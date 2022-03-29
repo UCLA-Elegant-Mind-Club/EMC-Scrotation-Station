@@ -4,9 +4,10 @@ prefs.hardware['audioLib'] = ['ptb', 'pyo']
 import os, time
 from RotationClasses import RotationProtocol as RP
 from RotationClasses import *
+from ScalingClasses import *
 
-protocolNames = ['Face Roll RT', 'Face Yaw RT', 'Face Pitch RT',
-        'English Roll RT', 'Thai Roll RT', 'Chinese Roll RT', 'Chinese Roll New RT']
+protocolNames = ['English Scale RT', 'Thai Scale RT', 'Chinese Scale RT',
+        'English Roll RT', 'Thai Roll RT', 'Chinese Roll RT']
 debug = False
 
 if debug:
@@ -27,36 +28,23 @@ def makeDataDirs(participant):
         if not os.path.isdir(protocolPath):
             os.mkdir(protocolPath)
 
-def getProtocolList(day, code, participantCode, dirPath):
-    participant = participantCode + '_' + time.strftime("%m_%d") + '_Mon1_'
-    fileNames = ['']*7
+def getProtocolList(group, includeThai, participantCode, dirPath):
+    participant = participantCode + '_' + time.strftime("%m_%d")
+    fileNames = ['']*6
     for protocol in range(0, len(protocolNames)):
         fileNames[protocol] = os.path.join(dirPath, participantCode, protocolNames[protocol],
             participant + protocolNames[protocol] + '.csv')
-    if day == '1':
-        r = FaceRoll(fileNames[0])
-        y = FaceYaw(fileNames[1])
-        p = FacePitch(fileNames[2])
-        if code == 'A': return [r,y,p]
-        if code == 'B': return [r,p,y]
-        if code == 'C': return [y,r,p]
-        if code == 'D': return [y,p,r]
-        if code == 'E': return [p,r,y]
-        if code == 'F': return [p,y,r]
-    elif day == '2':
+    if group == 'Scaling':
+        e = EnglishScaling(fileNames[0])
+        t = ThaiScaling(fileNames[1])
+        c = ChineseScaling(fileNames[2])
+    else:
         e = EnglishRoll(fileNames[3])
         t = ThaiRoll(fileNames[4])
         c = ChineseRoll(fileNames[5])
-        code = 'A'  #Training effect: Start with easiest --> hardest
-        if code == 'A': return [e,t,c]
-        if code == 'B': return [e,c,t]
-        if code == 'C': return [t,e,c]
-        if code == 'D': return [t,c,e]
-        if code == 'E': return [c,e,t]
-        if code == 'F': return [c,t,e]
+    if includeThai == 'Yes':
+        return [e, t, c]
     else:
-        e = EnglishRoll(fileNames[3])
-        c = ChineseRollNew(fileNames[6])
         return [e, c]
 
 def loadSounds():
@@ -92,21 +80,21 @@ if __name__ == '__main__':
         RP.postSetBreak = 1
         RP.dummyTrials = 1
     
-    codeInfo = {'Participant Code': ''}
+    codeInfo = {'Participant Name': ''}
     codeDialog = gui.DlgFromDict(dictionary = codeInfo, sortKeys = False, title = 'Participant Info')
     if codeDialog.OK == False:
         core.quit()
     
     autoProtocol = 2;
-    protocolDialog = gui.Dlg(title='Select protocol to run', screen=-1)
-    protocolDialog.addField('Day: ', choices = ['1', '2'])
-    protoChoices = ['A', 'B', 'C', 'D', 'E', 'F']
+    protocolDialog = gui.Dlg(title='Select protocols to run', screen=-1)
+    protocolDialog.addField('Group: ', choices = ['Scaling', 'Rotation'])
+    includeThai = ['Yes', 'No']
     
     if autoProtocol == 0:
         protocolInfo = ['', '']
     else:
         if autoProtocol == 2:
-            protocolDialog.addField('Protocol: ', choices = protoChoices)
+            protocolDialog.addField('Include Thai: ', choices = includeThai)
         protocolInfo = protocolDialog.show()
         if protocolInfo is None:
             core.quit()
