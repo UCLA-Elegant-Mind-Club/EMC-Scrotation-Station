@@ -1,4 +1,3 @@
-#test
 from psychopy import gui, core, prefs
 from psychopy.sound import Sound
 prefs.hardware['audioLib'] = ['ptb', 'pyo']
