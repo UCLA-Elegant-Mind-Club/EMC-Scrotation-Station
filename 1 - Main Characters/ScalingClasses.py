@@ -15,7 +15,7 @@ class ScalingProtocol(TVStimuli):
     trainingReps = 2
     
     crossSize = 4
-    referenceSize = 16
+    referenceSize = 8
     refValue = 8
     
     practiceFreq = 25
