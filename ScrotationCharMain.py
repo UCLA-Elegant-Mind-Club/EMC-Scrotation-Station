@@ -99,11 +99,11 @@ if __name__ == '__main__':
         protocolInfo = protocolDialog.show()
         if protocolInfo is None:
             core.quit()
-        protocolInfo += random.choice(protoChoices);
+        protocolInfo += ['Yes'];
     
     RP.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
-    makeDataDirs(codeInfo['Participant Code'])
-    protocolList = getProtocolList(protocolInfo[0], protocolInfo[1], codeInfo['Participant Code'],
+    makeDataDirs(codeInfo['Participant Name'])
+    protocolList = getProtocolList(protocolInfo[0], protocolInfo[1], codeInfo['Participant Name'],
         os.path.join(os.getcwd(), 'Data'))
         
     for protocolNum in range(0, len(protocolList)):    

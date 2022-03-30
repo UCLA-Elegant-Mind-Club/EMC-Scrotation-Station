@@ -83,10 +83,6 @@ class ScalingProtocol(TVStimuli):
         self.genDisplay('(Press space to continue)', 0, -8)
         self.showWait()
     
-    def main(self):
-        self.calibrate('monitor_calibration_8.csv')
-        super().main()
-    
 class EnglishScaling(ScalingProtocol):
     winners = ['Ana', 'Minerva', 'Will', 'Cerisol', 'RNFO', 'CyndaquilIsFire', ' ', 'SausageBoy', 'cm600286', 'AmongUs']
     highScores = [145301, 142012, 141954, 138562, 134953, 128433, 127950, 126169, 124406, 121526]
