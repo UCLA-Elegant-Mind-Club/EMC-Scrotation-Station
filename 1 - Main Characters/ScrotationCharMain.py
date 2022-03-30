@@ -102,9 +102,9 @@ if __name__ == '__main__':
         protocolInfo += ['Yes'];
     
     if customCalibration:
-        RP.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration1.csv'))
-    else:
         RP.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
+    else:
+        RP.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration1.csv'))
     makeDataDirs(codeInfo['Participant Name'])
     protocolList = getProtocolList(protocolInfo[0], protocolInfo[1], codeInfo['Participant Name'],
         os.path.join(os.getcwd(), 'Data'))
