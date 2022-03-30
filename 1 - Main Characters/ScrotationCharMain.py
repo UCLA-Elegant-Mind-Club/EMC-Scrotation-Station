@@ -9,6 +9,7 @@ from ScalingClasses import *
 protocolNames = ['English Scale RT', 'Thai Scale RT', 'Chinese Scale RT',
         'English Roll RT', 'Thai Roll RT', 'Chinese Roll RT']
 debug = False
+customCalibration = False
 
 if debug:
     debugDlg = gui.Dlg(title='Debug Mode?', pos=None, size=None, style=None,\
@@ -100,7 +101,10 @@ if __name__ == '__main__':
             core.quit()
         protocolInfo += ['Yes'];
     
-    RP.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
+    if customCalibration:
+        RP.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration1.csv'))
+    else:
+        RP.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
     makeDataDirs(codeInfo['Participant Name'])
     protocolList = getProtocolList(protocolInfo[0], protocolInfo[1], codeInfo['Participant Name'],
         os.path.join(os.getcwd(), 'Data'))
