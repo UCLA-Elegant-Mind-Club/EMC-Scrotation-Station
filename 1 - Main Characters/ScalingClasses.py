@@ -7,26 +7,6 @@ from TVStimuli import TVStimuli
 class ScalingProtocol(TVStimuli):
     baseSizes = [1, 2, 4, 8, 16, 28]
     
-    numSets = 3
-    trialsPerSet = 50
-    totalTrials = numSets * trialsPerSet
-    
-    trainingTime = 10
-    trainingReps = 2
-    
-    crossSize = 4
-    referenceSize = 8
-    refValue = 8
-    
-    practiceFreq = 25
-    prePracticeBreak = 5
-    postPracticeBreak = 5
-    postSetBreak = 20
-    initialPracticeTrials = 12
-    interimPracticeTrials = 6
-    dummyTrials = 3
-    timeOut = 1.2
-    
     def __init__(self, stimDescription, stimType, fileName = ''):
         sizes = self.baseSizes
         for i in range(0, len(self.baseSizes) - 1):
@@ -59,14 +39,13 @@ class ScalingProtocol(TVStimuli):
     def initFile(self):
         self.csvOutput(['Correct Response', 'Height', 'RT', 'Face'])
     
-    def showImage(self, set, showTarget, size):
+    def showImage(self, set, showTarget, size, folder):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'face ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'New Faces', 'Roll', fileName)
+        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         self.displayImage.size = (faceWidth, faceHeight)
-        
         self.displayImage.draw()
     
     def demoSequence(self, sizes, demoMessage):
@@ -82,29 +61,23 @@ class ScalingProtocol(TVStimuli):
         self.showImage(3, 0, self.referenceSize)
         self.genDisplay('(Press space to continue)', 0, -8)
         self.showWait()
+        
+    def demo(self):
+        print(self.testValues)
+        self.demoSequence(self.testValues, 'The characters will be rescaled as shown below.')
     
 class EnglishScaling(ScalingProtocol):
     winners = ['Ana', 'Minerva', 'Will', 'Cerisol', 'RNFO', 'CyndaquilIsFire', ' ', 'SausageBoy', 'cm600286', 'AmongUs']
     highScores = [145301, 142012, 141954, 138562, 134953, 128433, 127950, 126169, 124406, 121526]
 
-    trainingTime = 5
+    if not debug:
+        trainingTime = 5
     
     def __init__(self, fileName = ''):
         super().__init__('English', 'letter', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Characters', fileName)
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        self.displayImage.size = (faceWidth, faceHeight)
-        
-        self.displayImage.draw()
-
-    def demo(self):
-        print(self.testValues)
-        self.demoSequence(self.testValues, 'The letters will be rescaled as shown below.')
+        super().showImage(set, showTarget, size, 'English Characters')
 
 class ThaiScaling(ScalingProtocol):
     winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
@@ -114,17 +87,7 @@ class ThaiScaling(ScalingProtocol):
         super().__init__('Thai', 'characters', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Thai Characters', fileName)
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        self.displayImage.size = (faceWidth, faceHeight)
-        
-        self.displayImage.draw()
-
-    def demo(self):
-        self.demoSequence(self.testValues, 'The characters will be rescaled as shown below.')
+        super().showImage(set, showTarget, size, 'English Characters')
 
 class ChineseScaling(ScalingProtocol):
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
@@ -134,14 +97,4 @@ class ChineseScaling(ScalingProtocol):
         super().__init__('Chinese', 'characters', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Chinese Characters', fileName)
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        self.displayImage.size = (faceWidth, faceHeight)
-        
-        self.displayImage.draw()
-
-    def demo(self):
-        self.demoSequence(self.testValues, 'The characters will be rescaled as shown below.')
+        super().showImage(set, showTarget, size, 'English Characters')
