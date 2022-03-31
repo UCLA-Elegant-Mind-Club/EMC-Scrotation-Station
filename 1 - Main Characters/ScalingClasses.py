@@ -1,11 +1,12 @@
 from psychopy import gui, core, prefs
 from psychopy.sound import Sound
 prefs.hardware['audioLib'] = ['ptb', 'pyo']
-import os, time, math
+import os, time, random, math
 from TVStimuli import TVStimuli
 
 class ScalingProtocol(TVStimuli):
     baseSizes = [1, 2, 4, 8, 16, 28]
+    refValue = TVStimuli.referenceSize
     
     def __init__(self, stimDescription, stimType, fileName = ''):
         sizes = self.baseSizes
@@ -14,6 +15,11 @@ class ScalingProtocol(TVStimuli):
             intermed = self.baseSizes[i] * 10 ** diff
             sizes = sizes + [round(intermed,2)]
         sizes.sort()
+        
+        for i in range(0,len(self.highScores)):
+            self.highScores[i] -= random.randint(0, i * 400)
+        self.highScores.sort(reverse = True)
+        
         super().__init__(sizes, stimDescription, stimType, fileName)
     
     def instructions(self):
@@ -70,7 +76,7 @@ class EnglishScaling(ScalingProtocol):
     winners = ['Ana', 'Minerva', 'Will', 'Cerisol', 'RNFO', 'CyndaquilIsFire', ' ', 'SausageBoy', 'cm600286', 'AmongUs']
     highScores = [145301, 142012, 141954, 138562, 134953, 128433, 127950, 126169, 124406, 121526]
 
-    if not debug:
+    if not TVStimuli.debug:
         trainingTime = 5
     
     def __init__(self, fileName = ''):

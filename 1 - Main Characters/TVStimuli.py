@@ -10,6 +10,7 @@ from abc import ABC, abstractmethod
 textZoom = 1.25
 
 class TVStimuli(ABC):
+    debug = False
     
     numSets = 3
     trialsPerSet = 50

@@ -2,19 +2,19 @@ from psychopy import gui, core, prefs
 from psychopy.sound import Sound
 prefs.hardware['audioLib'] = ['ptb', 'pyo']
 import os, time
-from RotationClasses import *
+from TVStimuli import TVStimuli as TV
 from ScalingClasses import *
-TV = TVStimuli
+from RotationClasses import *
 
 protocolNames = ['English Scale RT', 'Thai Scale RT', 'Chinese Scale RT',
         'English Roll RT', 'Thai Roll RT', 'Chinese Roll RT']
-debug = True
+TV.debug = True
 
-if debug:
+if TV.debug:
     debugDlg = gui.Dlg(title='Debug Mode?', pos=None, size=None, style=None,\
          labelButtonOK=' Yes ', labelButtonCancel=' No ', screen=-1)
     debugDlg.show()
-    debug = debugDlg.OK
+    TV.debug = debugDlg.OK
 
 calibDlg = gui.Dlg(title='Testing location?', pos=None, size=None, style=None,\
      labelButtonOK=' Local at Knudson ', labelButtonCancel=' Remotely ', screen=-1)
@@ -75,7 +75,7 @@ def protocolBreak():
             TV.showWait()
 
 if __name__ == '__main__':
-    if debug:
+    if TV.debug:
         TV.trialsPerSet = 5
         TV.initialPracticeTrials = 3
         TV.trainingTime = 1
