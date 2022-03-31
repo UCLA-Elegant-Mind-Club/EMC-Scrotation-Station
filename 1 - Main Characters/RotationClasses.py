@@ -3,7 +3,6 @@ from psychopy.sound import Sound
 prefs.hardware['audioLib'] = ['ptb', 'pyo']
 import os, time, random
 from TVStimuli import TVStimuli
-debug = False
 
 class RotationProtocol(TVStimuli):
     rotations = [0, 30, 60, 90, 120, 150, 180, -150, -120, -90, -60, -30]
@@ -65,7 +64,7 @@ class EnglishRoll(RotationProtocol):
     winners = ['Arisvt', 'Mila', 'KayLA', 'Minerva', 'WW', 'Owl', 'Snoopy', 'cm600286', 'Ana', 'Katsaka']
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
 
-    if not debug:
+    if not TVStimuli.debug:
         trainingTime = 5
     
     def __init__(self, fileName = ''):
