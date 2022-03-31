@@ -87,7 +87,7 @@ class ThaiScaling(ScalingProtocol):
         super().__init__('Thai', 'characters', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'English Characters')
+        super().showImage(set, showTarget, size, 'Thai Characters')
 
 class ChineseScaling(ScalingProtocol):
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
@@ -97,4 +97,4 @@ class ChineseScaling(ScalingProtocol):
         super().__init__('Chinese', 'characters', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'English Characters')
+        super().showImage(set, showTarget, size, 'Chinese Characters')
