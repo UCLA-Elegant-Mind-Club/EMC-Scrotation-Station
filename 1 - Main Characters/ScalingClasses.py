@@ -96,6 +96,7 @@ class ThaiScaling(ScalingProtocol):
         super().showImage(set, showTarget, size, 'Thai Characters')
 
 class ChineseScaling(ScalingProtocol):
+    trialsPerSet = 32
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
     highScores = [143509, 135973, 134306, 133651, 133637, 132135, 131291, 116550, 114824, 114323]
 
