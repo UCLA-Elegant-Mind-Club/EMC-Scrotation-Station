@@ -74,7 +74,7 @@ class ScalingProtocol(TVStimuli):
     
 class EnglishScaling(ScalingProtocol):
     winners = ['Ana', 'Minerva', 'Will', 'Cerisol', 'RNFO', 'CyndaquilIsFire', ' ', 'SausageBoy', 'cm600286', 'AmongUs']
-    highScores = [145301, 142012, 141954, 138562, 134953, 128433, 127950, 126169, 124406, 121526]
+    highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
 
     if not TVStimuli.debug:
         trainingTime = 5
@@ -98,7 +98,7 @@ class ThaiScaling(ScalingProtocol):
 class ChineseScaling(ScalingProtocol):
     trialsPerSet = 32
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
-    highScores = [143509, 135973, 134306, 133651, 133637, 132135, 131291, 116550, 114824, 114323]
+    highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
     def __init__(self, fileName = ''):
         super().__init__('Chinese', 'characters', fileName = fileName)

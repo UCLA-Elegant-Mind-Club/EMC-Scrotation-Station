@@ -53,6 +53,10 @@ def getProtocolList(group, includeThai, participantCode, dirPath):
     if includeThai == 'Yes':
         return [e, t, c]
     else:
+        for i in range(0, len(e.highScores)):
+            e.highScores[i] = int(e.highScores[i] * 1.5)
+        for i in range(0, len(c.highScores)):
+            c.highScores[i] = int(c.highScores[i] * 1.5)
         return [e, c]
 
 def loadSounds():
