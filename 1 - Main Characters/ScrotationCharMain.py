@@ -39,6 +39,9 @@ def getProtocolList(group, includeThai, participantCode, dirPath):
     for protocol in range(0, len(protocolNames)):
         fileNames[protocol] = os.path.join(dirPath, participantCode, protocolNames[protocol],
             participant + protocolNames[protocol] + '.csv')
+    if includeThai == 'No' and not TV.debug:
+        TV.trialsPerSet = 50
+        TV.practiceFreq = 25
     if group == 'Scaling':
         e = EnglishScaling(fileNames[0])
         t = ThaiScaling(fileNames[1])
