@@ -45,10 +45,10 @@ class ScalingProtocol(TVStimuli):
     def initFile(self):
         self.csvOutput(['Correct Response', 'Height', 'RT', 'Face'])
     
-    def showImage(self, set, showTarget, size, folder):
+    def showImage(self, set, showTarget, size):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
+        folderName = 'face ' + str(targets[set][showTarget])
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folderName, 'main')
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         self.displayImage.size = (faceWidth, faceHeight)
@@ -72,36 +72,10 @@ class ScalingProtocol(TVStimuli):
         print(self.testValues)
         self.demoSequence(self.testValues, 'The characters will be rescaled as shown below.')
     
-class EnglishScaling(ScalingProtocol):
-    winners = ['Ana', 'Minerva', 'Will', 'Cerisol', 'RNFO', 'CyndaquilIsFire', ' ', 'SausageBoy', 'cm600286', 'AmongUs']
-    highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
-
-    if not TVStimuli.debug:
-        trainingTime = 5
-    
-    def __init__(self, fileName = ''):
-        super().__init__('English', 'letter', fileName = fileName)
-    
-    def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'English Characters')
-
-class ThaiScaling(ScalingProtocol):
-    winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
-    highScores = [92560, 92319, 92276, 91589, 90669, 89813, 87408, 87336, 85451, 84110]
-
-    def __init__(self, fileName):
-        super().__init__('Thai', 'characters', fileName = fileName)
-    
-    def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'Thai Characters')
-
-class ChineseScaling(ScalingProtocol):
+class FaceScale(ScalingProtocol):
     trialsPerSet = 32
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
     def __init__(self, fileName = ''):
-        super().__init__('Chinese', 'characters', fileName = fileName)
-    
-    def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'Chinese Characters')
+        super().__init__('Celebrity', 'face', fileName = fileName)

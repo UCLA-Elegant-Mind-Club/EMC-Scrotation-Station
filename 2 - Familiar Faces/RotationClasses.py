@@ -33,10 +33,10 @@ class RotationProtocol(TVStimuli):
         self.genDisplay('Press space to start.', 0, -2)
         self.showWait()
     
-    def showImage(self, set, showTarget, rotation, folder):
+    def showImage(self, set, showTarget, rotation):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
+        folderName = 'face ' + str(targets[set][showTarget])
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folderName, 'main')
         self.displayImage.ori = rotation
         self.displayImage.draw()
     
@@ -60,35 +60,30 @@ class RotationProtocol(TVStimuli):
     def demo(self):
         self.demoSequence(self.rotations, 'The characters will be rotated in a circle as shown below.')
 
-class EnglishRoll(RotationProtocol):
+class FaceTraining(RotationProtocol):
+    names = ["Jennifer Connelly", "Daniel Day-Lewis", "Peter Gallagher", "Jennifer Lawrence",
+        "Cate Blanchett", "Helen Mirren", "Emily Blunt", "Katy Perry", "Zooey Deschanel"]
+    trainingTime = 1;
+    
+    def __init__(self):
+        super().__init__(self.rotations, 'Celebrity', 'Faces', fileName = '')
+        
+    def main(self):
+        for i in range(0,9):
+            self.genDisplay('The following images are of ' + self.names[i] + '.', 0, 3)
+            self.genDisplay('(Press space to continue)', 0, 0)
+            self.showWait()
+            dirList = os.listdir(os.path.join(os.getcwd(), 'Stimuli', 'face ' + str(i + 1)));
+            for name in dirList:
+                if name != 'main.png':
+                    self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'face ' + str(i + 1), name)
+                    self.displayImage.draw()
+                    self.genDisplay('This is ' + self.names[i] + '.', 0, -8)
+                    self.showWait(self.trainingTime)
+
+class FaceRoll(RotationProtocol):
     winners = ['Arisvt', 'Mila', 'KayLA', 'Minerva', 'WW', 'Owl', 'Snoopy', 'cm600286', 'Ana', 'Katsaka']
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
-
-    if not TVStimuli.debug:
-        trainingTime = 5
     
     def __init__(self, fileName = ''):
-        super().__init__(self.rotations, 'English', 'letter', fileName = fileName)
-    
-    def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'English Characters')
-
-class ThaiRoll(RotationProtocol):
-    winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
-    highScores = [92560, 92319, 92276, 91589, 90669, 89813, 87408, 87336, 85451, 84110]
-
-    def __init__(self, fileName):
-        super().__init__(self.rotations, 'Thai', 'characters', fileName = fileName)
-    
-    def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Thai Characters')
-
-class ChineseRoll(RotationProtocol):
-    winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
-    highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
-
-    def __init__(self, fileName = ''):
-        super().__init__(self.rotations, 'Chinese', 'characters', fileName = fileName)
-    
-    def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Chinese Characters')
+        super().__init__(self.rotations, 'Celebrity', 'face', fileName = fileName)

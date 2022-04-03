@@ -6,8 +6,7 @@ from TVStimuli import TVStimuli as TV
 from ScalingClasses import *
 from RotationClasses import *
 
-protocolNames = ['English Scale RT', 'Thai Scale RT', 'Chinese Scale RT',
-        'English Roll RT', 'Thai Roll RT', 'Chinese Roll RT']
+protocolNames = ['Fam Face Scale RT', 'Fam Face Roll RT']
 TV.debug = True
 
 if TV.debug:
@@ -33,31 +32,18 @@ def makeDataDirs(participant):
         if not os.path.isdir(protocolPath):
             os.mkdir(protocolPath)
 
-def getProtocolList(group, includeThai, participantCode, dirPath):
+def getProtocolList(group, training, participantCode, dirPath):
     participant = participantCode + '_' + time.strftime("%m_%d")
-    fileNames = ['']*6
+    fileNames = ['']*2
     for protocol in range(0, len(protocolNames)):
         fileNames[protocol] = os.path.join(dirPath, participantCode, protocolNames[protocol],
             participant + protocolNames[protocol] + '.csv')
-    if includeThai == 'No' and not TV.debug:
-        TV.trialsPerSet = 50
-        TV.practiceFreq = 25
+    if training == 'Yes':
+        return [FaceTraining()]
     if group == 'Scaling':
-        e = EnglishScaling(fileNames[0])
-        t = ThaiScaling(fileNames[1])
-        c = ChineseScaling(fileNames[2])
+        return [FaceScale(fileNames[0])]
     else:
-        e = EnglishRoll(fileNames[3])
-        t = ThaiRoll(fileNames[4])
-        c = ChineseRoll(fileNames[5])
-    if includeThai == 'Yes':
-        return [e, t, c]
-    else:
-        for i in range(0, len(e.highScores)):
-            e.highScores[i] = int(e.highScores[i] * 1.5)
-        for i in range(0, len(c.highScores)):
-            c.highScores[i] = int(c.highScores[i] * 1.5)
-        return [e, c]
+        return [FaceRoll(fileNames[1])]
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
@@ -100,13 +86,13 @@ if __name__ == '__main__':
     autoProtocol = 2;
     protocolDialog = gui.Dlg(title='Select protocols to run', screen=-1)
     protocolDialog.addField('Group: ', choices = ['Scaling', 'Rotation'])
-    includeThai = ['Yes', 'No']
+    training = ['Yes', 'No']
     
     if autoProtocol == 0:
         protocolInfo = ['', '']
     else:
         if autoProtocol == 2:
-            protocolDialog.addField('Include Thai: ', choices = includeThai)
+            protocolDialog.addField('Training: ', choices = training)
         protocolInfo = protocolDialog.show()
         if protocolInfo is None:
             core.quit()
