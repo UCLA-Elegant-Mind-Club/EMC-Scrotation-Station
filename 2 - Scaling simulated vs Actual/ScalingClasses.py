@@ -48,7 +48,7 @@ class ScalingProtocol(TVStimuli):
     def showImage(self, set, showTarget, size):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
         fileName = 'face ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', fileName)
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         self.displayImage.size = (faceWidth, faceHeight)
@@ -88,6 +88,7 @@ class Face2Scaling(ScalingProtocol):
         super().__init__('', 'face', fileName = fileName)
         
     def csvOutput(self, output):
-        output[1] = output[1] / 2
+        if output[1] != 'Height':
+            output[1] = output[1] / 2
         super().csvOutput(output)
         
