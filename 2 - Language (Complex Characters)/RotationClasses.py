@@ -71,24 +71,28 @@ class EnglishRoll(RotationProtocol):
         super().__init__(self.rotations, 'English', 'letter', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'English Characters')
+        super().showImage(set, showTarget, rotation, 'New English Characters')
 
-class ThaiRoll(RotationProtocol):
+class HebrewRoll(RotationProtocol):
     winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
     highScores = [92560, 92319, 92276, 91589, 90669, 89813, 87408, 87336, 85451, 84110]
 
     def __init__(self, fileName):
-        super().__init__(self.rotations, 'Thai', 'characters', fileName = fileName)
+        super().__init__(self.rotations, 'Hebrew', 'characters', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Thai Characters')
+        super().showImage(set, showTarget, rotation, 'Hebrew Characters')
 
-class ChineseRoll(RotationProtocol):
+class NonsenseRoll(RotationProtocol):
     winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
     def __init__(self, fileName = ''):
-        super().__init__(self.rotations, 'Chinese', 'characters', fileName = fileName)
+        super().__init__(self.rotations, 'Combined', 'characters', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Chinese Characters')
+        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
+        fileName = 'nonsense ' + str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Nonsense Characters', fileName)
+        self.displayImage.ori = rotation
+        self.displayImage.draw()
