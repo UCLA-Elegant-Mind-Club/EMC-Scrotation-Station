@@ -23,7 +23,7 @@ class TVStimuli(ABC):
     referenceSize = 8
     refValue = 0
     
-    practiceFreq = 40
+    practiceFreq = 20
     prePracticeBreak = 5
     postPracticeBreak = 5
     postSetBreak = 20
