@@ -43,16 +43,7 @@ class ScalingProtocol(TVStimuli):
         self.showWait()
     
     def initFile(self):
-        self.csvOutput(['Correct Response', 'Height', 'RT', 'Face'])
-    
-    def showImage(self, set, showTarget, size, folder):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        self.displayImage.size = (faceWidth, faceHeight)
-        self.displayImage.draw()
+        self.csvOutput(['Correct Response', 'Height', 'RT', 'Word'])
     
     def demoSequence(self, sizes, demoMessage):
         self.genDisplay(demoMessage, 0, 8)
@@ -83,7 +74,14 @@ class EnglishScaling(ScalingProtocol):
         super().__init__('English', 'letter', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'English Characters')
+        ##IDK what to put here
+        targets = #???
+        fileName = str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
+        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        self.displayImage.size = (faceWidth, faceHeight)
+        self.displayImage.draw()
 
 class ThaiScaling(ScalingProtocol):
     winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']

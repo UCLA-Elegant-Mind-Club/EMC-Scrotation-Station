@@ -33,15 +33,8 @@ class RotationProtocol(TVStimuli):
         self.genDisplay('Press space to start.', 0, -2)
         self.showWait()
     
-    def showImage(self, set, showTarget, rotation, folder):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
-        self.displayImage.ori = rotation
-        self.displayImage.draw()
-    
     def initFile(self):
-        self.csvOutput(["Correct Response","Rotation (deg)", "Reaction Time (ms)", "Target"])
+        self.csvOutput(["Correct Response","Rotation (deg)", "Reaction Time (ms)", "Word"])
         
     def demoSequence(self, rotations, demoMessage):
         self.genDisplay(demoMessage, 0, 8)
@@ -58,9 +51,9 @@ class RotationProtocol(TVStimuli):
         self.showWait()
     
     def demo(self):
-        self.demoSequence(self.rotations, 'The characters will be rotated in a circle as shown below.')
+        self.demoSequence(self.rotations, 'The words will be rotated in a circle as shown below.')
 
-class EnglishRoll(RotationProtocol):
+class EnglishWordRoll (RotationProtocol):
     winners = ['Arisvt', 'Mila', 'KayLA', 'Minerva', 'WW', 'Owl', 'Snoopy', 'cm600286', 'Ana', 'Katsaka']
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
 
@@ -68,27 +61,39 @@ class EnglishRoll(RotationProtocol):
         trainingTime = 5
     
     def __init__(self, fileName = ''):
-        super().__init__(self.rotations, 'English', 'letter', fileName = fileName)
+        super().__init__(self.rotations, 'English', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'English Characters')
+        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['DEER','DEAR','DOOR'], ['demo']]
+        fileName = str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
+        self.displayImage.ori = rotation
+        self.displayImage.draw()
 
-class ThaiRoll(RotationProtocol):
+class HebrewWordRoll(RotationProtocol):
     winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
     highScores = [92560, 92319, 92276, 91589, 90669, 89813, 87408, 87336, 85451, 84110]
 
     def __init__(self, fileName):
-        super().__init__(self.rotations, 'Thai', 'characters', fileName = fileName)
+        super().__init__(self.rotations, 'Hebrew', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Thai Characters')
+        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['EQUIP','BOUND','PROWL'], ['demo']]
+        fileName = str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Hebrew Words', fileName)
+        self.displayImage.ori = rotation
+        self.displayImage.draw()
 
-class ChineseRoll(RotationProtocol):
+class NonsenseWordRoll(RotationProtocol):
     winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
     def __init__(self, fileName = ''):
-        super().__init__(self.rotations, 'Chinese', 'characters', fileName = fileName)
+        super().__init__(self.rotations, 'Unfamiliar', 'words', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Chinese Characters')
+        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GLIDE','GRATE'], ['EQUIP','BOUND','PROWL'], ['demo']]
+        fileName = str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Nonsense Words', fileName)
+        self.displayImage.ori = rotation
+        self.displayImage.draw()
