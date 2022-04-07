@@ -93,7 +93,7 @@ class HebrewWordRoll(RotationProtocol):
         super().__init__(self.rotations, 'Hebrew', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImge(set, showTarget, rotation, 'Hebrew Words');
+        super().showImage(set, showTarget, rotation, 'Hebrew Words');
 
 class NonsenseWordRoll(RotationProtocol):
     winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
