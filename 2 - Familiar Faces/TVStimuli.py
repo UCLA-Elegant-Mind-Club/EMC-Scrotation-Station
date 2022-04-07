@@ -10,8 +10,6 @@ from abc import ABC, abstractmethod
 textZoom = 1.25
 
 class TVStimuli(ABC):
-    debug = False
-    
     numSets = 3
     trialsPerSet = 32
     totalTrials = numSets * trialsPerSet
@@ -20,7 +18,7 @@ class TVStimuli(ABC):
     trainingReps = 2
     
     crossSize = 4
-    referenceSize = 8
+    referenceSize = 9
     refValue = 0
     
     practiceFreq = 40
