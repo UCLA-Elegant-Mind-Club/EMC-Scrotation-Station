@@ -41,6 +41,10 @@ class RotationProtocol(TVStimuli):
         fileName = 'word ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         self.displayImage.ori = rotation
+        self.displayImage.size = None
+        faceHeight = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
+        self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
     
     def demoSequence(self, rotations, demoMessage):
@@ -75,6 +79,10 @@ class EnglishWordRoll (RotationProtocol):
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
         self.displayImage.ori = rotation
+        self.displayImage.size = None
+        faceHeight = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
+        self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
 
 class HebrewWordRoll(RotationProtocol):

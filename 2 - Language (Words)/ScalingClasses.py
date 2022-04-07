@@ -45,6 +45,16 @@ class ScalingProtocol(TVStimuli):
     def initFile(self):
         self.csvOutput(['Correct Response', 'Height', 'RT', 'Word'])
     
+    def showImage(self, set, showTarget, size, folder):
+        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']]
+        fileName = 'word ' + str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
+        self.displayImage.size = None
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
+        self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
+        self.displayImage.draw()
+    
     def demoSequence(self, sizes, demoMessage):
         self.genDisplay(demoMessage, 0, 8)
         self.showImage(3, 0, self.referenceSize)
@@ -61,17 +71,7 @@ class ScalingProtocol(TVStimuli):
         
     def demo(self):
         print(self.testValues)
-        self.demoSequence(self.testValues, 'The characters will be rescaled as shown below.')
-        
-    
-    def showImage(self, set, showTarget, size, folder):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']]
-        fileName = 'word ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        self.displayImage.size = (faceWidth, faceHeight)
-        self.displayImage.draw()
+        self.demoSequence(self.testValues, 'The words will be rescaled as shown below.')
     
 class EnglishWordScaling(ScalingProtocol):
     winners = ['Ana', 'Minerva', 'Will', 'Cerisol', 'RNFO', 'CyndaquilIsFire', ' ', 'SausageBoy', 'cm600286', 'AmongUs']
@@ -87,9 +87,10 @@ class EnglishWordScaling(ScalingProtocol):
         targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['DEER','DEAR','DOOR'], ['demo']]
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
+        self.displayImage.size = None
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        self.displayImage.size = (faceWidth, faceHeight)
+        factor = faceHeight / self.displayImage.size[1]
+        self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
 
 class HebrewWordScaling(ScalingProtocol):
@@ -102,7 +103,7 @@ class HebrewWordScaling(ScalingProtocol):
     def showImage(self, set, showTarget, size):
         super().showImage(set, showTarget, size, 'Hebrew Words')
 
-class ChineseScaling(ScalingProtocol):
+class NonsenseWordScaling(ScalingProtocol):
     trialsPerSet = 32
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
