@@ -13,7 +13,6 @@ class RotationScaledProtocol(TVStimuli):
         self.highScores.sort(reverse = True)
         super().__init__(self.rotations, '', 'faces', fileName)
         self.referenceSize *= sizeFactor
-        self.displayImage.size = (self.displayImage.size[0] * sizeFactor, self.displayImage.size[1] * sizeFactor)
     
     def instructions(self):
         self.genDisplay('Welcome player. In this module, there will be ' + str(self.numSets) + ' sets of 3 ' + self.stimDescription + self.stimType + 's', 0, 6)
@@ -40,6 +39,9 @@ class RotationScaledProtocol(TVStimuli):
         fileName = 'face ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', fileName)
         self.displayImage.ori = rotation
+        faceWidth = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceWidth'])
+        faceHeight = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceHeight'])
+        self.displayImage.size = (faceWidth, faceHeight)
         self.displayImage.draw()
     
     def initFile(self):
@@ -75,7 +77,7 @@ class LargeFaceRoll(RotationScaledProtocol):
 
     def __init__(self, fileName):
         super().__init__(2, fileName = fileName)
-
+        
 class SmallFaceRoll(RotationScaledProtocol):
     winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]

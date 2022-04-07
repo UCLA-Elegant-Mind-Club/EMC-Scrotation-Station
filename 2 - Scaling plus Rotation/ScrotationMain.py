@@ -8,6 +8,7 @@ from RotationClasses import *
 
 protocolNames = ['Normal Face Roll RT', 'Large Face Roll RT', 'Small Face Roll RT', 'Scaling with rotations']
 TV.debug = True
+longBreakTime = 60
 
 if TV.debug:
     debugDlg = gui.Dlg(title='Debug Mode?', pos=None, size=None, style=None,\
@@ -58,14 +59,14 @@ def loadSounds():
     TV.showWait(0)
 
 def protocolBreak():
-    for i in range(0, 61):
+    for i in range(0, longBreakTime + 1):
         TV.genDisplay('Longer Break', 0, 9)
         TV.genDisplay('You now have a 4 minute break to rest your eyes, get up,', 0, 6)
         TV.genDisplay('and stretch your arms. If you need to use the restroom,', 0, 4)
         TV.genDisplay('please notify the operator. You can also start the next', 0, 2)
         TV.genDisplay('protocol early after 1 minute if you are ready.', 0, 0)
-        if i < 60:
-            TV.genDisplay('Seconds left until early start: ' + str(60 - i), 0, -4)
+        if i < longBreakTime:
+            TV.genDisplay('Seconds left until early start: ' + str(longBreakTime - i), 0, -4)
             TV.showWait(1)
         else:
             TV.genDisplay('[Press space to start next protocol]', 0, -4)
@@ -81,6 +82,7 @@ if __name__ == '__main__':
         TV.postPracticeBreak = 1
         TV.postSetBreak = 1
         TV.dummyTrials = 1
+        longBreakTime = 1
     
     codeInfo = {'Participant Name': ''}
     codeDialog = gui.DlgFromDict(dictionary = codeInfo, sortKeys = False, title = 'Participant Info')
