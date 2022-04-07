@@ -4,8 +4,9 @@ prefs.hardware['audioLib'] = ['ptb', 'pyo']
 import os, time
 from TVStimuli import TVStimuli as TV
 from ScrotationClasses import *
+from RotationClasses import *
 
-protocolNames = ['Scaling with rotations']
+protocolNames = ['Normal Face Roll RT', 'Large Face Roll RT', 'Small Face Roll RT', 'Scaling with rotations']
 TV.debug = True
 
 if TV.debug:
@@ -33,11 +34,20 @@ def makeDataDirs(participant):
 
 def getProtocolList(group, participantCode, dirPath):
     participant = participantCode + '_' + time.strftime("%m_%d")
-    fileNames = ['']*1
+    fileNames = ['']*4
     for protocol in range(0, len(protocolNames)):
         fileNames[protocol] = os.path.join(dirPath, participantCode, protocolNames[protocol],
             participant + protocolNames[protocol] + '.csv')
-    return [ScalingRotationProtocol(fileNames[0])]
+    if group == 'Rotation Protocols at Different Scalings':
+        a = NormalFaceRoll(fileNames[0])
+        b = LargeFaceRoll(fileNames[1])
+        c = SmallFaceRoll(fileNames[2])
+        if random.randint(0,1) == 0:
+            return [a, b, c]
+        else:
+            return [a, c, b]
+    else:
+        return [ScalingRotationProtocol(fileNames[4])]
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
@@ -77,10 +87,9 @@ if __name__ == '__main__':
     if codeDialog.OK == False:
         core.quit()
     
-    autoProtocol = 0;
+    autoProtocol = 1;
     protocolDialog = gui.Dlg(title='Select protocols to run', screen=-1)
-    protocolDialog.addField('Distance to Screen: ', choices = ['Normal', 'Double'])
-    includeThai = ['Yes', 'No']
+    protocolDialog.addField('Type of Combination: ', choices = ['Rotation Protocols at Different Scalings', 'Scaling protocol with random rotation'])
     
     if autoProtocol == 0:
         protocolInfo = ['', '']
