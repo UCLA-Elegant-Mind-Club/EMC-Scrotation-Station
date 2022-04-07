@@ -36,6 +36,13 @@ class RotationProtocol(TVStimuli):
     def initFile(self):
         self.csvOutput(["Correct Response","Rotation (deg)", "Reaction Time (ms)", "Word"])
         
+    def showImage(self, set, showTarget, rotation, folder):
+        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']]
+        fileName = 'word ' + str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
+        self.displayImage.ori = rotation
+        self.displayImage.draw()
+    
     def demoSequence(self, rotations, demoMessage):
         self.genDisplay(demoMessage, 0, 8)
         self.showImage(3, 0, self.refValue)
@@ -78,11 +85,7 @@ class HebrewWordRoll(RotationProtocol):
         super().__init__(self.rotations, 'Hebrew', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['EQUIP','BOUND','PROWL'], ['demo']]
-        fileName = str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Hebrew Words', fileName)
-        self.displayImage.ori = rotation
-        self.displayImage.draw()
+        super().showImge(set, showTarget, rotation, 'Hebrew Words');
 
 class NonsenseWordRoll(RotationProtocol):
     winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
@@ -92,8 +95,4 @@ class NonsenseWordRoll(RotationProtocol):
         super().__init__(self.rotations, 'Unfamiliar', 'words', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GLIDE','GRATE'], ['EQUIP','BOUND','PROWL'], ['demo']]
-        fileName = str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Nonsense Words', fileName)
-        self.displayImage.ori = rotation
-        self.displayImage.draw()
+        super().showImage(set, showTarget, rotation, 'Nonsense Words')

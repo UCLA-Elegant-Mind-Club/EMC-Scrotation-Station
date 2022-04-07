@@ -62,8 +62,18 @@ class ScalingProtocol(TVStimuli):
     def demo(self):
         print(self.testValues)
         self.demoSequence(self.testValues, 'The characters will be rescaled as shown below.')
+        
     
-class EnglishScaling(ScalingProtocol):
+    def showImage(self, set, showTarget, size, folder):
+        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']]
+        fileName = 'word ' + str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
+        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        self.displayImage.size = (faceWidth, faceHeight)
+        self.displayImage.draw()
+    
+class EnglishWordScaling(ScalingProtocol):
     winners = ['Ana', 'Minerva', 'Will', 'Cerisol', 'RNFO', 'CyndaquilIsFire', ' ', 'SausageBoy', 'cm600286', 'AmongUs']
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
 
@@ -74,8 +84,7 @@ class EnglishScaling(ScalingProtocol):
         super().__init__('English', 'letter', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        ##IDK what to put here
-        targets = #???
+        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['DEER','DEAR','DOOR'], ['demo']]
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
@@ -83,15 +92,15 @@ class EnglishScaling(ScalingProtocol):
         self.displayImage.size = (faceWidth, faceHeight)
         self.displayImage.draw()
 
-class ThaiScaling(ScalingProtocol):
+class HebrewWordScaling(ScalingProtocol):
     winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
     highScores = [92560, 92319, 92276, 91589, 90669, 89813, 87408, 87336, 85451, 84110]
 
     def __init__(self, fileName):
-        super().__init__('Thai', 'characters', fileName = fileName)
+        super().__init__('Hebrew', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'Thai Characters')
+        super().showImage(set, showTarget, size, 'Hebrew Words')
 
 class ChineseScaling(ScalingProtocol):
     trialsPerSet = 32
@@ -99,7 +108,7 @@ class ChineseScaling(ScalingProtocol):
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
     def __init__(self, fileName = ''):
-        super().__init__('Chinese', 'characters', fileName = fileName)
+        super().__init__('Nonsense', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'Chinese Characters')
+        super().showImage(set, showTarget, size, 'Nonsense Words')

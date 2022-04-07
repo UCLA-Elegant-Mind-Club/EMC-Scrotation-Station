@@ -6,8 +6,8 @@ from TVStimuli import TVStimuli as TV
 from ScalingClasses import *
 from RotationClasses import *
 
-protocolNames = ['English Scale RT', 'Thai Scale RT', 'Chinese Scale RT',
-        'English Roll RT', 'Thai Roll RT', 'Chinese Roll RT']
+protocolNames = ['English Word Scale RT', 'Hebrew Word Scale RT', 'Nonsense Word Scale RT',
+        'English Word Roll RT', 'Hebrew Word Roll RT', 'Nonsense Word Roll RT']
 TV.debug = True
 
 if TV.debug:
@@ -33,31 +33,21 @@ def makeDataDirs(participant):
         if not os.path.isdir(protocolPath):
             os.mkdir(protocolPath)
 
-def getProtocolList(group, includeThai, participantCode, dirPath):
+def getProtocolList(group, participantCode, dirPath):
     participant = participantCode + '_' + time.strftime("%m_%d")
     fileNames = ['']*6
     for protocol in range(0, len(protocolNames)):
         fileNames[protocol] = os.path.join(dirPath, participantCode, protocolNames[protocol],
             participant + protocolNames[protocol] + '.csv')
-    if includeThai == 'No' and not TV.debug:
-        TV.trialsPerSet = 50
-        TV.practiceFreq = 25
     if group == 'Scaling':
-        e = EnglishScaling(fileNames[0])
-        t = ThaiScaling(fileNames[1])
-        c = ChineseScaling(fileNames[2])
+        e = EnglishWordScaling(fileNames[0])
+        t = HebrewWordScaling(fileNames[1])
+        c = NonsenseWordScaling(fileNames[2])
     else:
-        e = EnglishRoll(fileNames[3])
-        t = ThaiRoll(fileNames[4])
-        c = ChineseRoll(fileNames[5])
-    if includeThai == 'Yes':
-        return [e, t, c]
-    else:
-        for i in range(0, len(e.highScores)):
-            e.highScores[i] = int(e.highScores[i] * 1.5)
-        for i in range(0, len(c.highScores)):
-            c.highScores[i] = int(c.highScores[i] * 1.5)
-        return [e, c]
+        e = EnglishWordRoll(fileNames[3])
+        t = HebrewWordRoll(fileNames[4])
+        c = NonsenseWordRoll(fileNames[5])
+    return [e, t, c]
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
@@ -97,27 +87,23 @@ if __name__ == '__main__':
     if codeDialog.OK == False:
         core.quit()
     
-    autoProtocol = 2;
+    autoProtocol = 1;
     protocolDialog = gui.Dlg(title='Select protocols to run', screen=-1)
     protocolDialog.addField('Group: ', choices = ['Scaling', 'Rotation'])
-    includeThai = ['Yes', 'No']
     
     if autoProtocol == 0:
         protocolInfo = ['', '']
     else:
-        if autoProtocol == 2:
-            protocolDialog.addField('Include Thai: ', choices = includeThai)
         protocolInfo = protocolDialog.show()
         if protocolInfo is None:
             core.quit()
-        protocolInfo += ['Yes'];
     
     if standardCalibration:
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration_Knudson.csv'))
     else:
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
     makeDataDirs(codeInfo['Participant Name'])
-    protocolList = getProtocolList(protocolInfo[0], protocolInfo[1], codeInfo['Participant Name'],
+    protocolList = getProtocolList(protocolInfo[0], codeInfo['Participant Name'],
         os.path.join(os.getcwd(), 'Data'))
         
     for protocolNum in range(0, len(protocolList)):    
