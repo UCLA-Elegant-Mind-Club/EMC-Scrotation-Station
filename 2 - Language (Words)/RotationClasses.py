@@ -43,7 +43,7 @@ class RotationProtocol(TVStimuli):
         self.displayImage.ori = rotation
         self.displayImage.size = None
         faceWidth = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceWidth'])
-        factor = faceHeight / self.displayImage.size[0]
+        factor = faceWidth / self.displayImage.size[0]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
     
@@ -81,7 +81,7 @@ class EnglishWordRoll (RotationProtocol):
         self.displayImage.ori = rotation
         self.displayImage.size = None
         faceWidth = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceWidth'])
-        factor = faceHeight / self.displayImage.size[0]
+        factor = faceWidth / self.displayImage.size[0]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
 
