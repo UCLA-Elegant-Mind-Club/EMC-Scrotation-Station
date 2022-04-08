@@ -76,10 +76,10 @@ if strcmp(answer,'3')
         end
     elseif strcmp(answer,'No')
         prompt = {'Enter Name of Protocol 1:', 'Enter Name of Protocol 2:',...
-            'Enter Name of Protocol 3:', 'Enter Name of Protcol 4'};
+            'Enter Name of Protocol 3:'};
         dlgtitle = 'Input';
         dims = [1 35];
-        definput = {'Protocol 1', 'Protocol 2', 'Protocol 3', 'Protocol 4'};
+        definput = {'Protocol 1', 'Protocol 2', 'Protocol 3'};
         answer = inputdlg(prompt,dlgtitle,dims,definput);
         protocolNames = answer;
         
@@ -97,6 +97,24 @@ if strcmp(answer,'3')
         definput = defInputStr2;
         answer = inputdlg(prompt,dlgtitle,dims,defInputStr2);
         colors = answer;
+        clear strArray;
+        clear defInputStr;
+        clear strArray2;
+        clear defInputStr2;
+        strArray = strings(1,Answer);
+        defInputStr = strings(1,Answer);
+        for ii = 1:Answer
+            strArray(ii) = strcat('Enter Linestyle for Protocol', {' '}, string(ii), ':');
+            strArray2 = cellstr(strArray);
+            defInputStr(ii)  = '--';
+            defInputStr2 = cellstr(defInputStr);
+        end
+        prompt = strArray2;
+        dlgtitle = 'Choose from these linestyles: ''-'' or ''--'' (single/double dash)';
+        dims = [1 35];
+        definput = defInputStr2;
+        answer = inputdlg(prompt,dlgtitle,dims,defInputStr2);
+        linestyle = answer; 
     end
         
 elseif strcmp(answer,'4')
