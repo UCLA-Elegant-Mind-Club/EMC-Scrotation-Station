@@ -50,8 +50,8 @@ class ScalingProtocol(TVStimuli):
         fileName = 'word ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         self.displayImage.size = None
-        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        factor = faceHeight / self.displayImage.size[1]
+        faceWidth = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceWidth'])
+        factor = faceHeight / self.displayImage.size[0]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
     
@@ -88,8 +88,8 @@ class EnglishWordScaling(ScalingProtocol):
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
         self.displayImage.size = None
-        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        factor = faceHeight / self.displayImage.size[1]
+        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
+        factor = faceWidth / self.displayImage.size[0]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
 
