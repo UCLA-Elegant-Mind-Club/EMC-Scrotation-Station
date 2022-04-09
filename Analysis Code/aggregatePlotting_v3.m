@@ -32,9 +32,10 @@ for ii = 1:length(fileList)
      'LineStyle', linestyle{ii}, 'MarkerSize', 5, 'DisplayName', protocolNames{ii},...
      'Marker', S{ii}); hold on;
     legend(h, 'Location', 'Northeastoutside', 'AutoUpdate', 'off');
-    xlim([-187.5 187.5]);
+    xRange = max(masterAngles) - min(masterAngles);
+    xlim([min(masterAngles) - xRange * 0.1, max(masterAngles) + xRange * 0.1]);
     ylim([300 900]);
     set(gca, 'fontsize', 14);
-    xticks([-180:60:180]);
+    %xticks([-180:60:180]);
     saveas(gcf, fullfile(pwd,  'combined_plots' ,strcat('Aggregate', '.png')));
 end

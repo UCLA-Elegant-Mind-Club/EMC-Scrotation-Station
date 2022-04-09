@@ -1,6 +1,7 @@
 clear newFullImg;
 fullImg = im2double(imread("mainRotated.png"));
 for pixel = 1:size(fullImg, 3)
+    img = fullImg(:, :, pixel);
     for i = 1:2
         width = size(img, 2);
         if mod(width,2) ~= 0

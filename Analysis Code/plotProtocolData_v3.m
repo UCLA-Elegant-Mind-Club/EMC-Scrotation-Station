@@ -6,7 +6,7 @@ close all
 for k = 1:length(fileList)
     folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
     addpath(folderPath);
-    mkdir(protocolNames{k});
+    mkdir(fullfile(pwd, direc, "Without Legend"));
     figure(k);
     for ii = 1:length(fileList(k).files)
         data = table2array(readtable(fileList(k).files(ii).name));
@@ -63,13 +63,13 @@ for k = 1:length(fileList)
         h(ii) = plot(2000, 'LineWidth', 1, 'MarkerFaceColor', color{ii}, 'color', color{ii}, ...
           'LineStyle', '--', 'MarkerSize', 5, 'DisplayName', SubjectNames{ii},...
           'Marker', S{k}); hold on;
-        
-        xlim([(masterAngles(1)-7.5) (masterAngles(end)+7.5)]);
+        xRange = masterAngles(end) - masterAngles(1);
+        xlim([(masterAngles(1)- xRange * 0.1) (masterAngles(end)+ xRange * 0.1)]);
         ylim([300 900]);
         set(gca, 'fontsize', 14);
         
         title(strcat(string(protocolNames{k})));
-            saveas(gcf, fullfile(pwd,  protocolNames{k},strcat(string(protocolNames{k}), '.png')));
+        saveas(gcf, fullfile(pwd, direc, "Without Legend",strcat(string(protocolNames{k}), '.png')));
         
     end
     hold on;

@@ -21,8 +21,12 @@ for k = 1:length(fileList)
             figure(ii);
         end
         hold on;
+        try
         scatter(angles, [angleRT_Mean(k).protocol(ii).subject.data], S{k}, 'filled', ...
             'LineWidth', 1, 'MarkerFaceColor',colors{k}, 'MarkerEdgeColor', colors{k});
+        catch
+            sprintf("error");
+        end
         hold on;
         errorbar(angles, [angleRT_Mean(k).protocol(ii).subject.data],...
             [angleRT_StdErr(k).protocol(ii).subject.data], S{k}, 'Color', colors{k},...
@@ -53,10 +57,11 @@ for k = 1:length(fileList)
         if strcmp(plotSeparate, 'True')
             legend(h, 'Location', 'Northeastoutside');
         end
-        xlim([(masterAngles(1)-5) (masterAngles(end)+5)]);
+        xRange = masterAngles(end) - masterAngles(1);
+        xlim([(masterAngles(1)- xRange * 0.1) (masterAngles(end)+ xRange * 0.1)]);
         ylim([300 900]);
         set(gca, 'fontsize', 14);
-        xticks([-180:30:180]);
+        %xticks([-180:30:180]);
         if strcmp(plotSeparate, 'True')
             title(strcat('Subject', {' '}, string(ii), {' '}, 'B/BBB'));
             saveas(gcf, fullfile(pwd,  protocolNames{k},strcat('Subject', '_',...
