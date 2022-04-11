@@ -4,7 +4,7 @@ close all;
 ScalingAnalysis = true;
 
 if ScalingAnalysis
-    readXValues = ["angle", "log", "distance"];
+    readXValues = ["linear", "log", "distance"];
 else
     readXValues = [""];
 end
@@ -30,7 +30,7 @@ end
 for i = 1:length(readXValues)
     readX = readXValues(i);
     switch readX
-        case "angle"
+        case "linear"
             refDist = refD;
             axes{1} = "Angle of " + axNames{1} + " (°)";
             dirName = "Angle analysis - " + dName;
@@ -48,6 +48,7 @@ for i = 1:length(readXValues)
             dirName = dName;
     end
     mkdir(dirName);
+    cd(dirName);
 
     %% Sort Through Data
     masterAngles = [];
@@ -104,7 +105,8 @@ for i = 1:length(readXValues)
         angleRT_Mean, angleRT_StdErr, myDir, linestyle, protocolNames, S, axes, colors,...
         masterAngles, refDist, plotSeparate);
     %% Plotting Incorrect Percentages
-    cd(dirName);
+    mkdir("Accuracy Bar Graphs");
+    cd("Accuracy Bar Graphs");
     for k = 1:length(fileList)
         mkdir(strcat(protocolNames{k}, 'Percentage Correct'));
         cd(strcat(protocolNames{k}, 'Percentage Correct'));
@@ -137,7 +139,8 @@ for i = 1:length(readXValues)
     end
     cd ..
     %% Output to XLSX
-    cd(dirName);
+    mkdir("Parameter Tables");
+    cd("Parameter Tables");
     for ii = 1:length(outputParamStats)
         tableStats = struct2table(outputParamStats(ii));
         fileName = strcat('output-Parameters for' , {' '}, ...
@@ -211,8 +214,8 @@ for i = 1:length(readXValues)
          ylim([0 15]);
          xlim([0 14]);
          title(strcat(string(protocolNames{ii})));
-         mkdir('chiSqrHist')
-         saveas(gcf, fullfile(pwd,  'chiSqrHist' ,strcat( protocolNames{ii}, '.png')));
+         mkdir('Chi Square Histograms')
+         saveas(gcf, fullfile(pwd,  'Chi Square Histograms' ,strcat( protocolNames{ii}, '.png')));
          
      end
     
@@ -342,7 +345,7 @@ for i = 1:length(readXValues)
     end
     
     %% Output Aggregate Parameters to XLSX
-    cd(dirName);
+    cd("Parameter Tables");
     for ii = 1:length(protocolNames)
         protocolChiFit(ii).slopePos = protocolChiFitPos(ii).slope;
         protocolChiFit(ii).slopePosErr = protocolChiFitPos(ii).slopeErr;
@@ -389,7 +392,6 @@ for i = 1:length(readXValues)
     
     %%  Aggregate Plotting
     figure();
-    mkdir('combined_plots');
     aggregatePlotting_v3(fileList, masterAngles, protocolWeightedMean, colors,...
         protocolStdErr,protocolChiFitPos, protocolChiFitNeg, linestyle,protocolNames, S,...
         axes, refDist);

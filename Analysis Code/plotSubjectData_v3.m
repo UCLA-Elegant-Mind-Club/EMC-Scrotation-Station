@@ -96,8 +96,8 @@ if strcmp(plotSeparate, 'False')
              'LineStyle', linestyle{k}, 'MarkerSize', 5, 'DisplayName', protocolNames{k},...
              'Marker', S{k}); hold on;
         H(k) = legend(h, 'Location', 'Northeastoutside');
-        mkdir combined_plots
-        saveas(gcf, fullfile(pwd,  'combined_plots' ,strcat('Subject', '_',...
+        mkdir("Separate Subject Plots");
+        saveas(gcf, fullfile(pwd,  'Separate Subject Plots' ,strcat('Subject', '_',...
                 string(ii), '.png')));
         end
     end
