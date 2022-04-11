@@ -1,6 +1,6 @@
 function [] = aggregatePlotting_v3(fileList, masterAngles, protocolWeightedMean, colors,...
     protocolStdErr,protocolChiFitPos, protocolChiFitNeg, linestyle,protocolNames, S,...
-    axes, refDist)
+    axes, refDist, saveDir)
 
 for ii = 1:length(fileList)
     data = table2array(readtable(fileList(ii).files(1).name));
@@ -37,5 +37,5 @@ for ii = 1:length(fileList)
     ylim([300 900]);
     set(gca, 'fontsize', 14);
     %xticks([-180:60:180]);
-    saveas(gcf, fullfile(pwd, strcat('Aggregate', '.png')));
+    saveas(gcf, fullfile(pwd, saveDir, strcat('Aggregate', '.png')));
 end

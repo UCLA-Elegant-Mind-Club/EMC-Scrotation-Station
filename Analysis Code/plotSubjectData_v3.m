@@ -1,11 +1,11 @@
 function [outputParamStats, protocolOutput, h] = plotSubjectData_v3(fileList,listing,...
     angleRT_Mean, angleRT_StdErr, myDir, linestyle, protocolNames, S, axes, colors,...
-    masterAngles, refDist, plotSeparate)
+    masterAngles, refDist, plotSeparate, saveDir)
 close all
 for k = 1:length(fileList)
     folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
     addpath(folderPath);
-    mkdir(protocolNames{k});
+    %mkdir(protocolNames{k});
     for ii = 1:length(fileList(k).files)
         data = table2array(readtable(fileList(k).files(ii).name));
         dist = data(:,2);
@@ -64,7 +64,7 @@ for k = 1:length(fileList)
         %xticks([-180:30:180]);
         if strcmp(plotSeparate, 'True')
             title(strcat('Subject', {' '}, string(ii), {' '}, 'B/BBB'));
-            saveas(gcf, fullfile(pwd,  protocolNames{k},strcat('Subject', '_',...
+            saveas(gcf, fullfile(pwd, saveDir, protocolNames{k},strcat('Subject', '_',...
                 string(ii),{' '},string(protocolNames{k}), '.png')));
         elseif strcmp(plotSeparate, 'False')
             title(strcat('Subject', {' '}, string(ii)));
@@ -89,15 +89,15 @@ if strcmp(plotSeparate, 'False')
     for k = 1:length(fileList)
         folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
         addpath(folderPath);
-        mkdir(protocolNames{k});
+        %mkdir(protocolNames{k});
         for ii = 1:length(fileList(k).files)
             figure(ii);
             h(k) = plot(2000, 'LineWidth', 1, 'MarkerFaceColor', colors{k}, 'color', colors{k}, ...
              'LineStyle', linestyle{k}, 'MarkerSize', 5, 'DisplayName', protocolNames{k},...
              'Marker', S{k}); hold on;
         H(k) = legend(h, 'Location', 'Northeastoutside');
-        mkdir("Separate Subject Plots");
-        saveas(gcf, fullfile(pwd,  'Separate Subject Plots' ,strcat('Subject', '_',...
+        mkdir(fullfile(saveDir, "Separate Subject Plots"));
+        saveas(gcf, fullfile(pwd, saveDir, 'Separate Subject Plots' ,strcat('Subject', '_',...
                 string(ii), '.png')));
         end
     end

@@ -32,15 +32,15 @@ for i = 1:length(readXValues)
     switch readX
         case "linear"
             refDist = refD;
-            axes{1} = "Angle of " + axNames{1} + " (°)";
-            dirName = "Angle analysis - " + dName;
+            axes{1} = axNames{1} + " (°)";
+            dirName = "Linear analysis - " + dName;
         case "log"
             refDist = log(refD);
             axes{1} = "Log of " + axNames{1} + " (log °)";
             dirName = "Log analysis - " + dName;
         case "distance"
             refDist = 1.4 * tan(8 * pi/180) / tan(refD * pi/180);
-            axes{1} = "Distance of " + axNames{1} + " (m)";
+            axes{1} = "Distance (m)";
             dirName = "Distance analysis - " + dName;
         otherwise
             refDist = refD;
@@ -48,7 +48,6 @@ for i = 1:length(readXValues)
             dirName = dName;
     end
     mkdir(dirName);
-    cd(dirName);
 
     %% Sort Through Data
     masterAngles = [];
@@ -103,8 +102,9 @@ for i = 1:length(readXValues)
     plotSeparate = 'False';
     [outputParamStats, protocolOutput, h] = plotSubjectData_v3(fileList,listing,...
         angleRT_Mean, angleRT_StdErr, myDir, linestyle, protocolNames, S, axes, colors,...
-        masterAngles, refDist, plotSeparate);
+        masterAngles, refDist, plotSeparate, dirName);
     %% Plotting Incorrect Percentages
+    cd(dirName);
     mkdir("Accuracy Bar Graphs");
     cd("Accuracy Bar Graphs");
     for k = 1:length(fileList)
@@ -138,6 +138,7 @@ for i = 1:length(readXValues)
         cd ..
     end
     cd ..
+
     %% Output to XLSX
     mkdir("Parameter Tables");
     cd("Parameter Tables");
@@ -195,8 +196,7 @@ for i = 1:length(readXValues)
             set(gcf, 'Position',  [20, 20, 1000, 800]);
             title( 'Slope vs Intercept');
             
-      mkdir('SlopeVsIntercept')
-      saveas(gcf, fullfile(pwd,  'SlopeVsIntercept' ,strcat('Slope vs Intercept', '_',...
+      saveas(gcf, fullfile(pwd, strcat('Slope vs Intercept', '_',...
                      '.png')));
      %%
      %%ChiSquare Histograms
@@ -221,6 +221,7 @@ for i = 1:length(readXValues)
     
     
     %% Hypothesis Testing/Error Analysis
+    cd ..
     [incorrectHypArray] = hypothesisTesting_v3(fileList, listing,...
         angleRT_Raw, masterAngles);
     
@@ -345,7 +346,7 @@ for i = 1:length(readXValues)
     end
     
     %% Output Aggregate Parameters to XLSX
-    cd("Parameter Tables");
+    cd(fullfile(dirName, "Parameter Tables"));
     for ii = 1:length(protocolNames)
         protocolChiFit(ii).slopePos = protocolChiFitPos(ii).slope;
         protocolChiFit(ii).slopePosErr = protocolChiFitPos(ii).slopeErr;
@@ -368,11 +369,12 @@ for i = 1:length(readXValues)
         writetable(tableStats, fileName, 'Sheet', 1);
     end
     cd ..
+    cd ..
     
     %%  Protocol Plotting 
     close all;
-    direc = 'protocol_plots';
-    mkdir(direc)
+    direc = fullfile(dirName, 'Stacked Plots', 'Protocol Plots');
+    mkdir(direc);
     color = {[0.85098      0.32549     0.098039], [0.92941      0.69412      0.12549], [0.49412      0.18431      0.55686], [0.46667      0.67451      0.18824], [0.30196       0.7451      0.93333], [0.63529     0.078431      0.18431], [0.71765      0.27451            1], [0.65098      0.65098      0.65098], [0.66667      0.98039      0.43922], [0.078431       0.5098      0.10588], [0.90196      0.54118      0.61176], [0.062745     0.062745      0.52941], [0.61961      0.25882      0.35686]};
     SubjectNames = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', ...
         '16', '17', '18', '19', '20'}
@@ -383,8 +385,8 @@ for i = 1:length(readXValues)
     
     %%  Protocol Plotting Normalized
     close all;
-    direc = 'protocol_plots_normalized';
-    mkdir(direc)
+    direc = fullfile(dirName, 'Stacked Plots', 'Normalized Protocol Plots');
+    mkdir(direc);
     plotProtocolData_v3(fileList,listing,...
         angleRT_Norm, angleRT_StdErr, myDir, linestyle, protocolNames, S, axes,...
         masterAngles, refDist, color, SubjectNames,  protocolWeightedMean,...
@@ -394,8 +396,5 @@ for i = 1:length(readXValues)
     figure();
     aggregatePlotting_v3(fileList, masterAngles, protocolWeightedMean, colors,...
         protocolStdErr,protocolChiFitPos, protocolChiFitNeg, linestyle,protocolNames, S,...
-        axes, refDist);
-
-keyboard
-% Press continue after sorting files
+        axes, refDist, dirName);
 end
