@@ -85,6 +85,9 @@ function [pixVal, inRange, x, y] = pixelValue(radius, angle, img, width, height)
         bottomAvg = img(y2,x1) * weights(2) + img(y2,x2) * weights(1);
         pixVal = topAvg * weights(4) + bottomAvg * weights(3);
 
-        % a better smoothening function would be using the distances to each surrounding point
+        % Better smoothening may be achieved by using distances to surrounding points as weights
+        % instead of having 2 sets of weights (horizontal and vertical distance)
+        % Furthermore, to better represent boundaries, a sigmoidal function could also be used
+        % instead of a weighted average
     end
 end
