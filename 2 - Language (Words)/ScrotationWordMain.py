@@ -8,7 +8,7 @@ from RotationClasses import *
 
 protocolNames = ['English Word Scale RT', 'Hebrew Word Scale RT', 'Nonsense Word Scale RT',
         'English Word Roll RT', 'Hebrew Word Roll RT', 'Nonsense Word Roll RT']
-TV.debug = True
+TV.debug = False
 
 if TV.debug:
     debugDlg = gui.Dlg(title='Debug Mode?', pos=None, size=None, style=None,\
