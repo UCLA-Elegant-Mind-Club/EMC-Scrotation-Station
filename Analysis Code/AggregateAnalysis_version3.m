@@ -22,6 +22,9 @@ axes = axNames;
 %% Choose Large Meta Folder
 myDir = uigetdir; %gets directory
 listing = dir(myDir);
+%listing = listing([1,2,4:end]);
+
+
 for ii = 3:length(listing)
     subFolder(ii-2).subfolder = listing(ii).name;
     fileList(ii-2).files = dir(fullfile(myDir, listing(ii).name, '*.csv')); 
