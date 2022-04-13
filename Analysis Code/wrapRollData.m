@@ -1,4 +1,4 @@
-folderName = uigetdir;
+folderName = "C:\Users\emban\Documents\Elegant Mind Research\Rotation Analysis\Remote Senior Data\For analysis";
 folder = dir(folderName);
 for subNum = 3:length(folder)
     subFolder = fullfile(folderName,folder(subNum).name);

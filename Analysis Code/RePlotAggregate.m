@@ -1,8 +1,6 @@
 clear all;
 close all;
 %% Experiment Information
-global readX;
-readX = "";
 protocolNames = {'Faces Roll RT', 'Faces Yaw RT', 'Faces Pitch RT', ...
     'English Roll RT', 'Thai Roll RT', 'Chinese Roll RT'};
 
@@ -27,7 +25,7 @@ S = {marker, marker, marker, marker};
 %}
 
 %% Choosing Groups to plot
-groups2Graph = [1:3];
+groups2Graph = [1];
 
 %make lighter tint
 for i = 1:length(colors)
@@ -210,10 +208,10 @@ for k = 1:length(fileList)
 end
 
 %%  Aggregate Plotting
-mkdir('Aggregate Plot');
+mkdir('combined_plots');
 aggregatePlotting_v3(fileList, masterAngles, protocolWeightedMean, colors,...
     protocolStdErr,protocolChiFitPos, protocolChiFitNeg, linestyle,protocolNames, S,...
-    axes, refDist, 'Aggregate Plot');
+    axes, refDist);
 
 if ~exist('titleText', 'var'); titleText = ''; end
 title(titleText);
