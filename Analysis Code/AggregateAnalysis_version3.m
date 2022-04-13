@@ -22,8 +22,9 @@ axes = axNames;
 %% Choose Large Meta Folder
 myDir = uigetdir; %gets directory
 listing = dir(myDir);
-%listing = listing([1,2,4:end]);
-
+if listing(3).name + "" == ".DS_Store"
+    listing = listing([1,2,4:end]);
+end
 
 for ii = 3:length(listing)
     subFolder(ii-2).subfolder = listing(ii).name;
