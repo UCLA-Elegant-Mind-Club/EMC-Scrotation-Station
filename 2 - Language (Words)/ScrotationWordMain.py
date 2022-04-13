@@ -47,7 +47,7 @@ def getProtocolList(group, participantCode, dirPath):
         e = EnglishWordRoll(fileNames[3])
         t = HebrewWordRoll(fileNames[4])
         c = NonsenseWordRoll(fileNames[5])
-    return [t]
+    return [t, c]
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
