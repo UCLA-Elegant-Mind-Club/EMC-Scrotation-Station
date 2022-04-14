@@ -46,7 +46,7 @@ class ScalingProtocol(TVStimuli):
         self.csvOutput(['Correct Response', 'Height', 'RT', 'Face'])
     
     def showImage(self, set, showTarget, size):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
+        targets = [[1,2,3], [4,5,6], ['demo']];
         folderName = 'face ' + str(targets[set][showTarget])
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folderName, 'main')
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])

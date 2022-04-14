@@ -34,7 +34,7 @@ class RotationProtocol(TVStimuli):
         self.showWait()
     
     def showImage(self, set, showTarget, rotation):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
+        targets = [[1,2,3], [4,5,6], ['demo']];
         folderName = 'face ' + str(targets[set][showTarget])
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folderName, 'main')
         self.displayImage.ori = rotation
@@ -61,8 +61,8 @@ class RotationProtocol(TVStimuli):
         self.demoSequence(self.rotations, 'The characters will be rotated in a circle as shown below.')
 
 class FaceTraining(RotationProtocol):
-    names = ["Jennifer Connelly", "Daniel Day-Lewis", "Peter Gallagher", "Jennifer Lawrence",
-        "Cate Blanchett", "Helen Mirren", "Emily Blunt", "Katy Perry", "Zooey Deschanel"]
+    names = ["Biden", "Putin", "Trump", "Michael B Joran",
+        "Obama", "Dwayne Johnson"]
     trainingTime = 1;
     
     def __init__(self):
