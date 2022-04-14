@@ -10,18 +10,20 @@ from abc import ABC, abstractmethod
 textZoom = 1.25
 
 class TVStimuli(ABC):
-    numSets = 3
-    trialsPerSet = 32
+    debug = False
+    
+    numSets = 2
+    trialsPerSet = 40
     totalTrials = numSets * trialsPerSet
     
     trainingTime = 10
     trainingReps = 2
     
     crossSize = 4
-    referenceSize = 9
+    referenceSize = 8
     refValue = 0
     
-    practiceFreq = 40
+    practiceFreq = 50
     prePracticeBreak = 5
     postPracticeBreak = 5
     postSetBreak = 20
