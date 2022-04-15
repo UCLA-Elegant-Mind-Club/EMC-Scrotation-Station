@@ -1,11 +1,11 @@
-folderName = "C:\Users\emban\Documents\Elegant Mind Research\Rotation Analysis\Remote Senior Data\For analysis";
+folderName = uigetdir;
 folder = dir(folderName);
 for subNum = 3:length(folder)
     subFolder = fullfile(folderName,folder(subNum).name);
     fileList = dir(fullfile(subFolder, '*.csv'));
     for fileNum = 1:length(fileList)
         fileName = fullfile(subFolder, fileList(fileNum).name);
-        wrapData(fileName, 2, 180, -180)
+        wrapData(fileName, 2, 0, -5);
     end
 end
 
