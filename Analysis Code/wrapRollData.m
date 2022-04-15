@@ -5,7 +5,7 @@ for subNum = 3:length(folder)
     fileList = dir(fullfile(subFolder, '*.csv'));
     for fileNum = 1:length(fileList)
         fileName = fullfile(subFolder, fileList(fileNum).name);
-        wrapData(fileName, 2, 0, -5);
+        wrapData(fileName, 2, 45, -45);
     end
 end
 
