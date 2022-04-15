@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-ScalingAnalysis = true;
+ScalingAnalysis = false;
 
 if ScalingAnalysis
     readXValues = ["linear", "log", "distance"];
@@ -22,6 +22,10 @@ axes = axNames;
 %% Choose Large Meta Folder
 myDir = uigetdir; %gets directory
 listing = dir(myDir);
+if listing(3).name + "" == ".DS_Store"
+    listing = listing([1,2,4:end]);
+end
+
 for ii = 3:length(listing)
     subFolder(ii-2).subfolder = listing(ii).name;
     fileList(ii-2).files = dir(fullfile(myDir, listing(ii).name, '*.csv')); 
@@ -206,6 +210,7 @@ for i = 1:length(readXValues)
          figure(ii)
          
          allredchi = [outputParamStats(ii).redChi2Pos;outputParamStats(ii).redChi2Neg];
+         allredchi = allredchi(~isnan(allredchi) & ~isinf(allredchi));
          Histogram = histfit(allredchi, 10, 'gamma');
          pd = gamfit(allredchi, 10);
          %mu = median(pd);

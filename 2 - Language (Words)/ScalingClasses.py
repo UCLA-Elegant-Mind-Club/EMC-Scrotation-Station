@@ -50,7 +50,7 @@ class ScalingProtocol(TVStimuli):
         fileName = 'word ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         self.displayImage.size = None
-        faceWidth = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceWidth'])
+        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
         factor = faceWidth / self.displayImage.size[0]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
@@ -104,7 +104,6 @@ class HebrewWordScaling(ScalingProtocol):
         super().showImage(set, showTarget, size, 'Hebrew Words')
 
 class NonsenseWordScaling(ScalingProtocol):
-    trialsPerSet = 32
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
