@@ -210,6 +210,7 @@ for i = 1:length(readXValues)
          figure(ii)
          
          allredchi = [outputParamStats(ii).redChi2Pos;outputParamStats(ii).redChi2Neg];
+         allredchi = allredchi(~isnan(allredchi) & ~isinf(allredchi));
          Histogram = histfit(allredchi, 10, 'gamma');
          pd = gamfit(allredchi, 10);
          %mu = median(pd);
