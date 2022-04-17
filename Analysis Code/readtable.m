@@ -18,7 +18,7 @@ function t = readtable(filename, varargin)
     if ~exist("readX") || length(readX) == 0
         return;
     elseif readX + "" == "log"
-        matrix(:, 2) = log(matrix(:, 2));
+        matrix(:, 2) = log2(matrix(:, 2));
     elseif readX + "" == "distance"
         matrix(:, 2) = 1.4 * tan(8 * pi/180) ./ tan(matrix(:, 2) * pi/180);
     end
