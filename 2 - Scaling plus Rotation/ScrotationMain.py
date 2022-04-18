@@ -48,7 +48,7 @@ def getProtocolList(group, participantCode, dirPath):
         else:
             return [a, c, b]
     else:
-        return [ScalingRotationProtocol(fileNames[4])]
+        return [ScalingRotationProtocol(fileNames[3])]
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     
     autoProtocol = 1;
     protocolDialog = gui.Dlg(title='Select protocols to run', screen=-1)
-    protocolDialog.addField('Type of Combination: ', choices = ['Rotation Protocols at Different Scalings', 'Scaling protocol with random rotation'])
+    protocolDialog.addField('Type of Combination: ', choices = ['Rotation Protocols at set Scalings', 'Rotation protocol with random scaling'])
     
     if autoProtocol == 0:
         protocolInfo = ['', '']

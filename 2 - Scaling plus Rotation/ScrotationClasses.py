@@ -8,21 +8,13 @@ class ScalingRotationProtocol(TVStimuli):
     winners = ['Ana', 'Minerva', 'Will', 'Cerisol', 'RNFO', 'CyndaquilIsFire', ' ', 'SausageBoy', 'cm600286', 'AmongUs']
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
     
-    baseSizes = [1, 2, 4, 8, 16, 28]
-    rotations = [0, 45, 90, 135]
+    baseSizes = [4, 8, 16]
+    rotations = [0, 45, 90, 135, -135, -90, -45, 0]
     refValue = (TVStimuli.referenceSize, 0)
     
     def __init__(self, fileName = ''):
-        sizes = self.baseSizes
-        for i in range(0, len(self.baseSizes) - 1):
-            diff = math.log10(self.baseSizes[i + 1] / self.baseSizes[i])/2
-            intermed = self.baseSizes[i] * 10 ** diff
-            sizes = sizes + [round(intermed,2)]
-        sizes.sort()
-        self.baseSizes = sizes
-        values = [];
-        
-        for size in sizes:
+        values = []
+        for size in self.baseSizes:
             for rot in self.rotations:
                 values += [(size, rot)]
         
@@ -81,5 +73,5 @@ class ScalingRotationProtocol(TVStimuli):
         
     def demo(self):
         print(self.testValues)
-        self.demoSequence([(size, 0) for size in self.baseSizes], 'The faces will be resized as shown below.', 'resize', 0.1)
-        self.demoSequence([(self.referenceSize, rot) for rot in self.rotations], 'The faces will also be rotated as shown below.', 'rotate', 0.2)
+        self.demoSequence([(size, 0) for size in self.baseSizes], 'The faces will be resized as shown below.', 'resize', 0.2)
+        self.demoSequence([(self.referenceSize, rot) for rot in self.rotations], 'The faces will also be rotated as shown below.', 'rotate', 0.1)
