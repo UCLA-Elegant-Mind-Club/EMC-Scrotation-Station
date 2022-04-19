@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-ScalingAnalysis = false;
+ScalingAnalysis = true;
 
 if ScalingAnalysis
     readXValues = ["linear", "log", "distance"];
@@ -40,7 +40,7 @@ for i = 1:length(readXValues)
             dirName = "Linear analysis - " + dName;
         case "log"
             refDist = log(refD);
-            axes{1} = "Log of " + axNames{1} + " (log °)";
+            axes{1} = "Log of " + axNames{1} + " (log2 °)";
             dirName = "Log analysis - " + dName;
         case "distance"
             refDist = 1.4 * tan(8 * pi/180) / tan(refD * pi/180);
