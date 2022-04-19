@@ -10,10 +10,10 @@ class Test(TV):
     def __init__(self):
         super().__init__([0.5], 'test', 'test', fileName = '')
         
-    def showImage(self):
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Celeb Faces 2', 'demo', 'main.png')
-        faceWidth = self.angleCalc(0.5) * float(self.tvInfo['faceWidth'])
-        faceHeight = self.angleCalc(0.5) * float(self.tvInfo['faceHeight'])
+    def showImage(self, size):
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'face demo.png')
+        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         self.displayImage.size = (faceWidth, faceHeight)
         self.displayImage.draw()
     
@@ -22,6 +22,17 @@ class Test(TV):
         
     def demo(self):
         return
-
+        
+    def main(self):
+        scales = [0.5, 0.75, 1, 1.2, 1.4, 1.7, 2, 2.5 , 3, 3.5, 4];
+        while True:
+            for i in range(0, len(scales)):
+                self.showImage(scales[i])
+                self.showWait()
+                print(str(i))
+            for i in range(0, len(scales) - 2):
+                self.showImage(scales[len(scales) - 2 - i])
+                self.showWait(0.05)
+                print(str(i))
 test = Test()
-test.showImage()
+test.main()
