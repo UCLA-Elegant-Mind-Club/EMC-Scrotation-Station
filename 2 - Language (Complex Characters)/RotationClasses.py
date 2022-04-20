@@ -63,12 +63,11 @@ class RotationProtocol(TVStimuli):
 class EnglishRoll(RotationProtocol):
     winners = ['Arisvt', 'Mila', 'KayLA', 'Minerva', 'WW', 'Owl', 'Snoopy', 'cm600286', 'Ana', 'Katsaka']
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
-
-    if not TVStimuli.debug:
-        trainingTime = 5
     
     def __init__(self, fileName = ''):
         super().__init__(self.rotations, 'English', 'letter', fileName = fileName)
+        if not self.debug:
+            self.trainingTime = 5
     
     def showImage(self, set, showTarget, rotation):
         super().showImage(set, showTarget, rotation, 'New English Characters')
@@ -94,5 +93,19 @@ class NonsenseRoll(RotationProtocol):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
         fileName = 'nonsense ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Nonsense Characters', fileName)
+        self.displayImage.ori = rotation
+        self.displayImage.draw()
+
+class ChineseRoll(RotationProtocol):
+    winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
+    highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
+
+    def __init__(self, fileName = ''):
+        super().__init__(self.rotations, 'Chinese', 'characters', fileName = fileName)
+    
+    def showImage(self, set, showTarget, rotation):
+        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
+        fileName = 'chinese ' + str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Chinese Characters', fileName)
         self.displayImage.ori = rotation
         self.displayImage.draw()

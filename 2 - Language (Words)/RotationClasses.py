@@ -100,7 +100,17 @@ class NonsenseWordRoll(RotationProtocol):
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
     def __init__(self, fileName = ''):
-        super().__init__(self.rotations, 'Unfamiliar', 'words', fileName = fileName)
+        super().__init__(self.rotations, 'Unfamiliar', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
         super().showImage(set, showTarget, rotation, 'Nonsense Words')
+
+class LongWordRoll(RotationProtocol):
+    winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
+    highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
+
+    def __init__(self, fileName = ''):
+        super().__init__(self.rotations, 'English', 'word', fileName = fileName)
+    
+    def showImage(self, set, showTarget, rotation):
+        super().showImage(set, showTarget, rotation, 'Long English Words')

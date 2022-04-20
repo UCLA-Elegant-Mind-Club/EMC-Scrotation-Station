@@ -112,3 +112,13 @@ class NonsenseWordScaling(ScalingProtocol):
     
     def showImage(self, set, showTarget, size):
         super().showImage(set, showTarget, size, 'Nonsense Words')
+
+class LongWordScaling(ScalingProtocol):
+    winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
+    highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
+
+    def __init__(self, fileName = ''):
+        super().__init__('English', 'word', fileName = fileName)
+    
+    def showImage(self, set, showTarget, size):
+        super().showImage(set, showTarget, size, 'Long English Words')
