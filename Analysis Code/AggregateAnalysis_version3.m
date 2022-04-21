@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-ScalingAnalysis = false;
+ScalingAnalysis = true;
 
 if ScalingAnalysis
     readXValues = ["linear", "log", "distance"];
