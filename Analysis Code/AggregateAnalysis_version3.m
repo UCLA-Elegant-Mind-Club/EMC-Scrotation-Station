@@ -6,27 +6,25 @@ ScalingAnalysis = true;
 if ScalingAnalysis
     readXValues = ["linear", "log", "distance"];
 else
-    readXValues = [""];
+    readXValues = ["linear"];
 end
 global readX;
 
 %% Enter In Information for making Folder
-dName = FolderNameGenerator();
-disp(dName);
 
 %% Experiment Information
-[protocolNames, colors, linestyle, axNames, refD] = experimentInformation();
+[dName, axNames, refD, dataFolder, ...
+    protOrder, protocolNames, colors, linestyle] = experimentInformation();
 S = {'o', 'd', 's', 'h', '^', '*'};
 refD = str2num(refD{1});
 axes = axNames;
 %% Choose Large Meta Folder
-myDir = uigetdir; %gets directory
-listing = dir(myDir);
+listing = dir(dataFolder);
 if listing(3).name + "" == ".DS_Store"
     listing = listing([1,2,4:end]);
 end
 
-for ii = 3:length(listing)
+for ii = protOrder + 2
     subFolder(ii-2).subfolder = listing(ii).name;
     fileList(ii-2).files = dir(fullfile(myDir, listing(ii).name, '*.csv')); 
 end
