@@ -20,7 +20,7 @@ class TVStimuli(ABC):
     trainingReps = 2
     
     crossSize = 4
-    referenceSize = 8
+    referenceSize = 4
     refValue = 0
     
     practiceFreq = 50
