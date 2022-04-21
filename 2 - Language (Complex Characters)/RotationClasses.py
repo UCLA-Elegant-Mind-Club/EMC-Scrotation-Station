@@ -92,7 +92,7 @@ class NonsenseRoll(RotationProtocol):
     def showImage(self, set, showTarget, rotation):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
         fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'New Nonsense Characters', fileName)
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Nonsense Characters', fileName)
         self.displayImage.ori = rotation
         self.displayImage.draw()
 
@@ -105,7 +105,7 @@ class ChineseRoll(RotationProtocol):
     
     def showImage(self, set, showTarget, rotation):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'chinese ' + str(targets[set][showTarget]) + '.png'
+        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Chinese Characters', fileName)
         self.displayImage.ori = rotation
         self.displayImage.draw()
