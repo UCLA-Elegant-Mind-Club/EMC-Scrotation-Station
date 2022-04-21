@@ -16,6 +16,8 @@ class ScalingProtocol(TVStimuli):
             sizes = sizes + [round(intermed,2)]
         sizes.sort()
         
+        sizes = [size/2 for size in sizes]
+        
         for i in range(0,len(self.highScores)):
             self.highScores[i] -= random.randint(0, i * 400)
         self.highScores.sort(reverse = True)
@@ -50,8 +52,8 @@ class ScalingProtocol(TVStimuli):
         fileName = prefix + ' ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         self.displayImage.size = None
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        factor = faceWidth / self.displayImage.size[0]
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
     
@@ -88,8 +90,8 @@ class EnglishWordScaling(ScalingProtocol):
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
         self.displayImage.size = None
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        factor = faceWidth / self.displayImage.size[0]
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
 
