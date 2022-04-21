@@ -16,6 +16,8 @@ class ScalingProtocol(TVStimuli):
             sizes = sizes + [round(intermed,2)]
         sizes.sort()
         
+        sizes = [size/4 for size in sizes]
+        
         for i in range(0,len(self.highScores)):
             self.highScores[i] -= random.randint(0, i * 400)
         self.highScores.sort(reverse = True)
@@ -45,13 +47,13 @@ class ScalingProtocol(TVStimuli):
     def initFile(self):
         self.csvOutput(['Correct Response', 'Height', 'RT', 'Word'])
     
-    def showImage(self, set, showTarget, size, folder):
+    def showImage(self, set, showTarget, size, folder, prefix = 'word'):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']]
-        fileName = 'word ' + str(targets[set][showTarget]) + '.png'
+        fileName = prefix + ' ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         self.displayImage.size = None
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        factor = faceWidth / self.displayImage.size[0]
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
     
@@ -84,12 +86,12 @@ class EnglishWordScaling(ScalingProtocol):
         super().__init__('English', 'letter', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['DEER','DEAR','DOOR'], ['demo']]
+        targets = [['DEER','DEAR','DOOR'], ['GRACE','GREAT','GRATE'], [], ['demo']]
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
         self.displayImage.size = None
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        factor = faceWidth / self.displayImage.size[0]
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
 
@@ -111,4 +113,14 @@ class NonsenseWordScaling(ScalingProtocol):
         super().__init__('Nonsense', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'Nonsense Words')
+        super().showImage(set, showTarget, size, 'Nonsense Words', prefix = 'new')
+
+class LongWordScaling(ScalingProtocol):
+    winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
+    highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
+
+    def __init__(self, fileName = ''):
+        super().__init__('English', 'word', fileName = fileName)
+    
+    def showImage(self, set, showTarget, size):
+        super().showImage(set, showTarget, size, 'English Words', prefix = 'english')

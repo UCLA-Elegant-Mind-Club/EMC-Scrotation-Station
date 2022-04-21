@@ -36,14 +36,14 @@ class RotationProtocol(TVStimuli):
     def initFile(self):
         self.csvOutput(["Correct Response","Rotation (deg)", "Reaction Time (ms)", "Word"])
         
-    def showImage(self, set, showTarget, rotation, folder):
+    def showImage(self, set, showTarget, rotation, folder, prefix = 'word'):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']]
-        fileName = 'word ' + str(targets[set][showTarget]) + '.png'
+        fileName = prefix + ' ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         self.displayImage.ori = rotation
         self.displayImage.size = None
-        faceWidth = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceWidth'])
-        factor = faceWidth / self.displayImage.size[0]
+        faceHeight = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
     
@@ -75,13 +75,13 @@ class EnglishWordRoll (RotationProtocol):
         super().__init__(self.rotations, 'English', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['DEER','DEAR','DOOR'], ['demo']]
+        targets = [['DEER','DEAR','DOOR'], ['GRACE','GREAT','GRATE'], [], ['demo']]
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
         self.displayImage.ori = rotation
         self.displayImage.size = None
-        faceWidth = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceWidth'])
-        factor = faceWidth / self.displayImage.size[0]
+        faceHeight = self.angleCalc(self.referenceSize) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
 
@@ -100,7 +100,17 @@ class NonsenseWordRoll(RotationProtocol):
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
     def __init__(self, fileName = ''):
-        super().__init__(self.rotations, 'Unfamiliar', 'words', fileName = fileName)
+        super().__init__(self.rotations, 'Unfamiliar', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Nonsense Words')
+        super().showImage(set, showTarget, rotation, 'Nonsense Words', prefix = 'new')
+
+class LongWordRoll(RotationProtocol):
+    winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
+    highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
+
+    def __init__(self, fileName = ''):
+        super().__init__(self.rotations, 'English', 'word', fileName = fileName)
+    
+    def showImage(self, set, showTarget, rotation):
+        super().showImage(set, showTarget, rotation, 'English Words', prefix = 'english')

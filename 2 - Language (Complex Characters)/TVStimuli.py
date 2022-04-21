@@ -13,7 +13,7 @@ class TVStimuli(ABC):
     debug = False
     
     numSets = 2
-    trialsPerSet = 40
+    trialsPerSet = 25
     totalTrials = numSets * trialsPerSet
     
     trainingTime = 10

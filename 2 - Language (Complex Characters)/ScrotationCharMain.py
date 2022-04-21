@@ -6,8 +6,8 @@ from TVStimuli import TVStimuli as TV
 from ScalingClasses import *
 from RotationClasses import *
 
-protocolNames = ['English Char Scale RT', 'Hebrew Char Scale RT', 'Nonsense Char Scale RT',
-        'English Char Roll RT', 'Hebrew Char Roll RT', 'Nonsense Char Roll RT']
+protocolNames = ['English Char Scale RT', 'Hebrew Char Scale RT', 'Nonsense Char Scale RT', 'Chinese Char Scale RT',
+        'English Char Roll RT', 'Hebrew Char Roll RT', 'Nonsense Char Roll RT', 'Chinese Char Roll RT']
 TV.debug = True
 
 if TV.debug:
@@ -33,21 +33,30 @@ def makeDataDirs(participant):
         if not os.path.isdir(protocolPath):
             os.mkdir(protocolPath)
 
-def getProtocolList(group, participantCode, dirPath):
+def getProtocolList(group, protocol, participantCode, dirPath):
     participant = participantCode + '_' + time.strftime("%m_%d")
-    fileNames = ['']*6
-    for protocol in range(0, len(protocolNames)):
-        fileNames[protocol] = os.path.join(dirPath, participantCode, protocolNames[protocol],
-            participant + protocolNames[protocol] + '.csv')
+    fileNames = ['']*len(protocolNames)
+    for protNum in range(0, len(protocolNames)):
+        fileNames[protNum] = os.path.join(dirPath, participantCode, protocolNames[protNum],
+            participant + protocolNames[protNum] + '.csv')
     if group == 'Scaling':
-        e = EnglishScaling(fileNames[0])
-        t = HebrewScaling(fileNames[1])
-        c = NonsenseScaling(fileNames[2])
+        if protocol == 'English':
+            return [EnglishScaling(fileNames[0])]
+        elif protocol == 'Hebrew':
+            return [HebrewScaling(fileNames[1])]
+        elif protocol == 'Nonsense':
+            return [NonsenseScaling(fileNames[2])]
+        elif protocol == 'Chinese':
+            return [ChineseScaling(fileNames[3])]
     else:
-        e = EnglishRoll(fileNames[3])
-        t = HebrewRoll(fileNames[4])
-        c = NonsenseRoll(fileNames[5])
-    return [e, t, c]
+        if protocol == 'English':
+            return [EnglishRoll(fileNames[4])]
+        elif protocol == 'Hebrew':
+            return [HebrewRoll(fileNames[5])]
+        elif protocol == 'Nonsense':
+            return [NonsenseRoll(fileNames[6])]
+        elif protocol == 'Chinese':
+            return [ChineseRoll(fileNames[7])]
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
@@ -81,29 +90,27 @@ if __name__ == '__main__':
         TV.postPracticeBreak = 1
         TV.postSetBreak = 1
         TV.dummyTrials = 1
-    
-    codeInfo = {'Participant Name': ''}
-    codeDialog = gui.DlgFromDict(dictionary = codeInfo, sortKeys = False, title = 'Participant Info')
-    if codeDialog.OK == False:
-        core.quit()
+        codeInfo = {'Participant Name':'Test'}
+    else:
+        codeInfo = {'Participant Name': ''}
+        codeDialog = gui.DlgFromDict(dictionary = codeInfo, sortKeys = False, title = 'Participant Info')
+        if codeDialog.OK == False:
+            core.quit()
     
     autoProtocol = 1;
     protocolDialog = gui.Dlg(title='Select protocols to run', screen=-1)
     protocolDialog.addField('Group: ', choices = ['Scaling', 'Rotation'])
-    
-    if autoProtocol == 0:
-        protocolInfo = ['', '']
-    else:
-        protocolInfo = protocolDialog.show()
-        if protocolInfo is None:
-            core.quit()
+    protocolDialog.addField('Protocol: ', choices = ['English', 'Hebrew', 'Nonsense', 'Chinese'])
+    protocolInfo = protocolDialog.show()
+    if protocolInfo is None:
+        core.quit()
     
     if standardCalibration:
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration_Knudson.csv'))
     else:
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
     makeDataDirs(codeInfo['Participant Name'])
-    protocolList = getProtocolList(protocolInfo[0], codeInfo['Participant Name'],
+    protocolList = getProtocolList(protocolInfo[0], protocolInfo[1], codeInfo['Participant Name'],
         os.path.join(os.getcwd(), 'Data'))
         
     for protocolNum in range(0, len(protocolList)):    
