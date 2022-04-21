@@ -16,7 +16,7 @@ class ScalingProtocol(TVStimuli):
             sizes = sizes + [round(intermed,2)]
         sizes.sort()
         
-        sizes = [size/2 for size in sizes]
+        sizes = [size/4 for size in sizes]
         
         for i in range(0,len(self.highScores)):
             self.highScores[i] -= random.randint(0, i * 400)

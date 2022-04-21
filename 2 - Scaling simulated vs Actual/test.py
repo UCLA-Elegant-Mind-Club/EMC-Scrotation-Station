@@ -11,7 +11,7 @@ class Test(TV):
         super().__init__([0.5], 'test', 'test', fileName = '')
         
     def showImage(self, size):
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'face demo.png')
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'word demo.png')
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         self.displayImage.size = (faceWidth, faceHeight)
@@ -24,7 +24,7 @@ class Test(TV):
         return
         
     def main(self):
-        scales = [0.5, 0.75, 1, 1.2, 1.4, 1.7, 2, 2.5 , 3, 3.5, 4];
+        scales = [0.25, 0.5, 0.75, 1, 1.2, 1.4, 1.7, 2, 2.5 , 3, 3.5, 4];
         while True:
             for i in range(0, len(scales)):
                 self.showImage(scales[i])
