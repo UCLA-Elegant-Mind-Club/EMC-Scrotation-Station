@@ -4,7 +4,7 @@ prefs.hardware['audioLib'] = ['ptb', 'pyo']
 import os, time
 from TVStimuli import TVStimuli as TV
 
-TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration_Knudson.csv'))
+TV.calibrate(os.path.join(os.getcwd(), 'eccentricity_monitor_calibration_Knudson.csv'))
 
 class Test(TV):
     def __init__(self):
@@ -12,10 +12,12 @@ class Test(TV):
         
     def showImage(self, size):
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'word demo.png')
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
+        self.displayImage.size = None
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
-        self.displayImage.size = (faceWidth, faceHeight)
+        factor = faceHeight / self.displayImage.size[1]
+        self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         self.displayImage.draw()
+    
     
     def initFile(self):
         return
