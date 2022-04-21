@@ -104,7 +104,7 @@ class NonsenseScaling(ScalingProtocol):
     
     def showImage(self, set, showTarget, size):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'nonsense ' + str(targets[set][showTarget]) + '.png'
+        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Nonsense Characters', fileName)
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])

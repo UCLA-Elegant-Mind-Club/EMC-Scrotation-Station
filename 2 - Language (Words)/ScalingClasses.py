@@ -45,9 +45,9 @@ class ScalingProtocol(TVStimuli):
     def initFile(self):
         self.csvOutput(['Correct Response', 'Height', 'RT', 'Word'])
     
-    def showImage(self, set, showTarget, size, folder):
+    def showImage(self, set, showTarget, size, folder, prefix = 'word'):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']]
-        fileName = 'word ' + str(targets[set][showTarget]) + '.png'
+        fileName = prefix + ' ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         self.displayImage.size = None
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
@@ -84,7 +84,7 @@ class EnglishWordScaling(ScalingProtocol):
         super().__init__('English', 'letter', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['DEER','DEAR','DOOR'], ['demo']]
+        targets = [['DEER','DEAR','DOOR'], ['GRACE','GREAT','GRATE'], [], ['demo']]
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
         self.displayImage.size = None
@@ -111,7 +111,7 @@ class NonsenseWordScaling(ScalingProtocol):
         super().__init__('Nonsense', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'Nonsense Words')
+        super().showImage(set, showTarget, size, 'Nonsense Words', prefix = 'new')
 
 class LongWordScaling(ScalingProtocol):
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
@@ -121,4 +121,4 @@ class LongWordScaling(ScalingProtocol):
         super().__init__('English', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'Long English Words')
+        super().showImage(set, showTarget, size, 'English Words', prefix = 'english')

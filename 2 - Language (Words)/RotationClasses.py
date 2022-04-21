@@ -36,9 +36,9 @@ class RotationProtocol(TVStimuli):
     def initFile(self):
         self.csvOutput(["Correct Response","Rotation (deg)", "Reaction Time (ms)", "Word"])
         
-    def showImage(self, set, showTarget, rotation, folder):
+    def showImage(self, set, showTarget, rotation, folder, prefix = 'word'):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']]
-        fileName = 'word ' + str(targets[set][showTarget]) + '.png'
+        fileName = prefix + ' ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folder, fileName)
         self.displayImage.ori = rotation
         self.displayImage.size = None
@@ -75,7 +75,7 @@ class EnglishWordRoll (RotationProtocol):
         super().__init__(self.rotations, 'English', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        targets = [['GLIDE','LEDGE','LIEGE'], ['GRACE','GREAT','GRATE'], ['DEER','DEAR','DOOR'], ['demo']]
+        targets = [['DEER','DEAR','DOOR'], ['GRACE','GREAT','GRATE'], [], ['demo']]
         fileName = str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'English Words', fileName)
         self.displayImage.ori = rotation
@@ -103,7 +103,7 @@ class NonsenseWordRoll(RotationProtocol):
         super().__init__(self.rotations, 'Unfamiliar', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Nonsense Words')
+        super().showImage(set, showTarget, rotation, 'Nonsense Words', prefix = 'new')
 
 class LongWordRoll(RotationProtocol):
     winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
@@ -113,4 +113,4 @@ class LongWordRoll(RotationProtocol):
         super().__init__(self.rotations, 'English', 'word', fileName = fileName)
     
     def showImage(self, set, showTarget, rotation):
-        super().showImage(set, showTarget, rotation, 'Long English Words')
+        super().showImage(set, showTarget, rotation, 'English Words', prefix = 'english')

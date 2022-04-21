@@ -91,8 +91,8 @@ class NonsenseRoll(RotationProtocol):
     
     def showImage(self, set, showTarget, rotation):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'nonsense ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Nonsense Characters', fileName)
+        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'New Nonsense Characters', fileName)
         self.displayImage.ori = rotation
         self.displayImage.draw()
 
