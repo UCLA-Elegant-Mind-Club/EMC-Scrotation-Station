@@ -1,4 +1,4 @@
-function [folderName, axes, refDist, analysisTypes, dataDir, ...
+function [folderName, axes, refDist, analysisTypes, dataFolder, ...
     protOrder, protNames, colors, linestyles] = experimentInformation()
 [file, path] = uigetfile("*.csv;*.xlsx", "Choose Analysis Template");
 template = readtable(fullfile(path, file));
@@ -15,16 +15,16 @@ if exist(folderName, 'dir')
     folderName = folderName + "(" + dupNum + ")";
 end
 
+axes = inputdlg({'Enter x axis label', 'Enter y axis label'}, ...
+    'Axes Names', [1 60], template{[2,1],3});
+
+refDist = inputdlg('Enter expected location of kink:', ...
+    'Kink Location', [1 60], template{1,6} + "");
+
 analysisTypes = ["Linear", "Log", "Distance", "Absolute Value"];
 include = inputdlg([sprintf("Enter 0 to include and 0 to exclude analysis:\n\n" + analysisTypes(1)), analysisTypes(2:end)], ...
     'Analysis Types', [1 60], ismember(analysisTypes, template{:,2}) + 0 + "");
 analysisTypes = analysisTypes(ismember(include, '1'));
-
-axes = inputdlg(["Enter y axis label", "Enter label for " + analysisTypes + " Analysis"], ...
-    'Axes Names', [1 60], [template{:,3}; repmat({''},4,1)]);
-
-refDist = inputdlg('Enter expected location of kink:', ...
-    'Kink Location', [1 60], template{1,6} + "");
 
 dataDir = uigetdir(path, "Choose Master Folder that contains Protocols");
 dataDir = dir(dataDir);
@@ -44,7 +44,7 @@ for i = 1:max(protOrder)
         if i == protOrder(j)
             newTemplate = [newTemplate; table2cell(template(j,:))];
             newProtNames = [newProtNames; protNames(j)];
-            newDataDir(i,1) = dataDir(j+2);
+            newDataDir(i,1) = dataDir(j);
         end
     end
 end
@@ -52,10 +52,9 @@ dataDir = [dataDir(1:2); newDataDir];
 protNames = inputdlg(newProtNames, "Rename Protocols", [1 60], newTemplate{:,7});
 
 message = sprintf("Choose from these colors: gray, red, blue, light blue,maroon, black, green:\n\n");
+colors = inputdlg([message + protNames(1); protNames(2:end)], ...
+    'Choose plotting colors', [1 35], template{:,9});
 
-colors = inputdlg([message + protNames(1), protNames(2:end)], ...
-    'Choose plotting colors', [1 60], template{:,9});
-
-message = sprintf("Choose from these linestyles: ''-'' (solid) or ''--'' (dashed):\n\n");
-linestyles = inputdlg([message + protNames(1), protNames(2:end)], ...
-    'Choose line drawing styles', [1 60], template{:,10}); 
+message = 'Choose from these linestyles: ''-'' (solid) or ''--'' (dashed)';
+linestyles = inputdlg([message + protNames(1); protNames(2:end)], ...
+    'Choose line drawing styles', [1 35], template{:,10}); 

@@ -14,13 +14,17 @@ function t = readtable(filename, varargin)
         throw(ME)
     end
 
-    matrix = table2array(t);
-    if ~exist("readX") || length(readX) == 0
-        return;
-    elseif readX + "" == "log"
-        matrix(:, 2) = log2(matrix(:, 2));
-    elseif readX + "" == "distance"
-        matrix(:, 2) = 1.4 * tan(8 * pi/180) ./ tan(matrix(:, 2) * pi/180);
-    end
-    t = array2table(matrix, "VariableNames", t.Properties.VariableNames);
+    try
+        matrix = table2array(t);
+        if ~exist("readX") || length(readX) == 0
+            return;
+        elseif readX + "" == "log"
+            matrix(:, 2) = log2(matrix(:, 2));
+        elseif readX + "" == "distance"
+            matrix(:, 2) = 1.4 * tan(8 * pi/180) ./ tan(matrix(:, 2) * pi/180);
+        elseif readX + "" == "absolute value"
+            matrix(:, 2) = abs(matrix(:, 2));
+        end
+        t = array2table(matrix, "VariableNames", t.Properties.VariableNames);
+    catch; end
 end

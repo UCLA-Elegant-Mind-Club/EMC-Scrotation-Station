@@ -1,52 +1,41 @@
 clear all;
 close all;
 
-ScalingAnalysis = true;
-
-if ScalingAnalysis
-    readXValues = ["linear", "log", "distance"];
-else
-    readXValues = ["linear"];
-end
 global readX;
 
 %% Enter In Information for making Folder
 
 %% Experiment Information
-[dName, axNames, refD, dataFolder, ...
+[dName, axNames, refD, readXValues, listing, ...
     protOrder, protocolNames, colors, linestyle] = experimentInformation();
+myDir = listing(1).folder;
 S = {'o', 'd', 's', 'h', '^', '*'};
 refD = str2num(refD{1});
-axes = axNames;
+axes{2} = axNames{1};
 %% Choose Large Meta Folder
-listing = dir(dataFolder);
-if listing(3).name + "" == ".DS_Store"
-    listing = listing([1,2,4:end]);
-end
-
-for ii = protOrder + 2
+for ii = transpose(protOrder + 2)
     subFolder(ii-2).subfolder = listing(ii).name;
     fileList(ii-2).files = dir(fullfile(myDir, listing(ii).name, '*.csv')); 
 end
 
 for i = 1:length(readXValues)
-    readX = readXValues(i);
+    readX = lower(readXValues(i));
+    axes{1} = axNames{i + 1};
     switch readX
         case "linear"
             refDist = refD;
-            axes{1} = axNames{1} + " (°)";
-            dirName = "Linear analysis - " + dName;
+            dirName = "Linear - " + dName;
         case "log"
-            refDist = log(refD);
-            axes{1} = "Log of " + axNames{1} + " (log2 °)";
-            dirName = "Log analysis - " + dName;
+            refDist = log2(refD);
+            dirName = "Log - " + dName;
         case "distance"
             refDist = 1.4 * tan(8 * pi/180) / tan(refD * pi/180);
-            axes{1} = "Distance (m)";
-            dirName = "Distance analysis - " + dName;
+            dirName = "Distance - " + dName;
+        case "absolute value"
+            refDist = abs(refDist);
+            dirName = "Absolute Value - " + dName;
         otherwise
             refDist = refD;
-            axes{1} = axNames{1};
             dirName = dName;
     end
     mkdir(dirName);
