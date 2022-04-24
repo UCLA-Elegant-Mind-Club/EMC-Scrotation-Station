@@ -8,7 +8,7 @@ protOrder, protNames, colors, linestyles] = experimentInformation()
         case 'No'; [file, path] = deal("Sample Analysis Template.xlsx", pwd);
         otherwise; file = 0;
     end
-    if file == 0; fprintf("Analysis Canceled\n"); return
+    if file + "" == "0"; fprintf("Analysis Canceled\n"); return
     else; fprintf("Reading template file: " + file + "\n");
         template = readtable(fullfile(path, file)); end
     
