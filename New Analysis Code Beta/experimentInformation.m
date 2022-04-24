@@ -1,5 +1,5 @@
-%function [folderName, axes, refDist, analysisTypes, dataDir, ...
-%protOrder, protNames, colors, linestyles] = experimentInformation()
+function [folderName, axes, refDist, analysisTypes, dataDir, ...
+protOrder, protNames, colors, linestyles] = experimentInformation()
 
     useTemplate = questdlg("Load fields from template csv/excel file?");
     switch useTemplate
@@ -68,4 +68,4 @@
     message = sprintf("Choose from these linestyles: ''-'' (solid) or ''--'' (dashed):\n\n");
     linestyles = inputdlg([message + protNames(1), protNames(2:end)], ...
         'Choose line drawing styles', [1 60], template{:,10}); 
-%end
+end

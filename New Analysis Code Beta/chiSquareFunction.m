@@ -1,5 +1,6 @@
 function [chiSquareFit] = chiSquareFunction(xVals, yVals, yErr) 
     xVals = transpose(xVals);
+    yErr = yErr + 0.0001;
     weights = (1./yErr).^2;
     f = @(x, xPoints, yPoints, weights)sum(weights.*((yPoints-((xPoints.*x(1))+x(2))).^2));
     optFun = @(x)f(x, xVals, yVals, weights);

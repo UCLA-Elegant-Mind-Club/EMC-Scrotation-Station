@@ -1,14 +1,16 @@
 function [folderName, axes, refDist, analysisTypes, dataDir, ...
-    protOrder, protNames, colors, linestyles] = experimentInformation()
+protOrder, protNames, colors, linestyles] = experimentInformation()
 
     useTemplate = questdlg("Load fields from template csv/excel file?");
     switch useTemplate
-        case 'Yes'; [file, path] = uigetfile("*.csv;*.xlsx", "Choose Analysis Template", fileparts(pwd));
+        case 'Yes'; [file, path] = uigetfile("*.csv;*.xlsx", ...
+                "Choose Analysis Template", fileparts(pwd));
         case 'No'; [file, path] = deal("Sample Analysis Template.xlsx", pwd);
         otherwise; file = 0;
     end
     if file == 0; fprintf("Analysis Canceled\n"); return
-    else; fprintf("Reading template file: " + file); template = readtable(fullfile(path, file)); end
+    else; fprintf("Reading template file: " + file + "\n");
+        template = readtable(fullfile(path, file)); end
     
     format shortg;
     userInput = inputdlg('All analysis files will be organized into a folder with this name:', ...
