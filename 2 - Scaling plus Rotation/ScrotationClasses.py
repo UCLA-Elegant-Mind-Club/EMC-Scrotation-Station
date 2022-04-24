@@ -9,6 +9,7 @@ class ScalingRotationProtocol(TVStimuli):
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
     
     baseSizes = [4, 8, 16]
+    #rotations = [0, 30, 60, 90, 135, -135, -90, -60, -30, 0]
     rotations = [0, 45, 90, 135, -135, -90, -45, 0]
     refValue = (TVStimuli.referenceSize, 0)
     

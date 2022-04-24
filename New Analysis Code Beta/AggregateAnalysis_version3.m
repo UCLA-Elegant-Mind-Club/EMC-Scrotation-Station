@@ -3,8 +3,6 @@ close all;
 
 global readX;
 
-%% Enter In Information for making Folder
-
 %% Experiment Information
 [dName, axNames, refD, readXValues, listing, ...
     protOrder, protocolNames, colors, linestyle] = experimentInformation();
