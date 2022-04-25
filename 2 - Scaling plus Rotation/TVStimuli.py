@@ -13,7 +13,7 @@ class TVStimuli(ABC):
     debug = False
     
     numSets = 3
-    trialsPerSet = 75
+    trialsPerSet = 70
     totalTrials = numSets * trialsPerSet
     
     trainingTime = 10
@@ -27,7 +27,7 @@ class TVStimuli(ABC):
     prePracticeBreak = 5
     postPracticeBreak = 5
     postSetBreak = 60
-    initialPracticeTrials = 8
+    initialPracticeTrials = 12
     interimPracticeTrials = 6
     dummyTrials = 3
     timeOut = 1.2
