@@ -30,7 +30,7 @@ class TVStimuli(ABC):
     initialPracticeTrials = 12
     interimPracticeTrials = 6
     dummyTrials = 3;
-    timeOut = 1.2
+    timeOut = 1.5
     
     tvInfo = mon = win = displayImage = 0
     recordData = True
