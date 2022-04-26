@@ -139,11 +139,12 @@ def main():
         protocolFile[groupNum][2 + 2 * protocolNum] = '. '.join(topWinners + recentWinners)
         protocolFile[groupNum][3 + 2 * protocolNum] = '. '.join([str(num) for num in topScores + recentScores])
         
+        """
         with open(groupFile, 'w', newline='') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerows(protocolFile)
         csvFile.close()
-        
+        """
     #if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
 
 def endScene(protocolList):
