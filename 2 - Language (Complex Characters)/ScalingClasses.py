@@ -83,7 +83,7 @@ class EnglishScaling(ScalingProtocol):
         super().__init__('English', 'letter', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'English Characters')
+        super().showImage(set, showTarget, size, 'New English Characters')
 
 class HebrewScaling(ScalingProtocol):
     winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
