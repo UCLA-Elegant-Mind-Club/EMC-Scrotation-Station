@@ -180,51 +180,45 @@ class FamousFacesScaling(FamiliarFaces, ScalingProtocol):
 class ComplexCharacters (TVStimuli):
     numSets = 2
     trialsPerSet = 25
-
-    def getImage(self, set, showTarget, folder):
+    
+    referenceSize = 8
+    folder = ''
+    def getImage(self, set, showTarget):
         targets = [[1,2,3], [4,5,6], ['demo']]
         fileName = 'char ' + str(targets[set][showTarget]) + '.png'
-        return os.path.join(os.getcwd(), '2 - Language (Complex Characters)', 'Stimuli', folder, fileName)
+        return os.path.join(os.getcwd(), '2 - Language (Complex Characters)', 'Stimuli', self.folder, fileName)
 
 #Rotation
 class EnglishCharsRoll(ComplexCharacters, RotationProtocol):
+    folder = 'New English Characters'
     def __init__(self, fileName = ''):
         self.initRotations(self.rotations)
         super().__init__(self.rotations, 'English', 'letter', fileName = fileName)
         if not TVStimuli.debug:
             self.trainingTime = 5
             self.trainingReps = 1
-    
-    def getImage(self, set, showTarget):
-        super().getImage(set, showTarget, 'New English Characters')
 
 class ChineseCharsRoll(ComplexCharacters, RotationProtocol):
+    folder = 'Chinese Characters'
     def __init__(self, fileName):
         self.initRotations(self.rotations)
         super().__init__(self.rotations, 'Chinese', 'character', fileName = fileName)
-    
-    def getImage(self, set, showTarget):
-        super().getImage(set, showTarget, 'Chinese Characters')
 
 class NonsenseCharsRoll(ComplexCharacters, RotationProtocol):
+    folder = 'Nonsense Characters'
     def __init__(self, fileName = ''):
         self.initRotations(self.rotations)
         super().__init__(self.rotations, 'Combined', 'characters', fileName = fileName)
-    
-    def getImage(self, set, showTarget):
-        super().getImage(set, showTarget, 'Nonsense Characters')
 
 #Scaling
 class EnglishCharsScaling(ComplexCharacters, ScalingProtocol):
+    folder = 'New English Characters'
     def __init__(self, fileName = ''):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, 'English', 'letter', fileName = fileName)
         if not TVStimuli.debug:
             self.trainingTime = 5
             self.trainingReps = 1
-    
-    def getImage(self, set, showTarget):
-        super().getImage(set, showTarget, 'New English Characters')
 
 class ChineseCharsScaling(ComplexCharacters, ScalingProtocol):
     def __init__(self, fileName):
@@ -437,16 +431,20 @@ class SimulatedScaling (ScalingProtocol):
 class FourDegrees70cm (SimulatedScaling):
     referenceSize = 2
     recordFactor = 2
+    distance = 0.7
     sizes = [size/2 for size in SimulatedScaling.sizes]
     
 class FourDegrees140cm (SimulatedScaling):
     referenceSize = 4
     recordFactor = 1
+    distance = 1.4
     
 class EightDegrees140cm (SimulatedScaling):
     referenceSize = 8
     recordFactor = 1
+    distance = 1.4
     
 class EightDegrees280cm (SimulatedScaling):
     referenceSize = 16
     recordFactor = 0.5
+    distance = 2.8
