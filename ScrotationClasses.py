@@ -181,7 +181,6 @@ class ComplexCharacters (TVStimuli):
     numSets = 2
     trialsPerSet = 25
     
-    referenceSize = 8
     folder = ''
     def getImage(self, set, showTarget):
         targets = [[1,2,3], [4,5,6], ['demo']]
@@ -246,11 +245,6 @@ class WordsProtocol (TVStimuli):
     language = folder = ''
     def __init__(self, testValues, language, fileName = ''):
         super().__init__(testValues, language, 'word', fileName = fileName)
-    
-    def getImage(self, set, showTarget, folder):
-        targets = [[1,2,3], [4,5,6], ['demo']]
-        fileName = 'word ' + targets[set][showTarget] + '.png'
-        return os.path.join(os.getcwd(), '2 - Language (Words)', 'Stimuli', folder, fileName)
 
     def resizeImage(self, size):
         self.displayImage.size = None
@@ -397,8 +391,14 @@ class RandomRotationAndScaling (ScrotationBination):
         self.displayImage.ori = testVar[1]
         self.displayImage.draw()
 
+
+##### Simulated Scaling vs Real Distance #####
+##### Simulated Scaling vs Real Distance #####
+##### Simulated Scaling vs Real Distance #####
+
+
 class SimulatedScaling (ScalingProtocol):
-    numSets = 3
+    numSets = 2
     trialsPerSet = 28
     initialPracticeTrials = 6
     
@@ -406,16 +406,16 @@ class SimulatedScaling (ScalingProtocol):
     distance = 1.4
     def __init__(self, fileName = ''):
         self.initSizes(self.sizes)
-        super().__init__(self.sizes, 'Scrambled English', fileName = fileName)
+        super().__init__(self.sizes, '', 'face', fileName = fileName)
 
     def getImage(self, set, showTarget):
         targets = [[1,2,3], [4,5,6], ['demo']];
         fileName = 'face ' + str(targets[set][showTarget]) + '.png'
-        self.displayImage.image = os.path.join(os.getcwd(), '2 - Scaling simulated vs Actual', 'Stimuli', fileName)
+        return os.path.join(os.getcwd(), '2 - Scaling simulated vs Actual', 'Stimuli', fileName)
 
     def demo(self):
         super().demo()
-        self.genDisplay('Before we begin, please make sure that you are seated ' + self.distance + ' m from the screen.', 0, 3)
+        self.genDisplay('Before we begin, please make sure that you are seated ' + str(self.distance) + ' m from the screen.', 0, 3)
         self.genDisplay('Press spacebar to start.', 0, 0)
         self.showWait()
     
