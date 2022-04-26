@@ -1,0 +1,6 @@
+face 1 - Biden
+face 2 - Putin
+face 3 - Trump
+face 4 - Jordan
+face 5 - Obama
+face 6 - Rock

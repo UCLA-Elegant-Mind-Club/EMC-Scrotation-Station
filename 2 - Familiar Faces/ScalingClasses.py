@@ -46,9 +46,9 @@ class ScalingProtocol(TVStimuli):
         self.csvOutput(['Correct Response', 'Height', 'RT', 'Face'])
     
     def showImage(self, set, showTarget, size):
-        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
+        targets = [[1,2,3], [4,5,6], ['demo']];
         folderName = 'face ' + str(targets[set][showTarget])
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', folderName, 'main')
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Celeb Faces 2', folderName, 'main.png')
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         self.displayImage.size = (faceWidth, faceHeight)
@@ -56,15 +56,15 @@ class ScalingProtocol(TVStimuli):
     
     def demoSequence(self, sizes, demoMessage):
         self.genDisplay(demoMessage, 0, 8)
-        self.showImage(3, 0, self.referenceSize)
+        self.showImage(self.numSets, 0, self.referenceSize)
         self.genDisplay('(Press space to rescale)', 0, -8)
         self.showWait()
         for size in sizes:
             self.genDisplay(demoMessage, 0, 8)
-            self.showImage(3, 0, size)
+            self.showImage(self.numSets, 0, size)
             self.showWait(0.1)
         self.genDisplay(demoMessage, 0, 8)
-        self.showImage(3, 0, self.referenceSize)
+        self.showImage(self.numSets, 0, self.referenceSize)
         self.genDisplay('(Press space to continue)', 0, -8)
         self.showWait()
         
@@ -73,7 +73,7 @@ class ScalingProtocol(TVStimuli):
         self.demoSequence(self.testValues, 'The characters will be rescaled as shown below.')
     
 class FaceScale(ScalingProtocol):
-    trialsPerSet = 32
+    trialsPerSet = 64
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 

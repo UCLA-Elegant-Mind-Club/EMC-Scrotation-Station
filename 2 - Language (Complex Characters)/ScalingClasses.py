@@ -83,7 +83,7 @@ class EnglishScaling(ScalingProtocol):
         super().__init__('English', 'letter', fileName = fileName)
     
     def showImage(self, set, showTarget, size):
-        super().showImage(set, showTarget, size, 'English Characters')
+        super().showImage(set, showTarget, size, 'New English Characters')
 
 class HebrewScaling(ScalingProtocol):
     winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
@@ -96,7 +96,6 @@ class HebrewScaling(ScalingProtocol):
         super().showImage(set, showTarget, size, 'Hebrew Characters')
 
 class NonsenseScaling(ScalingProtocol):
-    trialsPerSet = 32
     winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
 
@@ -105,8 +104,24 @@ class NonsenseScaling(ScalingProtocol):
     
     def showImage(self, set, showTarget, size):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
-        fileName = 'nonsense ' + str(targets[set][showTarget]) + '.png'
+        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
         self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Nonsense Characters', fileName)
+        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        self.displayImage.size = (faceWidth, faceHeight)
+        self.displayImage.draw()
+
+class ChineseScaling(ScalingProtocol):
+    winners = ['cm600286', 'Mila', 'KayLA', 'Minerva', 'Arisvt', 'RNFO', 'Bot6', 'Snoopy', 'Ana', 'BruinCub']
+    highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
+
+    def __init__(self, fileName = ''):
+        super().__init__('Chinese', 'character', fileName = fileName)
+    
+    def showImage(self, set, showTarget, size):
+        targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
+        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Chinese Characters', fileName)
         faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         self.displayImage.size = (faceWidth, faceHeight)

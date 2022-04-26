@@ -6,13 +6,14 @@ from TVStimuli import TVStimuli
 
 class RotationScaledProtocol(TVStimuli):
     rotations = [0, 45, 90, 135, 180]
+    sizeFactor = 1
     
-    def __init__(self, sizeFactor, fileName = ''):
+    def __init__(self, fileName = ''):
         for i in range(0,len(self.highScores)):
             self.highScores[i] -= random.randint(0, i * 400)
         self.highScores.sort(reverse = True)
         super().__init__(self.rotations, '', 'faces', fileName)
-        self.referenceSize *= sizeFactor
+        self.refSize = self.referenceSize
     
     def instructions(self):
         self.genDisplay('Welcome player. In this module, there will be ' + str(self.numSets) + ' sets of 3 ' + self.stimDescription + self.stimType + 's', 0, 6)
@@ -33,6 +34,15 @@ class RotationScaledProtocol(TVStimuli):
         self.genDisplay('Are you ready?', 0, 3, height = 3)
         self.genDisplay('Press space to start.', 0, -2)
         self.showWait()
+    
+    
+    def learningPeriod(self, set):
+        self.referenceSize = self.sizeFactor
+        super().learningPeriod(set)
+        
+    def experimentalRound(self, set):
+        self.referenceSize = self.refSize * self.sizeFactor
+        super().experimentalRound(set)
     
     def showImage(self, set, showTarget, rotation):
         targets = [[1,2,3], [4,5,6], [7,8,9], ['demo']];
@@ -67,20 +77,14 @@ class RotationScaledProtocol(TVStimuli):
 class NormalFaceRoll(RotationScaledProtocol):
     winners = ['Arisvt', 'Mila', 'KayLA', 'Minerva', 'WW', 'Owl', 'Snoopy', 'cm600286', 'Ana', 'Katsaka']
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
-    
-    def __init__(self, fileName = ''):
-        super().__init__(1, fileName = fileName)
+    sizeFactor = 1
 
 class LargeFaceRoll(RotationScaledProtocol):
     winners = ['WW', 'KayLA', 'Arisvt', 'Minerva', 'Mila', 'Katsaka', 'Brian', 'Snoopy', 'cm600286', 'Samushka']
     highScores = [92560, 92319, 92276, 91589, 90669, 89813, 87408, 87336, 85451, 84110]
-
-    def __init__(self, fileName):
-        super().__init__(2, fileName = fileName)
+    sizeFactor = 2
         
 class SmallFaceRoll(RotationScaledProtocol):
     winners = ['Minerva', 'WW', 'Arisvt', 'Mila', 'KayLA', 'Johnny2', 'Annika', 'Nat', 'BRGJ', 'Katsaka']
     highScores = [85696, 85646, 85191, 84935, 82726, 81222, 79835, 78097, 77787, 71178]
-
-    def __init__(self, fileName = ''):
-        super().__init__(0.5, fileName = fileName)
+    sizeFactor = 0.5

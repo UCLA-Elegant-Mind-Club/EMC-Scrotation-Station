@@ -22,8 +22,9 @@ axes = axNames;
 %% Choose Large Meta Folder
 myDir = uigetdir; %gets directory
 listing = dir(myDir);
-%listing = listing([1,2,4:end]);
-
+if listing(3).name + "" == ".DS_Store"
+    listing = listing([1,2,4:end]);
+end
 
 for ii = 3:length(listing)
     subFolder(ii-2).subfolder = listing(ii).name;
@@ -39,7 +40,7 @@ for i = 1:length(readXValues)
             dirName = "Linear analysis - " + dName;
         case "log"
             refDist = log(refD);
-            axes{1} = "Log of " + axNames{1} + " (log °)";
+            axes{1} = "Log of " + axNames{1} + " (log2 °)";
             dirName = "Log analysis - " + dName;
         case "distance"
             refDist = 1.4 * tan(8 * pi/180) / tan(refD * pi/180);
@@ -209,6 +210,7 @@ for i = 1:length(readXValues)
          figure(ii)
          
          allredchi = [outputParamStats(ii).redChi2Pos;outputParamStats(ii).redChi2Neg];
+         allredchi = allredchi(~isnan(allredchi) & ~isinf(allredchi));
          Histogram = histfit(allredchi, 10, 'gamma');
          pd = gamfit(allredchi, 10);
          %mu = median(pd);

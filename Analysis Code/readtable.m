@@ -15,9 +15,11 @@ function t = readtable(filename, varargin)
     end
 
     matrix = table2array(t);
-    if readX == "log"
-        matrix(:, 2) = log(matrix(:, 2));
-    elseif readX == "distance"
+    if ~exist("readX") || length(readX) == 0
+        return;
+    elseif readX + "" == "log"
+        matrix(:, 2) = log2(matrix(:, 2));
+    elseif readX + "" == "distance"
         matrix(:, 2) = 1.4 * tan(8 * pi/180) ./ tan(matrix(:, 2) * pi/180);
     end
     t = array2table(matrix, "VariableNames", t.Properties.VariableNames);

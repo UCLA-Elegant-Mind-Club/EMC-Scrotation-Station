@@ -12,25 +12,25 @@ textZoom = 1.25
 class TVStimuli(ABC):
     debug = False
     
-    numSets = 3
-    trialsPerSet = 32
+    numSets = 2
+    trialsPerSet = 25
     totalTrials = numSets * trialsPerSet
     
     trainingTime = 10
     trainingReps = 2
     
     crossSize = 4
-    referenceSize = 8
+    referenceSize = 4
     refValue = 0
     
-    practiceFreq = 40
+    practiceFreq = 50
     prePracticeBreak = 5
     postPracticeBreak = 5
     postSetBreak = 20
     initialPracticeTrials = 12
     interimPracticeTrials = 6
     dummyTrials = 3;
-    timeOut = 1.2
+    timeOut = 1.5
     
     tvInfo = mon = win = displayImage = 0
     recordData = True
