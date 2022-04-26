@@ -183,7 +183,7 @@ class ComplexCharacters (TVStimuli):
 
     def getImage(self, set, showTarget, folder):
         targets = [[1,2,3], [4,5,6], ['demo']]
-        fileName = 'char ' + targets[set][showTarget] + '.png'
+        fileName = 'char ' + str(targets[set][showTarget]) + '.png'
         return os.path.join(os.getcwd(), '2 - Language (Complex Characters)', 'Stimuli', folder, fileName)
 
 #Rotation
