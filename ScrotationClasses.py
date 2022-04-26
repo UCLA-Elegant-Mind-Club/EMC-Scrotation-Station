@@ -221,20 +221,16 @@ class EnglishCharsScaling(ComplexCharacters, ScalingProtocol):
             self.trainingReps = 1
 
 class ChineseCharsScaling(ComplexCharacters, ScalingProtocol):
+    folder = 'Chinese Characters'
     def __init__(self, fileName):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, 'Chinese', 'character', fileName = fileName)
-    
-    def getImage(self, set, showTarget):
-        super().getImage(set, showTarget, 'Chinese Characters')
 
 class NonsenseCharsScaling(ComplexCharacters, ScalingProtocol):
+    folder = 'Nonsense Characters'
     def __init__(self, fileName = ''):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, 'Combined', 'characters', fileName = fileName)
-    
-    def getImage(self, set, showTarget):
-        super().getImage(set, showTarget, 'Nonsense Characters')
 
 
 ##### Word Protocols #####
