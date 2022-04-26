@@ -1,8 +1,8 @@
-Group,Protocols,Scores and Winners
-Familiar Faces,Famous Faces Roll. Famous Faces Scaling,0. cm600286
-Char Rotation,English Chars Roll. Nonsense Chars Roll. Chinese Chars Roll,0. cm600286
-Word Rotation,English Words Roll. Long English Words Roll. Nonsense Words Roll. Long Nonsense Words Roll,0. cm600286
-Char Scaling,English Chars Scaling. Nonsense Chars Scaling. Chinese Chars Scaling,0. cm600286
-Word Scaling,English Words Scaling. Long English Words Scaling. Nonsense Words Scaling. Long Nonsense Words Scaling,0. cm600286
-Scaling plus Rotation,Random Rotation And Scaling,0. cm600286
-Simulated Scaling,Four Degrees 70 cm. Four Degrees 140 cm. Eight Degrees 140 cm. Eight Degrees 280 cm. ,0. cm600286
+Group,Protocols,Scores and Winners,,
+Familiar Faces,Famous Faces Roll. Famous Faces Scaling,0. cm600286,,
+Char Rotation,English Chars Roll. Nonsense Chars Roll. Chinese Chars Roll,0. cm600286,0. cm600286,
+Word Rotation,English Words Roll. Long English Words Roll. Nonsense Words Roll. Long Nonsense Words Roll,0. cm600286,,
+Char Scaling,English Chars Scaling. Nonsense Chars Scaling. Chinese Chars Scaling,0. cm600286,0. cm600286,0. cm600286
+Word Scaling,English Words Scaling. Long English Words Scaling. Nonsense Words Scaling. Long Nonsense Words Scaling,0. cm600286,,
+Scaling plus Rotation,Random Rotation And Scaling,0. cm600286,,
+Simulated Scaling,Four Degrees 70 cm. Four Degrees 140 cm. Eight Degrees 140 cm. Eight Degrees 280 cm. ,0. cm600286,,
