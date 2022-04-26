@@ -182,7 +182,7 @@ class ComplexCharacters (TVStimuli):
     trialsPerSet = 25
 
     def getImage(self, set, showTarget, folder):
-        targets = [[1,2,3], [4,5,6], demo]
+        targets = [[1,2,3], [4,5,6], ['demo']]
         fileName = 'char ' + targets[set][showTarget] + '.png'
         return os.path.join(os.getcwd(), '2 - Language (Complex Characters)', 'Stimuli', folder, fileName)
 
@@ -258,7 +258,7 @@ class WordsProtocol (TVStimuli):
         super().__init__(testValues, language, 'word', fileName = fileName)
     
     def getImage(self, set, showTarget, folder):
-        targets = [[1,2,3], [4,5,6], demo]
+        targets = [[1,2,3], [4,5,6], ['demo']]
         fileName = 'word ' + targets[set][showTarget] + '.png'
         return os.path.join(os.getcwd(), '2 - Language (Words)', 'Stimuli', folder, fileName)
 
