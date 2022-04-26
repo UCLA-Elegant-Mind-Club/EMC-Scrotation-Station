@@ -13,7 +13,7 @@ class TVStimuli(ABC):
     debug = False
     
     numSets = 3
-    trialsPerSet = 70
+    trialsPerSet = 32
     totalTrials = numSets * trialsPerSet
     
     trainingTime = 10
@@ -23,7 +23,7 @@ class TVStimuli(ABC):
     referenceSize = 8
     refValue = 0
     
-    practiceFreq = 40
+    practiceFreq = -1
     prePracticeBreak = 5
     postPracticeBreak = 5
     postSetBreak = 60
@@ -36,6 +36,7 @@ class TVStimuli(ABC):
     recordData = True
     winners = []
     highScores = []
+    rank = [-1, -1]
     
     def __init__(self, testValues, stimDescription, stimType, fileName = ''):
         self.testValues = testValues
@@ -94,7 +95,7 @@ class TVStimuli(ABC):
         TVStimuli.win = win
         TVStimuli.tvInfo = tvInfo
         
-        crossImg = os.path.join(os.getcwd(), 'Stimuli', 'cross.png')
+        crossImg = os.path.join(os.getcwd(), 'cross.png')
         crossWidth = TVStimuli.angleCalc(TVStimuli.crossSize) * float(tvInfo['faceHeight'])
         crossHeight = TVStimuli.angleCalc(TVStimuli.crossSize) * float(tvInfo['faceWidth'])
         TVStimuli.cross = visual.ImageStim(win = win, units = 'cm', image = crossImg, size = (crossWidth, crossHeight))
@@ -130,22 +131,29 @@ class TVStimuli(ABC):
     def showHighScores(self):
         i = 0
         leftEdge, rightEdge = -float(self.tvInfo['leftEdge']), float(self.tvInfo['rightEdge'])
+        scoreText = 'Try to beat these High Scores!'
         while i < len(self.winners):
-            self.genDisplay('Try to beat these High Scores!', 0, 8, height = 3)
+            self.genDisplay(scoreText, 0, 8, height = 3)
             for j in range (0, 5):
                 if i + j < len(self.winners):
                     self.genDisplay(str(self.winners[i + j]), (rightEdge - leftEdge) * -1/8, 4 - 2 * j)
                     self.genDisplay(str(self.highScores[i + j]), (rightEdge - leftEdge) * 1/8, 4 - 2 * j)
                     self.genDisplay('Press space to continue', 0, -8)
             i += 5
+            scoreText = 'Here are some recent scores!'
             self.showWait()
  
     def checkHighScores(self):
-        for i in range(0, len(self.highScores)):
+        rank = [-1, -1]
+        for i in range(0, 5):
             if self.score > self.highScores[i]:
-                return i + 1
-        if i < 9: return i + 1
-        else: return -1
+                rank[0] = i + 1
+                break;
+        for i in range(5, len(self.highScores)):
+            if self.score > self.highScores[i]:
+                rank[1] = i - 4
+                break;
+        return rank;
     
     @staticmethod
     def showWait(seconds = -1, keys = ['space'], flip = True):
@@ -345,7 +353,7 @@ class TVStimuli(ABC):
         trialNum = 0
         print('Experimental Round')
         while trialNum < self.trialsPerSet:
-            if trialNum > 0 and trialNum % self.practiceFreq == 0:
+            if trialNum > 0 and self.practiceFreq > 0 and trialNum % self.practiceFreq == 0:
                 self.practiceRound(set, self.interimPracticeTrials,
                     trialsLeft = self.totalTrials - set * self.trialsPerSet - trialNum)
                 
@@ -376,9 +384,12 @@ class TVStimuli(ABC):
         self.genDisplay('Done!', 0, 6, height = 3)
         self.genDisplay('Final Score: ' + str(self.score), 0, 2, height = 3, color = [0,1,0])
         rank = self.checkHighScores()
-        if rank > 0:
-            self.genDisplay('Congratulations! You ranked in place ' + str(rank), -4, 0, color = [1,1,-1])
-        self.genDisplay('Press space to continue.', 0, -6)
+        if rank[0] > 0:
+            self.genDisplay('Congratulations! You ranked in place ' + str(rank[0]) + ' among the top scores!', 0, -2, color = [1,1,-1])
+        if rank[1] > 0:
+            self.genDisplay('Congratulations! You ranked in place ' + str(rank[1]) + ' among the recent scores!', 0, -2 - 3 * (rank[0] > 0), color = [1,1,-1])
+        self.genDisplay('Press space to continue.', 0, -6 - 3 * (rank[0] > 0))
         print('Current Protocol Finished. Score = ' + str(self.score) + '; Rank = ' + str(rank))
+        self.rank = rank
         self.showWait()
         

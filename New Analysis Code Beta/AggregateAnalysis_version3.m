@@ -30,7 +30,7 @@ for i = 1:length(readXValues)
             refDist = 1.4 * tan(8 * pi/180) / tan(refD * pi/180);
             dirName = "Distance - " + dName;
         case "absolute value"
-            refDist = abs(refDist);
+            refDist = abs(refD);
             dirName = "Absolute Value - " + dName;
         otherwise
             refDist = refD;

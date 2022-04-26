@@ -23,7 +23,10 @@ function t = readtable(filename, varargin)
         elseif readX + "" == "distance"
             matrix(:, 2) = 1.4 * tan(8 * pi/180) ./ tan(matrix(:, 2) * pi/180);
         elseif readX + "" == "absolute value"
-            matrix(:, 2) = [matrix(:,2), -matrix(:,2)];
+            matrix(:, 2) = abs(matrix(:,2));
+            copy = matrix;
+            copy(:,2) = -copy(:,2);
+            matrix = [matrix; copy];
         end
         t = array2table(matrix, "VariableNames", t.Properties.VariableNames);
     catch; end
