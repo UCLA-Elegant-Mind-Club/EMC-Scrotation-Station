@@ -36,7 +36,7 @@ class RotationProtocol(TVStimuli):
     def showImage(self, set, showTarget, rotation):
         targets = [[1,2,3], [4,5,6], ['demo']];
         folderName = 'face ' + str(targets[set][showTarget])
-        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', 'Celeb Faces 2', folderName, 'main.png')
+        self.displayImage.image = os.path.join(os.getcwd(), 'Stimuli', '6 Famous Faces', folderName, 'main.png')
         self.displayImage.ori = rotation
         self.displayImage.draw()
     
@@ -65,7 +65,7 @@ class FaceTraining(RotationProtocol):
     trainingTime = 1;
     
     def __init__(self):
-        super().__init__(self.rotations, 'Celebrity', 'Faces', fileName = '')
+        super().__init__(self.rotations, 'Famous', 'Faces', fileName = '')
         
     def main(self):
         for i in range(0,9):
@@ -85,4 +85,4 @@ class FaceRoll(RotationProtocol):
     highScores = [95472, 94725, 94503, 94468, 94274, 94130, 94052, 93668, 93427, 93091]
     
     def __init__(self, fileName = ''):
-        super().__init__(self.rotations, 'Celebrity', 'face', fileName = fileName)
+        super().__init__(self.rotations, 'Famous', 'face', fileName = fileName)
