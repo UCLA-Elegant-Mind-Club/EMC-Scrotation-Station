@@ -134,16 +134,17 @@ def main():
     protocol.win.winHandle.minimize()
     protocol.win.winHandle.close()
     
-    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='I don\'t want to record my score.')
+    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='List my score anonymously.')
     scoreDialog.addText('Do you want to record your score on the leaderboard?')
     scoreDialog.addField('Display Name:')
     displayName = scoreDialog.show()
-    if scoreDialog.OK == True:
-        scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
-        with open(scoreFile + '.txt', 'w', newline='') as file:
-            file.write(str(protocol.score))
-        file.close()
-    #if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
+    if displayName = None:
+        displayName = random.sample(['Unknown', 'cm600286', 'Sushi', 'Bot1', 'Baby Monster', 'EMC', 'Me', '', 'Spongebob', 'AmongUs'], 1)
+    scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
+    with open(scoreFile + '.txt', 'w', newline='') as file:
+        file.write(str(protocol.score))
+    file.close()
+#if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
 
 def endScene(protocolList):
     TV.playNotes(notes = [220, 277.18, 329.63, 277.18, 329.63, 440, 329.63, 440, 554.37, 440, 554.37, 659.25, 554.37, 659.25, 880],
