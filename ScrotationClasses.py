@@ -160,12 +160,16 @@ class FamiliarFaces (TVStimuli):
 
 #Rotation
 class FamousFacesRoll(FamiliarFaces, RotationProtocol):
+    trialsPerSet = 40
+    
     def __init__(self, fileName = ''):
         self.initRotations(self.rotations)
         super().__init__(self.rotations, fileName = fileName)
 
 #Scaling
 class FamousFacesScaling(FamiliarFaces, ScalingProtocol):
+    trialsPerSet = 100
+    
     def __init__(self, fileName = ''):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, fileName = fileName)
