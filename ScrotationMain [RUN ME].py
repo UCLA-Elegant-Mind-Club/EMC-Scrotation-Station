@@ -102,7 +102,7 @@ def main():
             core.quit()
     else:
         codeInfo = {'Participant Name': 'Test'}
-        protocol.trialsPerSet = 1
+        protocol.trialsPerSet = 3
         protocol.numSets = 1
         protocol.initialPracticeTrials = 3
         protocol.trainingTime = 1
