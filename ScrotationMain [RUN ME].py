@@ -138,7 +138,7 @@ def main():
     scoreDialog.addText('Do you want to record your score on the leaderboard?')
     scoreDialog.addField('Display Name:')
     displayName = scoreDialog.show()
-    if displayName = None:
+    if displayName == None:
         displayName = random.sample(['Unknown', 'cm600286', 'Sushi', 'Bot1', 'Baby Monster', 'EMC', 'Me', '', 'Spongebob', 'AmongUs'], 1)
     scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
     with open(scoreFile + '.txt', 'w', newline='') as file:
