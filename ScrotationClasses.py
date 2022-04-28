@@ -417,7 +417,8 @@ class SimulatedScaling (ScalingProtocol):
     def demo(self):
         super().demo()
         self.genDisplay('Before we begin, please make sure that you are seated ' + str(self.distance) + ' m from the screen.', 0, 3)
-        self.genDisplay('Press spacebar to start.', 0, 0)
+        self.genDisplay('Move the Dolphin Room table to the correct spot using the tape marks on the floor.', 0, 3)
+        self.genDisplay('Press spacebar to start.', 0, -3)
         self.showWait()
     
     def csvOutput(self, output):
