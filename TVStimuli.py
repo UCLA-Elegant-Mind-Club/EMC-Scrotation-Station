@@ -96,7 +96,7 @@ class TVStimuli(ABC):
         TVStimuli.win = win
         TVStimuli.tvInfo = tvInfo
         
-        crossImg = os.path.join(os.getcwd(), 'cross.png')
+        crossImg = os.path.join(os.getcwd(), 'Calibration', 'cross.png')
         crossWidth = TVStimuli.angleCalc(TVStimuli.crossSize) * float(tvInfo['faceHeight'])
         crossHeight = TVStimuli.angleCalc(TVStimuli.crossSize) * float(tvInfo['faceWidth'])
         TVStimuli.cross = visual.ImageStim(win = win, units = 'cm', image = crossImg, size = (crossWidth, crossHeight))

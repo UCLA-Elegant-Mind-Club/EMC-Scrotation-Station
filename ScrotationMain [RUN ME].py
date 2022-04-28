@@ -69,7 +69,7 @@ def main():
     if TV.debug:
         longBreakTime = 1
 
-    with open(groupFile) as file:
+    with open(os.path.join(os.getcwd(), 'Calibration', groupFile)) as file:
         protocolFile = list(csv.reader(file, delimiter=','))
     file.close()
     
@@ -93,7 +93,7 @@ def main():
     
     # Prepare Highscores
     
-    scoreFolder = os.path.join(os.getcwd(), 'HighScores', groupInfo[0], protocolName[0])
+    scoreFolder = os.path.join(os.getcwd(), 'Calibration', 'HighScores', groupInfo[0], protocolName[0])
     dirList = os.listdir(scoreFolder);
     winners = [[0,'cm600286']] * 5
     for name in dirList:
