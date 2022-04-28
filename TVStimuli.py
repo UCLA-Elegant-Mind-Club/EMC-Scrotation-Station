@@ -40,6 +40,7 @@ class TVStimuli(ABC):
     
     def __init__(self, testValues, stimDescription, stimType, fileName = ''):
         self.testValues = testValues
+        self.initTestValues(testValues)
         
         if len(stimDescription) > 0:
             stimDescription += ' '
@@ -53,7 +54,6 @@ class TVStimuli(ABC):
             self.initFile()
         self.score = 0
         self.streak = 0
-        self.initTestValues(testValues)
 
     def initTestValues(self, testValues):
         trialsPerValue = math.floor(self.totalTrials/len(testValues))

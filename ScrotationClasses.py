@@ -138,38 +138,35 @@ class FamiliarFaces (TVStimuli):
     
     trainingTime = 10
     trainingReps = 1
+    
     def __init__(self, testValues, fileName = ''):
-        super().__init__(testValues, 'Famous', 'Face', fileName = fileName)
+        super().__init__(testValues, 'Celebrity', 'Face', fileName = '')
     
     def getImage(self, set, showTarget):
         fileName = self.names[set * 3 + showTarget] + '.png'
         return os.path.join(os.getcwd(), '2 - Familiar Faces', 'Stimuli', 'Celeb Faces 2', fileName)
     
     def learningTrial(self, set, target, mapping, repeatText = False):
-        yShift = repeatText * 3
-        if(repeatText):
-            self.genDisplay('Training has restarted from ' + self.names[0] + '.', 0, 6)
-        self.genDisplay('You have ' + str(self.trainingTime) + ' seconds to', 0, 6 - yShift)
-        self.genDisplay('memorize ' + self.names[set * 3 + target] + '\'s face on the next slide (mapped to ' + mapping + ')', 0, 3 - yShift)
-        self.genDisplay('Press \'' + mapping + '\' to continue.', 0, -3)
-        self.showWait(keys = [mapping])
-        self.showImage(set, target, self.refValue)
-        self.showWait(self.trainingTime)
-        self.genDisplay('Press \'' + mapping + '\' to continue.', 0, 0)
-        self.showWait(keys = [mapping])
+            yShift = repeatText * 3
+            if(repeatText):
+                self.genDisplay('Training has restarted from ' + self.names[0] + '.', 0, 6)
+            self.genDisplay('You have ' + str(self.trainingTime) + ' seconds to', 0, 6 - yShift)
+            self.genDisplay('memorize ' + self.names[set * 3 + target] + '\'s face on the next slide (mapped to ' + mapping + ')', 0, 3 - yShift)
+            self.genDisplay('Press \'' + mapping + '\' to continue.', 0, -3)
+            self.showWait(keys = [mapping])
+            self.showImage(set, target, self.refValue)
+            self.showWait(self.trainingTime)
+            self.genDisplay('Press \'' + mapping + '\' to continue.', 0, 0)
+            self.showWait(keys = [mapping])
 
 #Rotation
 class FamousFacesRoll(FamiliarFaces, RotationProtocol):
-    trialsPerSet = 40
-    
     def __init__(self, fileName = ''):
         self.initRotations(self.rotations)
         super().__init__(self.rotations, fileName = fileName)
 
 #Scaling
 class FamousFacesScaling(FamiliarFaces, ScalingProtocol):
-    trialsPerSet = 100
-    
     def __init__(self, fileName = ''):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, fileName = fileName)

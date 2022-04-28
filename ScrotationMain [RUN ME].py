@@ -8,7 +8,7 @@ from ScrotationClasses import *
 longBreakTime = 60
 TV.debug = True
 groupFile = 'GroupProtocols.csv'
-
+    
 def calibrate():
     calibDlg = gui.Dlg(title='Testing location?', pos=None, size=None, style=None,\
          labelButtonOK=' Local at Knudson ', labelButtonCancel=' Remotely ', screen=-1)
@@ -76,23 +76,10 @@ def main():
     protocol = globals()[protocolName[0].replace(' ','')]
     
     # Prepare Highscores
-    
-    scoreFolder = os.path.join(os.getcwd(), 'HighScores', groupInfo[0], protocolName[0])
-    dirList = os.listdir(scoreFolder);
-    winners = [[0,'cm600286']] * 5
-    for name in dirList:
-        with open(os.path.join(scoreFolder,name)) as file:
-            score = int(file.read())
-        file.close()
-        winners += [[score, name[10:-4]]]
-    recentWinners = winners[-5:]
-    recentWinners.reverse()
-    print(recentWinners)
-    winners.sort(reverse = True)
-    topWinners = winners[:5]
-    
-    protocol.highScores = [score[0] for score in topWinners + recentWinners]
-    protocol.winners = [score[1] for score in topWinners + recentWinners]
+    protocolNum = protocols.index(protocolName[0])
+    protocol.winners = protocolFile[groupNum][2 + 2 * protocolNum].split('. ')
+    scores = protocolFile[groupNum][3 + 2 * protocolNum].split('. ')
+    protocol.highScores = [int(num) for num in scores]
     
     if not TV.debug:
         # Participant Name
@@ -102,7 +89,7 @@ def main():
             core.quit()
     else:
         codeInfo = {'Participant Name': 'Test'}
-        protocol.trialsPerSet = 3
+        protocol.trialsPerSet = 1
         protocol.numSets = 1
         protocol.initialPracticeTrials = 3
         protocol.trainingTime = 1
@@ -134,17 +121,31 @@ def main():
     protocol.win.winHandle.minimize()
     protocol.win.winHandle.close()
     
-    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='List my score anonymously.')
+    rank = protocol.rank
+    scoreInfo = {'Display Name': ''}
+    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='I don\'t want to record my score.')
     scoreDialog.addText('Do you want to record your score on the leaderboard?')
     scoreDialog.addField('Display Name:')
     displayName = scoreDialog.show()
-    if displayName == None:
-        displayName = random.sample(['Unknown', 'cm600286', 'Sushi', 'Bot1', 'Baby Monster', 'EMC', 'Me', '', 'Spongebob', 'AmongUs'], 1)
-    scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
-    with open(scoreFile + '.txt', 'w', newline='') as file:
-        file.write(str(protocol.score))
-    file.close()
-#if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
+    if scoreDialog.OK == True:
+        if rank[0] > 0:
+            topWinners = protocol.winners[0:rank[0] - 1] + displayName + protocol.winners[rank[0]:4]
+            topScores = protocol.highScores[0:rank[0] - 1] + [protocol.score] + protocol.highScores[rank[0]:4]
+        else:
+            topWinners = protocol.winners[0:5]
+            topScores = protocol.highScores[0:5]
+        recentWinners = displayName + protocol.winners[6:10]
+        recentScores = [protocol.score] + protocol.highScores[6:10]
+        protocolFile[groupNum][2 + 2 * protocolNum] = '. '.join(topWinners + recentWinners)
+        protocolFile[groupNum][3 + 2 * protocolNum] = '. '.join([str(num) for num in topScores + recentScores])
+        
+        """
+        with open(groupFile, 'w', newline='') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerows(protocolFile)
+        csvFile.close()
+        """
+    #if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
 
 def endScene(protocolList):
     TV.playNotes(notes = [220, 277.18, 329.63, 277.18, 329.63, 440, 329.63, 440, 554.37, 440, 554.37, 659.25, 554.37, 659.25, 880],
