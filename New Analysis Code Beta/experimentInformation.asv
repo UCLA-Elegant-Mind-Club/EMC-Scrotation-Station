@@ -35,7 +35,7 @@ protOrder, protNames, colors, linestyles] = experimentInformation()
     refDist = inputdlg('Enter expected location of kink:', ...
         'Kink Location', [1 60], template{1,6} + "");
     
-    dataDir = uigetdir(fullfile(fileparts(pwd), 'Data'), "Choose Group Data Folder that contains Protocols");
+    dataDir = uigetdir(path, "Choose Master Folder that contains Protocols");
     dataDir = dir(dataDir);
     if dataDir(3).name + "" == ".DS_Store"
         dataDir = dataDir([1,2,4:end]);
@@ -63,10 +63,11 @@ protOrder, protNames, colors, linestyles] = experimentInformation()
     message = sprintf("Choose from these colors: gray, red, blue, light blue,maroon, black, green:\n\n");
     
     
-    colors = inputdlg([message + protNames(1); [protNames{2:end}]], ...
-        'Choose plotting colors', [1 60], newTemplate{:,9});
+    
+    colors = inputdlg([message + protNames(1); protNames(2:end)], ...
+        'Choose plotting colors', [1 60], template{:,9});
     
     message = sprintf("Choose from these linestyles: ''-'' (solid) or ''--'' (dashed):\n\n");
-    linestyles = inputdlg([message + protNames(1); [protNames{2:end}]], ...
-        'Choose line drawing styles', [1 60], newTemplate{:,10}); 
+    linestyles = inputdlg([message + protNames(1); protNames(2:end)], ...
+        'Choose line drawing styles', [1 60], template{:,10}); 
 end

@@ -11,7 +11,8 @@ S = {'o', 'd', 's', 'h', '^', '*'};
 refD = str2num(refD{1});
 axes{2} = axNames{1};
 %% Choose Large Meta Folder
-for ii = 3:length(listing)
+for ii = transpose(protOrder + 2)
+    if ii <= 0; break
     subFolder(ii-2).subfolder = listing(ii).name;
     fileList(ii-2).files = dir(fullfile(myDir, listing(ii).name, '*.csv')); 
 end
