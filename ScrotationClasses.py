@@ -122,7 +122,6 @@ class ScalingProtocol(TVStimuli):
         self.showWait()
         
     def demo(self):
-        print(self.testValues)
         self.demoSequence(self.sizes, 'The ' + self.stimType + 's will be rescaled as shown below.')
 
 
@@ -379,7 +378,6 @@ class ScrotationBination (TVStimuli):
         self.showWait()
         
     def demo(self):
-        print(self.testValues)
         self.demoSequence([(size, 0) for size in self.sizes], 'The faces will be resized as shown below.', 'resize', 0.2)
         self.demoSequence([(self.referenceSize, rot) for rot in self.rotations], 'The faces will also be rotated as shown below.', 'rotate', 0.1)
     
