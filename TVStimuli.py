@@ -53,6 +53,7 @@ class TVStimuli(ABC):
             self.initFile()
         self.score = 0
         self.streak = 0
+        
         self.initTestValues(testValues)
 
     def initTestValues(self, testValues):

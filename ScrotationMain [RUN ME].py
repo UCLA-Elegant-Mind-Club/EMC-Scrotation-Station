@@ -1,13 +1,14 @@
 from psychopy import gui, core, prefs
 from psychopy.sound import Sound
 prefs.hardware['audioLib'] = ['ptb', 'pyo']
-import os, time, csv
+import os, time, csv, re, uuid
 from TVStimuli import TVStimuli as TV
 from ScrotationClasses import *
 
 longBreakTime = 60
 TV.debug = True
 groupFile = 'GroupProtocols.csv'
+monitorFile = 'monitors.csv'
 
 def calibrate():
     calibDlg = gui.Dlg(title='Testing location?', pos=None, size=None, style=None,\
@@ -19,8 +20,21 @@ def calibrate():
     #if taking data remotely, replace the calibration file with your own before running code
     if standardCalibration:
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration_Knudson.csv'))
+        macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
+        with open(os.path.join(os.getcwd(), 'Calibration', monitorFile)) as file:
+            monitorList = list(csv.reader(file, delimiter = ','))
+        file.close()
+        addressList = [row[1] for row in monitorList]
+        if macAddress in addressList:
+            monitorNum = addressList.index(macAddress)
+            timeDelay = monitorList[monitorNum][2]
+            if timeDelay != 'none':
+                TV.tvInfo['timeDelay'] = timeDelay
+            return ' [Mon ' + str(monitorNum) + ']'
+        return ''
     else:
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
+        return ' [remote]'
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
@@ -55,7 +69,9 @@ def main():
     if TV.debug:
         longBreakTime = 1
 
-    protocolFile = list(csv.reader(open(groupFile), delimiter=','))
+    with open(groupFile) as file:
+        protocolFile = list(csv.reader(file, delimiter=','))
+    file.close()
     
     # Select group project
     groupDialog = gui.Dlg(title='Select Group Project', screen=-1)
@@ -87,7 +103,6 @@ def main():
         winners += [[score, name[10:-4]]]
     recentWinners = winners[-5:]
     recentWinners.reverse()
-    print(recentWinners)
     winners.sort(reverse = True)
     topWinners = winners[:5]
     
@@ -125,7 +140,7 @@ def main():
     
     fileName = codeInfo['Participant Name'] + ' (' + time.strftime("%m %d") + ') ' + groupInfo[0] + ', ' + protocolName[0]
     
-    calibrate()
+    fileName += calibrate()
     loadSounds()
     
     protocol = protocol(os.path.join(dataFolder, fileName + '.csv'))
@@ -134,15 +149,16 @@ def main():
     protocol.win.winHandle.minimize()
     protocol.win.winHandle.close()
     
-    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='I don\'t want to record my score.')
+    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='List my score anonymously.')
     scoreDialog.addText('Do you want to record your score on the leaderboard?')
     scoreDialog.addField('Display Name:')
     displayName = scoreDialog.show()
-    if scoreDialog.OK == True:
-        scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
-        with open(scoreFile + '.txt', 'w', newline='') as file:
-            file.write(str(protocol.score))
-        file.close()
+    if displayName == None:
+        displayName = random.sample(['Unknown', 'cm600286', 'Sushi', 'Bot1', 'Baby Monster', 'EMC', 'Me', '', 'Spongebob', 'AmongUs'], 1)
+    scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
+    with open(scoreFile + '.txt', 'w', newline='') as file:
+        file.write(str(protocol.score))
+    file.close()
     #if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
 
 def endScene(protocolList):
