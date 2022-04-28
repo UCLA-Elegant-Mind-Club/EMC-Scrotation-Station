@@ -30,8 +30,7 @@ def calibrate():
             timeDelay = monitorList[monitorNum][2]
             if timeDelay != 'none':
                 TV.tvInfo['timeDelay'] = timeDelay
-                print(timeDelay)
-                return ' [Mon ' + str(monitorNum) + ']'
+            return ' [Mon ' + str(monitorNum) + ']'
         return ''
     else:
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
