@@ -157,7 +157,8 @@ def main():
     scoreDialog.addField('Display Name:')
     displayName = scoreDialog.show()
     if displayName == None:
-        displayName = random.sample(['Unknown', 'cm600286', 'Sushi', 'Bot1', 'Baby Monster', 'EMC', 'Me', '', 'Spongebob', 'AmongUs'], 1)
+        displayName = random.sample(['cm600286', 'Powell Cat Sushi', 'Bot' + '%04d' % random.randint(0,1000), 'Baby Monster', 'Scroptimus Prime', 'Michael Scrott',
+            'Scrotation Crustacean', 'AmogUs', 'PikachYOU', 'Chuck Norris', 'Fast and Curious', 'Daddy Gene', 'Russian Spy', 'Ariana Grande\'s Ponytail'], 1)
     scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
     with open(scoreFile + '.txt', 'w', newline='') as file:
         file.write(str(protocol.score))
