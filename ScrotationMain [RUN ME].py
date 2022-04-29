@@ -11,30 +11,33 @@ groupFile = 'GroupProtocols.csv'
 monitorFile = 'monitors.csv'
 
 def calibrate():
-    calibDlg = gui.Dlg(title='Testing location?', pos=None, size=None, style=None,\
-         labelButtonOK=' Local at Knudson ', labelButtonCancel=' Remotely ', screen=-1)
-    calibDlg.show()
-    standardCalibration = calibDlg.OK
-
     #standard calibration uses Knudson TV data
     #if taking data remotely, replace the calibration file with your own before running code
-    if standardCalibration:
+    macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
+    with open(os.path.join(os.getcwd(), 'Calibration', monitorFile)) as file:
+        monitorList = list(csv.reader(file, delimiter = ','))
+    file.close()
+    addressList = [row[1] for row in monitorList]
+    if macAddress in addressList:
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration_Knudson.csv'))
-        macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
-        with open(os.path.join(os.getcwd(), 'Calibration', monitorFile)) as file:
-            monitorList = list(csv.reader(file, delimiter = ','))
-        file.close()
-        addressList = [row[1] for row in monitorList]
-        if macAddress in addressList:
-            monitorNum = addressList.index(macAddress)
-            timeDelay = monitorList[monitorNum][2]
-            if timeDelay != 'none':
-                TV.tvInfo['timeDelay'] = timeDelay
-            return ' [Mon ' + str(monitorNum) + ']'
-        return ''
+        monitorNum = addressList.index(macAddress)
+        timeDelay = monitorList[monitorNum][2]
+        if timeDelay != 'none':
+            TV.tvInfo['timeDelay'] = timeDelay
+        return ' [Mon ' + str(monitorNum) + ']'
     else:
-        TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration.csv'))
+        calibDlg = gui.Dlg(title='Remote Data Taking',
+            labelButtonOK=' I have a file ready. Open File Chooser. ', labelButtonCancel=' I have not calibrated my system. Cancel Experiment. ', screen=-1)
+        calibDlg.addText('System has detected remote data taking. You will now be prompted to choose your calibration file.')
+        calibDlg.addText('If you have not yet calibrated your monitor, you can run the script in the \'Calibration\' folder.\n')
+        calibDlg.show()
+        if not calibDlg.OK: core.quit()
+        calibFile = gui.fileOpenDlg(os.getcwd(), prompt = "Select Calibration File", allowed = '*.csv')
+        if calibFile != None: TV.calibrate(calibFile[0])
+        else: core.quit()
         return ' [remote]'
+    
+    
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
