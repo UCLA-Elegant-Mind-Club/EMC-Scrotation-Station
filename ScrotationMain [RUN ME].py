@@ -152,9 +152,9 @@ def main():
     protocol.win.winHandle.minimize()
     protocol.win.winHandle.close()
     
-    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='List my score anonymously.')
+    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='Choose Premade Random Name.')
     scoreDialog.addText('Do you want to record your score on the leaderboard?')
-    scoreDialog.addField('Display Name:')
+    scoreDialog.addField('Display Name:', 'Daddy ' + codeInfo['Participant Name'])
     displayName = scoreDialog.show()
     if displayName == None:
         displayName = random.sample(['cm600286', 'Powell Cat Sushi', 'Bot' + '%04d' % random.randint(0,1000), 'Baby Monster', 'Scroptimus Prime', 'Michael Scrott',
