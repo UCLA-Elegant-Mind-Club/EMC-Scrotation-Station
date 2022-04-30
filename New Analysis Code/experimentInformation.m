@@ -25,7 +25,7 @@ protOrder, protNames, colors, linestyles] = experimentInformation()
     end
     
     analysisTypes = ["Linear", "Log", "Distance", "Absolute Value"];
-    include = inputdlg([sprintf("Enter 0 to include and 0 to exclude analysis:\n\n" + analysisTypes(1)), analysisTypes(2:end)], ...
+    include = inputdlg([sprintf("Enter 1 to include and 0 to exclude analysis:\n\n" + analysisTypes(1)), analysisTypes(2:end)], ...
         'Analysis Types', [1 60], ismember(analysisTypes, template{:,2}) + 0 + "");
     analysisTypes = analysisTypes(ismember(include, '1'));
     

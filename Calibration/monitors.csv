@@ -1,9 +1,9 @@
-Monitor Number,Mac Address,Time Delay,Location
+MonitorNumber,MacAddress,TimeDelay,Location
 1,a8:a1:59:94:23:c1,91.54,4-134 (front left)
 2,a0:af:bd:7a:12:f9,96.02,4-134 (front right)
 3,1c:87:2c:d2:10:8a,99.04,4-134 (left side at front)
 4,80:c1:6e:e0:1c:ea,102.56,4-134 (left side in middle)
-5,a0:af:bd:7a:13:1c,none,4-134 (left side at back)
-6,a8:a1:59:9a:f2:28,none,4-134 (small room next to door)
-7,80:c1:6e:e2:0f:12,none,4-134 (small room back)
-8,b0:35:9f:69:36:e3,none,Dolphin Room
+5,a0:af:bd:7a:13:1c,NaN,4-134 (left side at back)
+6,a8:a1:59:9a:f2:28,NaN,4-134 (small room next to door)
+7,80:c1:6e:e2:0f:12,NaN,4-134 (small room back)
+8,b0:35:9f:69:36:e3,NaN,Dolphin Room
