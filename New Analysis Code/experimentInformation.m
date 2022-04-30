@@ -1,5 +1,5 @@
 function [folderName, axes, refDist, analysisTypes, dataDir, ...
-protOrder, protNames, colors, linestyles] = experimentInformation()
+    protOrder, protNames, colors, linestyles] = experimentInformation()
 
     useTemplate = questdlg("Load fields from template csv/excel file?");
     switch useTemplate
@@ -13,24 +13,16 @@ protOrder, protNames, colors, linestyles] = experimentInformation()
         template = readtable(fullfile(path, file)); end
     
     format shortg;
-    userInput = inputdlg('All analysis files will be organized into a folder with this name:', ...
+    folderName = inputdlg('All analysis files will be organized into a folder with this name:', ...
         'Analysis Folder Name', [1 60], template{1,1});
-    
-    time = floor(clock);
-    folderName = userInput + "[" + date + ", " + time(4) + "-" + time(5) + "]";
-    dupNum = 1;
-    if exist(folderName, 'dir')
-        while exist(folderName + "(" + dupNum + ")", 'dir'); dupNum = dupNum + 1; end
-        folderName = folderName + "(" + dupNum + ")";
-    end
+   
     
     analysisTypes = ["Linear", "Log", "Distance", "Absolute Value"];
-    include = inputdlg([sprintf("Enter 1 to include and 0 to exclude analysis:\n\n" + analysisTypes(1)), analysisTypes(2:end)], ...
-        'Analysis Types', [1 60], ismember(analysisTypes, template{:,2}) + 0 + "");
-    analysisTypes = analysisTypes(ismember(include, '1'));
-    
-    axes = inputdlg(["Enter y axis label", "Enter label for " + analysisTypes + " Analysis"], ...
-        'Axes Names', [1 60], [template{:,3}; repmat({''},4,1)]);
+    axes = inputdlg([sprintf("(Leave x-axes blank to exclude analysis\n\nEnter y-axis label"), ...
+        "Enter label for " + analysisTypes + " Analysis"], 'Axes Names', [1 60], [template{:,3}]);
+    include = ~ismember(axes, '');
+    axes = axes(include);
+    analysisTypes = analysisTypes(include(2:end));
     
     refDist = inputdlg('Enter expected location of kink:', ...
         'Kink Location', [1 60], template{1,6} + "");

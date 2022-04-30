@@ -22,28 +22,36 @@ for ii = 3:length(listing)
     fileList(ii-2).files = files;
 end
 
+timeInfo = floor(clock);
+timeInfo = "[" + timeInfo(2) + "-" + timeInfo(3) + "] ";
+
 for i = 1:length(readXValues)
     readX = lower(readXValues(i));
     axes{1} = axNames{i + 1};
     switch readX
         case "linear"
             refDist = refD;
-            dirName = "Linear - " + dName;
+            dirName = "Linear " + dName;
         case "log"
             refDist = log2(refD);
-            dirName = "Log - " + dName;
+            dirName = "Log " + dName;
         case "distance"
             refDist = 1.4 * tan(8 * pi/180) / tan(refD * pi/180);
-            dirName = "Distance - " + dName;
+            dirName = "Distance " + dName;
         case "absolute value"
             refDist = abs(refD);
-            dirName = "Absolute Value - " + dName;
+            dirName = "Abs Value " + dName;
         otherwise
             refDist = refD;
             dirName = dName;
     end
+    if exist(timeInfo + dirName, 'dir')
+        while exist(timeInfo + "(" + dupNum + ")" + dirName, 'dir'); dupNum = dupNum + 1; end
+    end
+    dirName = timeInfo + "(" + dupNum + ")" + dirName;
     mkdir(dirName);
 
+    
     %% Sort Through Data
     masterAngles = [];
     for k = 1:length(fileList)
@@ -81,17 +89,8 @@ for i = 1:length(readXValues)
                 angleRT_StdErr(k).protocol(ii).subject(jj).data = std(RT_IDX_RMO)/...
                     sqrt(length(RT_IDX_RMO));
             end
-        end
-        
-       
-    
-    
-        
-        
-       
-            
+        end    
     end
-    
     
     %% Plotting
     plotSeparate = 'False';
@@ -215,7 +214,6 @@ for i = 1:length(readXValues)
          
      end
     
-    
     %% Hypothesis Testing/Error Analysis
     cd ..
     [incorrectHypArray] = hypothesisTesting_v3(fileList, listing,...
@@ -263,7 +261,6 @@ for i = 1:length(readXValues)
             end
         end
     end
-    
     
     %% Aggregate Analysis
     masterAngles = [];
