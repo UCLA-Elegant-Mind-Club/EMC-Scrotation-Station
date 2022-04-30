@@ -1,9 +1,14 @@
-folderName = uigetdir;
+folderName = fullfile(fileparts(pwd), 'Data', 'Scaling plus Rotation');
 folder = dir(folderName);
-for subNum = 3:length(folder)
-    subFolder = fullfile(folderName,folder(subNum).name);
-    fileList = dir(fullfile(subFolder, '*.csv'));
-    for fileNum = 1:length(fileList)
+if folder(3).name + "" == ".DS_Store"; folder = folder([1,2,4:end]); end
+for i = 4:length(folder)
+    test = folder(i);
+    rmdir(fullfile(folderName, folder(i).name), 's');
+end
+subFolder = fullfile(folderName,folder(3).name);
+fileList = dir(fullfile(subFolder, '*.csv'));
+for fileNum = 1:length(fileList)
+    if extractBetween(fileList(fileNum).name, 1, 4) ~= "Test"
         sepData(subFolder, fileList(fileNum).name, 2);
     end
 end
