@@ -147,7 +147,7 @@ def main():
     loadSounds()
     
     protocol = protocol(os.path.join(dataFolder, fileName + '.csv'))
-    #protocol.main()
+    protocol.main()
     protocol.win.mouseVisible = False;
     protocol.win.winHandle.minimize()
     protocol.win.winHandle.close()
