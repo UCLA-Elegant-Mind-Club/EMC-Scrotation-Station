@@ -51,8 +51,10 @@ for i = 1:length(readXValues)
     end
     if exist(timeInfo + dirName, 'dir')
         while exist(timeInfo + "(" + dupNum + ")" + dirName, 'dir'); dupNum = dupNum + 1; end
+        dirName = timeInfo + "(" + dupNum + ")" + dirName;
+    else
+        dirName = timeInfo + dirName;
     end
-    dirName = timeInfo + "(" + dupNum + ")" + dirName;
     mkdir(dirName);
 
     
