@@ -22,7 +22,7 @@ def calibrate():
         TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration_Knudson.csv'))
         monitorNum = addressList.index(macAddress)
         timeDelay = monitorList[monitorNum][2]
-        if timeDelay != 'none':
+        if timeDelay != 'NaN':
             TV.tvInfo['timeDelay'] = timeDelay
         return ' [Mon ' + str(monitorNum) + ']'
     else:
@@ -147,7 +147,7 @@ def main():
     loadSounds()
     
     protocol = protocol(os.path.join(dataFolder, fileName + '.csv'))
-    protocol.main()
+    #protocol.main()
     protocol.win.mouseVisible = False;
     protocol.win.winHandle.minimize()
     protocol.win.winHandle.close()
