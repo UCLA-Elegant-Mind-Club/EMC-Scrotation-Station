@@ -49,6 +49,7 @@ for i = 1:length(readXValues)
             refDist = refD;
             dirName = dName;
     end
+    dupNum = 1;
     if exist(timeInfo + dirName, 'dir')
         while exist(timeInfo + "(" + dupNum + ")" + dirName, 'dir'); dupNum = dupNum + 1; end
         dirName = timeInfo + "(" + dupNum + ")" + dirName;
