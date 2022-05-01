@@ -1,11 +1,11 @@
-folderName = uigetdir;
+folderName = uigetdir(fullfile(fileparts(pwd), 'Data'));
 folder = dir(folderName);
 for subNum = 3:length(folder)
     subFolder = fullfile(folderName,folder(subNum).name);
     fileList = dir(fullfile(subFolder, '*.csv'));
     for fileNum = 1:length(fileList)
         fileName = fullfile(subFolder, fileList(fileNum).name);
-        wrapData(fileName, 2, 45, -45);
+        wrapData(fileName, 2, 180, -180);
     end
 end
 
