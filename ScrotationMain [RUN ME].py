@@ -13,31 +13,34 @@ monitorFile = 'monitors.csv'
 def calibrate():
     #standard calibration uses Knudson TV data
     #if taking data remotely, replace the calibration file with your own before running code
-    macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
-    with open(os.path.join(os.getcwd(), 'Calibration', monitorFile)) as file:
-        monitorList = list(csv.reader(file, delimiter = ','))
-    file.close()
-    addressList = [row[1] for row in monitorList]
-    if macAddress in addressList:
-        TV.calibrate(os.path.join(os.getcwd(), 'Calibration', 'eccentricity_monitor_calibration_Knudson.csv'))
-        monitorNum = addressList.index(macAddress)
-        timeDelay = monitorList[monitorNum][2]
-        if timeDelay != 'NaN':
-            TV.tvInfo['timeDelay'] = timeDelay
-        return ' [Mon ' + str(monitorNum) + ']'
+    label = TV.calibrate(os.path.join(os.getcwd(), 'Calibration', monitorFile))
+    if label != None:
+        return " " + label
     else:
-        calibDlg = gui.Dlg(title='Remote Data Taking',
+        calibDlg = gui.Dlg(title='Calibration File Required',
             labelButtonOK=' I have a file ready. Open File Chooser. ', labelButtonCancel=' I have not calibrated my system. Cancel Experiment. ', screen=-1)
-        calibDlg.addText('System has detected remote data taking. You will now be prompted to choose your calibration file.')
-        calibDlg.addText('If you have not yet calibrated your monitor, you can run the script in the \'Calibration\' folder.\n')
+        calibDlg.addText('Could not find system calibration. You will now be prompted to choose your calibration file.')
+        calibDlg.addText('If you have not yet recieved a calibration csv, you can run the script in the \'Calibration\' folder.\n')
         calibDlg.show()
         if not calibDlg.OK: core.quit()
+        
         calibFile = gui.fileOpenDlg(os.getcwd(), prompt = "Select Calibration File", allowed = '*.csv')
-        if calibFile != None: TV.calibrate(calibFile[0])
-        else: core.quit()
-        return ' [remote]'
-    
-    
+        if calibFile == None: core.quit()
+        with open(os.path.join(os.getcwd(), 'Calibration', calibFile[0])) as file:
+            tvInfo = list(csv.reader(file, delimiter=','))
+        
+        calibDlg = gui.Dlg(title='System Description', screen=-1)
+        calibDlg.addText('Please provide a short description of the system like your name and type of computer.')
+        calibDlg.addField('Description: ')
+        description = calibDlg.show()
+        if description == None: core.quit()
+        macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
+        with open(os.path.join(os.getcwd(), 'Calibration', monitorFile)) as file:
+            rows = sum(1 for row in file)
+        with open(os.path.join(os.getcwd(), 'Calibration', monitorFile), 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["Remote " + str(rows), description[0], macAddress] + tvInfo[1])
+        return " " + TV.calibrate(os.path.join(os.getcwd(), 'Calibration', monitorFile))
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
@@ -74,7 +77,6 @@ def main():
 
     with open(os.path.join(os.getcwd(), 'Calibration', groupFile)) as file:
         protocolFile = list(csv.reader(file, delimiter=','))
-    file.close()
     
     # Select group project
     groupDialog = gui.Dlg(title='Select Group Project', screen=-1)
@@ -102,7 +104,6 @@ def main():
     for name in dirList:
         with open(os.path.join(scoreFolder,name)) as file:
             score = int(file.read())
-        file.close()
         winners += [[score, name[10:-4]]]
     recentWinners = winners[-5:]
     recentWinners.reverse()
@@ -162,7 +163,6 @@ def main():
     scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
     with open(scoreFile + '.txt', 'w', newline='') as file:
         file.write(str(protocol.score))
-    file.close()
     #if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
 
 def endScene(protocolList):
