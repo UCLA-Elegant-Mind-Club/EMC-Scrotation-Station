@@ -98,7 +98,8 @@ for i = 1:length(readXValues)
             end
         end    
     end
-    
+
+
     %% Plotting
     plotSeparate = 'False';
     [outputParamStats, protocolOutput, h] = plotSubjectData_v3(fileList,listing,...
@@ -222,7 +223,7 @@ for i = 1:length(readXValues)
      end
     %% Hypothesis Testing/Error Analysis
     cd ..
-    
+    %}
     [incorrectHypArray] = hypothesisTesting_v3(fileList, listing,...
         angleRT_Raw, masterAngles);
     
@@ -259,6 +260,7 @@ for i = 1:length(readXValues)
             for jj = 1:length(fileList(ii).files)
                 if ismember(0, protocolStd_indvSub(ii).subject(jj).data)
                     disp("File " + fileList(ii).files(jj).name + " is bugged.");
+                    keyboard;
                 end
                 ProtocolRTind_Mean(ii).subject(jj).data = sum(protocolRT_indvSub(ii).subject(jj).data./protocolStd_indvSub(ii).subject(jj).data)/sum(1./protocolStd_indvSub(ii).subject(jj).data);  
                 data = table2array(readtable(fileList(ii).files(jj).name));
