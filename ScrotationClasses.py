@@ -61,6 +61,12 @@ class RotationProtocol (TVStimuli):
     
     def demo(self):
         self.demoSequence(self.rotations, 'The ' + self.stimType + 's will be rotated in a circle as shown below.')
+    
+    def csvOutput(self, output):
+        super().csvOutput(output);
+        if(output[1] == 180):
+            output[1] = -180
+            super().csvOutput(output);
 
 class ScalingProtocol(TVStimuli):
     sizes = [1, 2, 4, 8, 16, 28]
