@@ -12,10 +12,10 @@ end
 function [] = wrapData(fileName, xCol, input, output)
     table = readtable(fileName);
     matrix = table2array(table);
-    if ismember(output, matrix(:,xCol))
+    if height(matrix) <= 0 || ismember(output, matrix(:,xCol))
         return;
     end
-    for i = 1:length(matrix)
+    for i = 1:height(matrix)
         if matrix(i, xCol) == input
             row = matrix(i, :);
             row(xCol) = output;
