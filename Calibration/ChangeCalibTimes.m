@@ -3,8 +3,8 @@ newTime = 91.54;
 
 calibFile = 'monitors.csv';
 monTable = readtable(calibFile,'Delimiter','comma');
-oldTime = monTable{monitorNum, 3};
-monTable{monitorNum, 3} = newTime;
+oldTime = monTable{monitorNum, 21};
+monTable{monitorNum, 21} = newTime;
 
 dataFolder = rmDSStore(dir(fullfile(fileparts(pwd), 'Data')));
 for group = 3:length(dataFolder)

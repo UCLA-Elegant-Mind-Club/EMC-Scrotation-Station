@@ -4,7 +4,7 @@ import threading
 from psychopy.sound import Sound
 from psychopy.event import waitKeys
 import numpy as np
-import os, time, random, math, csv
+import os, time, random, math, csv, re, uuid
 from abc import ABC, abstractmethod
 
 textZoom = 1.25
@@ -78,10 +78,16 @@ class TVStimuli(ABC):
             csvFile.close()
     
     @staticmethod
-    def calibrate(calibrationFile = 'monitor_calibration.csv', mon = 'TV'):
+    def calibrate(calibrationFile = 'monitors.csv', mon = 'TV'):
+        macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
         with open(calibrationFile) as csvFile:
             reader = csv.DictReader(csvFile, delimiter = ',')
-            tvInfo = next(reader)
+            tvInfo = {'MacAddress' : 0}
+            while tvInfo['MacAddress'] != macAddress:
+                try: tvInfo = next(reader)
+                except:
+                    csvFile.close()
+                    return None
         csvFile.close()
         screenBrightness = -0.3
         mon = monitors.Monitor(mon)
@@ -105,6 +111,7 @@ class TVStimuli(ABC):
         trainingWidth = TVStimuli.angleCalc(TVStimuli.referenceSize) * float(tvInfo['faceWidth'])
         TVStimuli.displayImage = visual.ImageStim(win = win, units='cm',
             size = (trainingWidth,trainingHeight), interpolate=True)
+        return tvInfo['Label']
             
     @staticmethod
     def angleCalc(angle):
@@ -354,19 +361,22 @@ class TVStimuli(ABC):
         trialNum = 0
         print('Experimental Round')
         while trialNum < self.trialsPerSet:
+            fullTrialNum = set * self.trialsPerSet + trialNum
             if trialNum > 0 and self.practiceFreq > 0 and trialNum % self.practiceFreq == 0:
                 self.practiceRound(set, self.interimPracticeTrials,
-                    trialsLeft = self.totalTrials - set * self.trialsPerSet - trialNum)
+                    trialsLeft = self.totalTrials - fullTrialNum)
                 
             self.showWait(1)
-            testValue = self.testArray[set * self.trialsPerSet + trialNum]
+            testValue = self.testArray[fullTrialNum]
             target = random.randint(0,2)
             result = self.stimTest(set, target, testValue, ['v','b','n'][target])
-            print('Trial ' + str(set * self.trialsPerSet + trialNum + 1) + ' time: ' + str(result[2]) + '; Correct = ' + str(result[0]))
+            print('Trial ' + str(fullTrialNum + 1) + ' time: ' + str(result[2]) + '; Correct = ' + str(result[0]))
             if(result[0] == 1):
                 trialNum += 1
             else:
-                self.testArray += [testValue]
+                insert = random.randint(fullTrialNum + 1, len(self.testArray))
+                self.testArray = self.testArray[0:fullTrialNum] + self.testArray[fullTrialNum + 1:insert] \
+                    + [testValue] + self.testArray[insert:]
             if self.recordData:
                 self.csvOutput(result)
             
