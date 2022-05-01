@@ -257,6 +257,9 @@ for i = 1:length(readXValues)
     
             
             for jj = 1:length(fileList(ii).files)
+                if ismember(0, protocolStd_indvSub(ii).subject(jj).data)
+                    disp("File " + fileList(ii).files(jj).name + " is bugged.");
+                end
                 ProtocolRTind_Mean(ii).subject(jj).data = sum(protocolRT_indvSub(ii).subject(jj).data./protocolStd_indvSub(ii).subject(jj).data)/sum(1./protocolStd_indvSub(ii).subject(jj).data);  
                 data = table2array(readtable(fileList(ii).files(jj).name));
                 dist = data(:,2);
