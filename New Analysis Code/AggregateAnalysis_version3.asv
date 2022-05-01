@@ -35,24 +35,24 @@ for i = 1:length(readXValues)
     switch readX
         case "linear"
             refDist = refD;
-            dirName = dName + " (linear)";
+            dirName = "Linear " + dName;
         case "log"
             refDist = log2(refD);
-            dirName = dName + " (log)";
+            dirName = "Log " + dName;
         case "distance"
             refDist = 1.4 * tan(8 * pi/180) / tan(refD * pi/180);
-            dirName = dName + " (distance)";
+            dirName = "Distance " + dName;
         case "absolute value"
             refDist = abs(refD);
-            dirName = dName + "(abs value)";
+            dirName = "Abs Value " + dName;
         otherwise
             refDist = refD;
             dirName = dName;
     end
     dupNum = 1;
-    if exist(timeInfo + dirName, 'dir')
-        while exist(timeInfo + "(" + dupNum + ") " + dirName, 'dir'); dupNum = dupNum + 1; end
-        dirName = timeInfo + "(" + dupNum + ") " + dirName;
+    if false && exist(timeInfo + dirName, 'dir')
+        while exist(timeInfo + "(" + dupNum + ")" + dirName, 'dir'); dupNum = dupNum + 1; end
+        dirName = timeInfo + "(" + dupNum + ")" + dirName;
     else
         dirName = timeInfo + dirName;
     end
@@ -98,7 +98,7 @@ for i = 1:length(readXValues)
             end
         end    
     end
-    
+    %{
     %% Plotting
     plotSeparate = 'False';
     [outputParamStats, protocolOutput, h] = plotSubjectData_v3(fileList,listing,...
@@ -222,7 +222,6 @@ for i = 1:length(readXValues)
      end
     %% Hypothesis Testing/Error Analysis
     cd ..
-    
     [incorrectHypArray] = hypothesisTesting_v3(fileList, listing,...
         angleRT_Raw, masterAngles);
     
