@@ -38,7 +38,7 @@ end
     legend(h, 'Location', 'Northeastoutside', 'AutoUpdate', 'off');
     xRange = max(allAngles) - min(allAngles);
     xlim([min(allAngles) - xRange * 0.1, max(allAngles) + xRange * 0.1]);
-    ylim([300 900]);
+    ylim([400 800]);
     set(gca, 'fontsize', 14);
     %xticks([-180:60:180]);
     saveas(gcf, fullfile(pwd, saveDir, strcat('Aggregate', '.png')));
