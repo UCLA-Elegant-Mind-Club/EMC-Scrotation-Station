@@ -36,10 +36,10 @@ def calibrate():
         if description == None: core.quit()
         macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
         with open(os.path.join(os.getcwd(), 'Calibration', monitorFile)) as file:
-            rows = sum(1 for row in file)
+            rows = sum(1 for row in file if row[0:3] == 'Rem')
         with open(os.path.join(os.getcwd(), 'Calibration', monitorFile), 'a', newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(["Remote " + str(rows), description[0], macAddress] + tvInfo[1])
+            writer.writerow(["Remote " + str(rows + 1), description[0], macAddress] + tvInfo[1])
         return " " + TV.calibrate(os.path.join(os.getcwd(), 'Calibration', monitorFile))
 
 def loadSounds():
