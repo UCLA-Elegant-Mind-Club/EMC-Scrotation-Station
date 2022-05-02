@@ -1,8 +1,9 @@
-monitorNum = 1;
+monitorLabel = 'Mon 1';
 newTime = 91.54;
 
 calibFile = 'monitors.csv';
 monTable = readtable(calibFile,'Delimiter','comma');
+monitorNum = find([monTable{:,1} + ""] == monitorLabel + "");
 oldTime = monTable{monitorNum, 21};
 monTable{monitorNum, 21} = newTime;
 
