@@ -17,7 +17,7 @@ end
 
 for ii = 3:length(listing)
     subFolder(ii-2).subfolder = listing(ii).name;
-    files = dir(fullfile(myDir, listing(ii).name, '*.csv'));
+    files = dir(fullfile(listing(ii).folder, listing(ii).name, '*.csv'));
     for j = length(files):-1:1
         if lower(extractBetween(files(j).name + "    ", 1, 4)) == "test"
             files = [files(1:j-1); files(j+1:end)];

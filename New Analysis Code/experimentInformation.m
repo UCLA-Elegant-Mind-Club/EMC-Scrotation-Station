@@ -1,11 +1,11 @@
 function [folderName, axes, refDist, analysisTypes, dataDir, ...
-    protOrder, protNames, colors, linestyles] = experimentInformation()
+    protOrder, protNames, colors, linestyles, markers] = experimentInformation()
 
     useTemplate = questdlg("Load fields from template csv/excel file?");
     switch useTemplate
         case 'Yes'; [file, path] = uigetfile("*.csv;*.xlsx", ...
                 "Choose Analysis Template", "Templates");
-        case 'No'; [file, path] = deal("Sample Analysis Template.xlsx", pwd);
+        case 'No'; [file, path] = deal("Empty Analysis Template.xlsx", pwd);
         otherwise; file = 0;
     end
     if file + "" == "0"; fprintf("Analysis Canceled\n"); return
@@ -15,7 +15,7 @@ function [folderName, axes, refDist, analysisTypes, dataDir, ...
     format shortg;
     folderName = inputdlg('All analysis files will be organized into a folder with this name:', ...
         'Analysis Folder Name', [1 60], template{1,1});
-   
+    
     
     analysisTypes = ["Linear", "Log", "Distance", "Absolute Value"];
     axes = inputdlg([sprintf("(Leave x-axes blank to exclude analysis\n\nEnter y-axis label"), ...
@@ -34,16 +34,25 @@ function [folderName, axes, refDist, analysisTypes, dataDir, ...
     end
     protNames = {dataDir(3:end).name};
     order = template{:, 8};
+    order = order(~isnan(order));
     message = sprintf("Found " + length(protNames) + " protocols. " + ...
         "Choose their order in legend (0 to exclude):\n\n" + protNames(1));
-    protOrder = str2double(inputdlg({message, protNames{2:end}}, "Plotting Order", [1 60], order + ""));
+    protOrder = str2double(inputdlg({message, protNames{2:end}}, "Plotting Order", ...
+        [1 60], [order; zeros(length(protNames), 1)] + ""));
     
     newTemplate = cell2table(cell(0,width(template)), 'VariableNames', template.Properties.VariableNames);
     newProtNames = cell(0);
     for i = 1:max(protOrder)
         for j = 1:length(protOrder)
             if i == protOrder(j)
-                newTemplate = [newTemplate; table2cell(template(j,:))];
+                if j > length(order)
+                    row = repmat({''}, 1, width(template));
+                    row{7} = protNames{j};
+                    row{10} = '-';
+                    newTemplate = [newTemplate; row];
+                else
+                    newTemplate = [newTemplate; table2cell(template(j,:))];
+                end
                 newProtNames = [newProtNames; protNames(j)];
                 newDataDir(i,1) = dataDir(j+2);
             end
@@ -60,5 +69,9 @@ function [folderName, axes, refDist, analysisTypes, dataDir, ...
     
     message = sprintf("Choose from these linestyles: ''-'' (solid) or ''--'' (dashed):\n\n");
     linestyles = inputdlg([{message + protNames(1)}; protNames(2:end)], ...
-        'Choose line drawing styles', [1 60], newTemplate{:,10}); 
+        'Choose line drawing styles', [1 60], newTemplate{:,10});
+    
+    message = sprintf("Choose from these markers: 'o', ''d'', ''s'', ''h'', ''^'', ''*'':\n\n");
+    markers = inputdlg([{message + protNames(1)}; protNames(2:end)], ...
+        'Choose marker plotting shapes', [1 60], [{'o', 'd', 's', 'h', '^', '*'}, repmat({''}, 1, length(protNames))]);
 end

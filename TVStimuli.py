@@ -116,7 +116,7 @@ class TVStimuli(ABC):
     @staticmethod
     def angleCalc(angle):
         radians = math.radians(angle)
-        spacer = math.tan(radians) * float(TVStimuli.tvInfo['Distance to screen'])
+        spacer = 2 * math.tan(radians/2) * float(TVStimuli.tvInfo['Distance to screen'])
         return spacer
     
     @staticmethod

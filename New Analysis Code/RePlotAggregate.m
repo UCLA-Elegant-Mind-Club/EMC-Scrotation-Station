@@ -5,9 +5,8 @@ global readX;
 
 %% Experiment Information
 [dName, axNames, refD, readXValues, listing, ...
-    protOrder, protocolNames, colors, linestyle] = experimentInformation();
+    protOrder, protocolNames, colors, linestyle, S] = experimentInformation();
 myDir = listing(1).folder;
-S = {'o', 'd', 's', 'h', '^', '*'};
 refD = str2num(refD{1});
 axes{2} = axNames{1};
 %% Choose Large Meta Folder
@@ -17,7 +16,7 @@ end
 
 for ii = 3:length(listing)
     subFolder(ii-2).subfolder = listing(ii).name;
-    files = dir(fullfile(myDir, listing(ii).name, '*.csv'));
+    files = dir(fullfile(listing(ii).folder, listing(ii).name, '*.csv'));
     for j = length(files):-1:1
         if lower(extractBetween(files(j).name + "    ", 1, 4)) == "test"
             files = [files(1:j-1); files(j+1:end)];
@@ -50,13 +49,13 @@ for i = 1:length(readXValues)
             dirName = dName;
     end
 
-    
+
     %% Sort Through Data
     masterAngles = [];
     for k = 1:length(fileList)
         data=[];
         RT=[];
-        
+
         folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
         addpath(folderPath);
         for ii = 1:length(fileList(k).files)
@@ -88,29 +87,29 @@ for i = 1:length(readXValues)
                 angleRT_StdErr(k).protocol(ii).subject(jj).data = std(RT_IDX_RMO)/...
                     sqrt(length(RT_IDX_RMO));
             end
-        end    
+        end
     end
 
     %% Hypothesis Testing/Error Analysis
     [incorrectHypArray] = hypothesisTesting_v3(fileList, listing,...
         angleRT_Raw, masterAngles);
-    
+
     %% Normalize Data
     for ii = 1: length(fileList)
         data=[];
         RT=[];
-        
+
         protocolRT_allSub(ii).data =[];
         protocolStd_allSub(ii).data = [];
         for jj = 1:length(fileList(ii).files)
             protocolRT_allSub(ii).data = [protocolRT_allSub(ii).data, angleRT_Mean(ii).protocol(jj).subject.data];
             protocolStd_allSub(ii).data = [protocolStd_allSub(ii).data, angleRT_StdErr(ii).protocol(jj).subject.data];
-            
-        end 
-    
-        ProtocolRT_Mean(ii).data = sum(protocolRT_allSub(ii).data./protocolStd_allSub(ii).data)/sum(1./protocolStd_allSub(ii).data);  
-    
-        
+
+        end
+
+        ProtocolRT_Mean(ii).data = sum(protocolRT_allSub(ii).data./protocolStd_allSub(ii).data)/sum(1./protocolStd_allSub(ii).data);
+
+
         for jj = 1:length(fileList(ii).files)
             data = table2array(readtable(fileList(ii).files(jj).name));
             dist = data(:,2);
@@ -118,74 +117,74 @@ for i = 1:length(readXValues)
             protocolRT_indvSub(ii).subject(jj).data = [];
             protocolStd_indvSub(ii).subject(jj).data= [];
             for k = 1:length(angles)
-            protocolRT_indvSub(ii).subject(jj).data = [protocolRT_indvSub(ii).subject(jj).data, angleRT_Mean(ii).protocol(jj).subject(k).data];
-            protocolStd_indvSub(ii).subject(jj).data = [protocolStd_indvSub(ii).subject(jj).data, angleRT_StdErr(ii).protocol(jj).subject(k).data];
+                protocolRT_indvSub(ii).subject(jj).data = [protocolRT_indvSub(ii).subject(jj).data, angleRT_Mean(ii).protocol(jj).subject(k).data];
+                protocolStd_indvSub(ii).subject(jj).data = [protocolStd_indvSub(ii).subject(jj).data, angleRT_StdErr(ii).protocol(jj).subject(k).data];
             end
-            
-        end 
-    
-            
-            for jj = 1:length(fileList(ii).files)
-                if ismember(0, protocolStd_indvSub(ii).subject(jj).data)
-                    disp("File " + fileList(ii).files(jj).name + " is bugged.");
-                    keyboard;
-                end
-                ProtocolRTind_Mean(ii).subject(jj).data = sum(protocolRT_indvSub(ii).subject(jj).data./protocolStd_indvSub(ii).subject(jj).data)/sum(1./protocolStd_indvSub(ii).subject(jj).data);  
-                data = table2array(readtable(fileList(ii).files(jj).name));
-                dist = data(:,2);
-                angles = unique(dist);
-                
-                
+
+        end
+
+
+        for jj = 1:length(fileList(ii).files)
+            if ismember(0, protocolStd_indvSub(ii).subject(jj).data)
+                disp("File " + fileList(ii).files(jj).name + " is bugged.");
+                keyboard;
+            end
+            ProtocolRTind_Mean(ii).subject(jj).data = sum(protocolRT_indvSub(ii).subject(jj).data./protocolStd_indvSub(ii).subject(jj).data)/sum(1./protocolStd_indvSub(ii).subject(jj).data);
+            data = table2array(readtable(fileList(ii).files(jj).name));
+            dist = data(:,2);
+            angles = unique(dist);
+
+
             for k = 1:length(angles)
                 angleRT_Norm(ii).protocol(jj).subject(k).data = angleRT_Mean(ii).protocol(jj).subject(k).data - ProtocolRTind_Mean(ii).subject(jj).data + ProtocolRT_Mean(ii).data;
             end
         end
     end
-    
+
     %% Aggregate Analysis
     masterAngles = [];
     handles = [];
     for k = 1:length(fileList)
         data=[];
         RT=[];
-       folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
-       addpath(folderPath);
-       clear angles;
-       clear masterAngles;
-       for ii = 1:length(fileList(k).files)
-           fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
+        folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
+        addpath(folderPath);
+        clear angles;
+        clear masterAngles;
+        for ii = 1:length(fileList(k).files)
+            fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
             data = table2array(readtable(fileList(k).files(ii).name));
             dist = data(:,2);
             angles = unique(dist);
-          
+
             masterAngles = [angles];
             masterAngles = unique(masterAngles);
-            
-            
+
+
             for jj = 1:length(angles)
                 idx = find(masterAngles == angles(jj));
                 aggregateMeans(ii, idx, k) = angleRT_Norm(k).protocol(ii).subject(jj).data;
                 aggregateSTDE(ii,idx,k) = angleRT_StdErr(k).protocol(ii).subject(jj).data;
             end
-       end
-    end 
+        end
+    end
     % aggregateMeans(find(incorrectHypArray >= 0.05 & incorrectHypArray <= 1)) = NaN;
     % aggregateSTDE(find(incorrectHypArray >= 0.05 & incorrectHypArray <= 1)) = NaN;
     aggregateMeans(aggregateMeans == 0) = NaN;
     aggregateSTDE(aggregateSTDE == 0) = NaN;
-    
+
     for k = 1:length(fileList)
         data=[];
         RT=[];
-           for ii = 1:length(fileList(k).files)
-           fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
+        for ii = 1:length(fileList(k).files)
+            fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
             data = table2array(readtable(fileList(k).files(ii).name));
             dist = data(:,2);
             angles = unique(dist);
-            
+
             masterAngles = [angles];
             masterAngles = unique(masterAngles);
-           end
+        end
         for jj = 1:length(masterAngles)
             protocolWeightedMean(k, jj) = sum(aggregateMeans(:,jj,k)./aggregateSTDE(:,jj,k), ...
                 'omitnan')/sum(1./aggregateSTDE(:,jj,k) , 'omitnan');
@@ -197,17 +196,17 @@ for i = 1:length(readXValues)
     for k = 1:length(fileList)
         data=[];
         RT=[];
-           for ii = 1:length(fileList(k).files)
-           fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
+        for ii = 1:length(fileList(k).files)
+            fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
             data = table2array(readtable(fileList(k).files(ii).name));
             dist = data(:,2);
             angles = unique(dist);
-          
+
             masterAngles = [angles];
             masterAngles = unique(masterAngles);
-           end
-    
-    
+        end
+
+
         protocolChiFitPos(k) = chiSquareFunction(masterAngles(masterAngles >= refDist)...
             ,protocolWeightedMean(k,find(masterAngles >= refDist))...
             ,protocolStdErr(k,find(masterAngles >= refDist)));
@@ -215,7 +214,7 @@ for i = 1:length(readXValues)
             ,protocolWeightedMean(k,find(masterAngles <= refDist))...
             ,protocolStdErr(k,find(masterAngles <= refDist)));
     end
-    
+
     %%  Aggregate Plotting
     figure();
     aggregatePlotting_v3(fileList, masterAngles, protocolWeightedMean, colors,...
