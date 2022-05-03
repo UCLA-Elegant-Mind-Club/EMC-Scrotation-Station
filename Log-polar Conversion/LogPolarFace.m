@@ -22,7 +22,7 @@ expCoef = 100;
 % a compression of 2 will mean that a circle with radius of 1800 px
 % occupies a cortical pattern with a width of 900 px. Values < 1 will scale up the image
 compression = width / cortWidth / 2; % when resize, can match size of original image
-useSigmoid = false; % smoothens image by sigmoid rather than linear function
+useSigmoid = false; % sharpens image by sigmoid rather than smoothening linear function
 
 %% toggle drawing after every row is generated
 stepDraw = false;
