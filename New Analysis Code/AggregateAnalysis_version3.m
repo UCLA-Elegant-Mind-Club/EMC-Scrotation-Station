@@ -11,10 +11,6 @@ S = {'o', 'd', 's', 'h', '^', '*'};
 refD = str2num(refD{1});
 axes{2} = axNames{1};
 %% Choose Large Meta Folder
-if listing(3).name + "" == ".DS_Store"
-    listing = listing([1,2,4:end]);
-end
-
 for ii = 3:length(listing)
     subFolder(ii-2).subfolder = listing(ii).name;
     files = dir(fullfile(listing(ii).folder, listing(ii).name, '*.csv'));

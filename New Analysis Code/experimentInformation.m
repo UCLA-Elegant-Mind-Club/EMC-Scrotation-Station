@@ -29,9 +29,6 @@ function [folderName, axes, refDist, analysisTypes, dataDir, ...
     
     dataDir = uigetdir(fullfile(fileparts(pwd), 'Data'), "Choose Group Data Folder that contains Protocols");
     dataDir = dir(dataDir);
-    if dataDir(3).name + "" == ".DS_Store"
-        dataDir = dataDir([1,2,4:end]);
-    end
     protNames = {dataDir(3:end).name};
     order = template{:, 8};
     order = order(~isnan(order));
