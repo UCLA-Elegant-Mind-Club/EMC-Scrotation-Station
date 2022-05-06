@@ -44,8 +44,7 @@ def calibrate():
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
-    print(TV.debug)
-    playThread = TV.playNotes(notes = [440, 554.37] + (not TV.debug) * [659.25, 554.37, 440],
+    playThread = TV.playNotes(notes = [440, 554.37, 659.25, 554.37, 440],
         beats = [1, 1, 1, 1, 1], beatLength = 0.5)
     TV.showWait(0)
     playThread.join()
