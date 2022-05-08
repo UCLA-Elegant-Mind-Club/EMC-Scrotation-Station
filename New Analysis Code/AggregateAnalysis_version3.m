@@ -40,7 +40,7 @@ for i = 1:length(readXValues)
             dirName = dName + " (distance)";
         case "absolute value"
             refDist = abs(refD);
-            dirName = dName + "(abs value)";
+            dirName = dName + " (abs value)";
         otherwise
             refDist = refD;
             dirName = dName;
