@@ -4,7 +4,7 @@ function [] = aggregatePlotting_v3(fileList, masterAngles, protocolWeightedMean,
 
 allAngles = [];
 for ii = 1:length(fileList)
-    data = table2array(readtable(fileList(ii).files(1).name));
+    data = table2array(readtable(fullfile(fileList(ii).files(1).folder, fileList(ii).files(1).name)));
     dist = data(:,2);
     angles = unique(dist);
 
