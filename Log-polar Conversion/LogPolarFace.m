@@ -25,7 +25,7 @@ for fileNum = 1:length(folder)
     background = 1; %% 0 (black) - 1 (white) background color where image not drawn
     
     %% toggle whether left and right brain images should be split or stacked
-    imgSplit = true;
+    imgSplit = false;
     newImg = ones(cortHeight * (1 + ~imgSplit), cortWidth * (1 + imgSplit)) * background;
     
     %% expCoef determines how exponential distance is represented in the cortex
