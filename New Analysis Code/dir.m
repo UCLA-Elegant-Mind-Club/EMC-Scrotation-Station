@@ -1,9 +1,9 @@
 function listing = dir(name)
     parentDir = fileparts(pwd);
     listing = builtin('dir', name);
-    for i = 3:length(listing)
+    for i = length(listing):-1:3
         if listing(i).name + "" == ".DS_Store"
-            listing = [listing(1:i-1) + listing(i+1:end)];
+            listing = [listing(1:i-1); listing(i+1:end)];
         end
         len = length(listing(i).name);
         if len < 14; continue; end

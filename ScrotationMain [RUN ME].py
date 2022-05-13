@@ -6,7 +6,7 @@ from TVStimuli import TVStimuli as TV
 from ScrotationClasses import *
 
 longBreakTime = 60
-TV.debug = True
+TV.debug = False
 groupFile = 'GroupProtocols.csv'
 monitorFile = 'monitors.csv'
 
@@ -44,7 +44,8 @@ def calibrate():
 
 def loadSounds():
     TV.genDisplay('Loading...', 0, 0, height = 3)
-    playThread = TV.playNotes(notes = [440, 554.37, 659.25, 554.37, 440],
+    print(TV.debug)
+    playThread = TV.playNotes(notes = [440, 554.37] + (not TV.debug) * [659.25, 554.37, 440],
         beats = [1, 1, 1, 1, 1], beatLength = 0.5)
     TV.showWait(0)
     playThread.join()

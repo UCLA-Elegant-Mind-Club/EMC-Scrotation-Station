@@ -10,7 +10,8 @@ for k = 1:length(fileList)
     mkdir(fullfile(pwd, direc, "Without Legend"));
     figure(k);
     for ii = 1:length(fileList(k).files)
-        data = table2array(readtable(fileList(k).files(ii).name));
+        data = table2array(readtable(fullfile(fileList(k).files(ii).folder, ...
+            fileList(k).files(ii).name)));
         dist = data(:,2);
         angles = unique(dist);
         allAngles = unique([allAngles; angles]);
