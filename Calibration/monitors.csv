@@ -1,6 +1,6 @@
 Label,Description,MacAddress,Width (px),Height (px),Width (cm),Distance to screen,Screen number,Device,height,faceHeight,faceWidth,circleRadius,centerx,centery,rightx,rightEdge,leftx,leftEdge,spacer,timeDelay
 Mon 1,4-134 (front left),a8:a1:59:94:23:c1,4096,2160,121,140,0,Laptop,1.303125,0.9375,1,1,-0.05,0.7,1,60.46875,-1,60.4296875,0.9625,91.54
-Mon 2,4-134 (front right),a0:af:bd:7a:12:f9,3840,2160,121,140,0,Desktop,1.4,1,1,1,-0.05,0.7,1.005,60.01243781,-1.005,60.01243781,1.0625,96.02
+Mon 2,4-134 (front right),a0:af:bd:7a:12:f9,1920,1080,121,140,0,Desktop,0.7,0.5,0.5,0.5,-0.025,0.35,0.5025,30.00621891,-0.5025,30.00621891,0.53125,96.02
 Mon 3,4-134 (left side at front),1c:87:2c:d2:10:8a,3840,2160,121,140,0,Desktop,1.4375,1.03125,1,1,-0.05,0.75,1.0025,61.09725686,-1.02,60.04901961,1.0625,99.04
 Mon 4,4-134 (left side in middle),80:c1:6e:e0:1c:ea,4096,2160,121,140,0,Desktop,1.40625,1.0125,1,0.925,0,0.7,1.0875,55.45977011,-1.0725,56.23543124,1.0375,102.56
 Mon 5,4-134 (left side at back),a0:af:bd:7a:13:1c,3840,2160,122.88,140,0,Desktop,1.4375,1.03125,1,1,-0.05,0.75,1.0025,61.09725686,-1.02,60.04901961,1.0625,109
