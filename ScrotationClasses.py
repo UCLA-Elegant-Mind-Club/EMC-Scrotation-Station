@@ -179,7 +179,7 @@ class FamousFacesScaling(FamousFaces, ScalingProtocol):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, fileName = fileName)
 
-
+"""
 ##### Trained Faces Protocols #####
 ##### Trained Faces Protocols #####
 ##### Trained Faces Protocols #####
@@ -255,7 +255,7 @@ class TrainedFacesScaling(TrainedFaces, ScalingProtocol):
         targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
         fileName = 'face ' + targets[set][showTarget] + '.png'
         return super().getImage(os.path.join('Roll', fileName))
-
+"""
 
 ##### Complex Character Protocols #####
 ##### Complex Character Protocols #####
