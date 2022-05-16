@@ -40,7 +40,7 @@ for i = 1:length(readXValues)
             dirName = dName + " (distance)";
         case "absolute value"
             refDist = abs(refD);
-            dirName = dName + "(abs value)";
+            dirName = dName + " (abs value)";
         otherwise
             refDist = refD;
             dirName = dName;
@@ -65,8 +65,9 @@ for i = 1:length(readXValues)
         addpath(folderPath);
         for ii = 1:length(fileList(k).files)
             file = fileList(k).files(ii).name;
-            fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
-            data = table2array(readtable(fileList(k).files(ii).name));
+            fprintf(1, 'Now Reading %s\n' , file);
+            file = fullfile(fileList(k).files(ii).folder, file);
+            data = table2array(readtable(file));
             dist = data(:,2);
             correct = data(:,1);
             angles = unique(dist);
@@ -111,9 +112,8 @@ for i = 1:length(readXValues)
         addpath(folderPath);
         for ii = 1:length(fileList(k).files)
             file = fileList(k).files(ii).name;
-            fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
-            data = table2array(readtable(fullfile(fileList(k).files(ii).folder, ...
-                fileList(k).files(ii).name)));
+            fprintf(1, 'Now Reading %s\n', file);
+            data = table2array(readtable(fullfile(fileList(k).files(ii).folder, file)));
             dist = data(:,2);
             angles = unique(dist);
             bar(angles, 100*(1-[angleRT_IncorrectPerc(k).protocol(ii).subject.data]));
@@ -233,7 +233,8 @@ for i = 1:length(readXValues)
 
 
         for jj = 1:length(fileList(ii).files)
-            data = table2array(readtable(fileList(ii).files(jj).name));
+            data = table2array(readtable(fullfile(fileList(ii).files(jj).folder, ...
+                fileList(ii).files(jj).name)));
             dist = data(:,2);
             angles = unique(dist);
             protocolRT_indvSub(ii).subject(jj).data = [];
@@ -247,12 +248,13 @@ for i = 1:length(readXValues)
 
 
         for jj = 1:length(fileList(ii).files)
+            file = fileList(ii).files(jj).name;
             if ismember(0, protocolStd_indvSub(ii).subject(jj).data)
-                disp("File " + fileList(ii).files(jj).name + " is bugged.");
+                disp("File " + file + " is bugged.");
                 keyboard;
             end
             ProtocolRTind_Mean(ii).subject(jj).data = sum(protocolRT_indvSub(ii).subject(jj).data./protocolStd_indvSub(ii).subject(jj).data)/sum(1./protocolStd_indvSub(ii).subject(jj).data);
-            data = table2array(readtable(fileList(ii).files(jj).name));
+            data = table2array(readtable(fullfile(fileList(ii).files(jj).folder, file)));
             dist = data(:,2);
             angles = unique(dist);
 
@@ -274,8 +276,9 @@ for i = 1:length(readXValues)
         clear angles;
         clear masterAngles;
         for ii = 1:length(fileList(k).files)
-            fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
-            data = table2array(readtable(fileList(k).files(ii).name));
+            file = fileList(k).files(ii).name;
+            fprintf(1, 'Now Reading %s\n', file);
+            data = table2array(readtable(fullfile(fileList(k).files(ii).folder, file)));
             dist = data(:,2);
             angles = unique(dist);
 
@@ -301,8 +304,9 @@ for i = 1:length(readXValues)
         data=[];
         RT=[];
         for ii = 1:length(fileList(k).files)
-            fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
-            data = table2array(readtable(fileList(k).files(ii).name));
+            file = fileList(k).files(ii).name;
+            fprintf(1, 'Now Reading %s\n' , file);
+            data = table2array(readtable(fullfile(fileList(k).files(ii).folder, file)));
             dist = data(:,2);
             angles = unique(dist);
 
@@ -321,8 +325,9 @@ for i = 1:length(readXValues)
         data=[];
         RT=[];
         for ii = 1:length(fileList(k).files)
-            fprintf(1, 'Now Reading %s\n' , fileList(k).files(ii).name);
-            data = table2array(readtable(fileList(k).files(ii).name));
+            file = fileList(k).files(ii).name;
+            fprintf(1, 'Now Reading %s\n' , file);
+            data = table2array(readtable(fullfile(fileList(k).files(ii).folder, file)));
             dist = data(:,2);
             angles = unique(dist);
 

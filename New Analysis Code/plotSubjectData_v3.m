@@ -3,11 +3,10 @@ function [outputParamStats, protocolOutput, h] = plotSubjectData_v3(fileList,lis
     masterAngles, refDist, plotSeparate, saveDir)
 close all
 for k = 1:length(fileList)
-    folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
-    addpath(folderPath);
     %mkdir(protocolNames{k});
     for ii = 1:length(fileList(k).files)
-        data = table2array(readtable(fileList(k).files(ii).name));
+        data = table2array(readtable(fullfile(fileList(k).files(ii).folder, ...
+            fileList(k).files(ii).name)));
         dist = data(:,2);
         angles = unique(dist);
         
@@ -87,8 +86,6 @@ for k = 1:length(fileList)
 end
 if strcmp(plotSeparate, 'False')
     for k = 1:length(fileList)
-        folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
-        addpath(folderPath);
         %mkdir(protocolNames{k});
         for ii = 1:length(fileList(k).files)
             figure(ii);

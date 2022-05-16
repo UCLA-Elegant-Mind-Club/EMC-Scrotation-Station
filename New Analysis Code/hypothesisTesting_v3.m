@@ -5,7 +5,8 @@ for k = 1:length(fileList)
     folderPath = fullfile(listing(k+2).folder, listing(k+2).name);
     addpath(folderPath);
     for ii = 1:length(fileList(k).files)
-        data = table2array(readtable(fileList(k).files(ii).name));
+        data = table2array(readtable(fullfile(fileList(k).files(ii).folder, ...
+            fileList(k).files(ii).name)));
         dist = data(:,2);
         angles = unique(dist);
         for jj = 1:length(angleRT_Raw(k).protocol(ii).subject)

@@ -42,14 +42,14 @@ for fileNum = 1:length(folder)
     
     %% toggle drawing options
     stepDraw = false;
-    embedGrid = true;
+    embedGrid = false;
     
     for pixel = 1:size(img, 3)
         imgSlice = img(:, :, pixel);
         newImgSlice = ones(cortHeight * (1 + ~imgSplit), cortWidth * (1 + imgSplit)) * background;
         
         for pol = 1: cortHeight
-            %% Left side Cortical image
+            %% Left side Cortical image = right or bottom
             for dist = 1: cortWidth
                 radius = power(expCoef, 1 - dist/cortWidth) / (expCoef - 1);
                 radius = radius * cortWidth * 2 * compression;
@@ -58,12 +58,13 @@ for fileNum = 1:length(folder)
                 [pixVal, inRange, x, y] = pixelValue(radius, angle, imgSlice, ...
                     imgWidth, imgHeight, useSigmoid);
                 if inRange
-                    newImgSlice(pol, cortWidth - dist + 1) = pixVal;
+                    if imgSplit; newImgSlice(pol, cortWidth - dist + 1) = pixVal;
+                    else; newImgSlice(cortHeight + pol, cortWidth - dist + 1) = pixVal; end
                     sampleImg(floor(y), floor(x)) = 1;
                 end
             end
     
-            %% Right side of image = left or bottom side of cortical image
+            %% Right side of image = left or top side of cortical image
             for dist = cortWidth + 1: 2 * cortWidth
                 radius = power(expCoef, dist/cortWidth - 1) / (expCoef - 1);
                 radius = radius * cortWidth * 2 * compression;
@@ -73,7 +74,7 @@ for fileNum = 1:length(folder)
                     imgWidth, imgHeight, useSigmoid);
                 if inRange
                     if imgSplit; newImgSlice(pol, cortWidth * 3 - dist + 1) = pixVal;
-                    else; newImgSlice(cortHeight * 2 - pol + 1, dist - cortWidth) = pixVal; end
+                    else; newImgSlice(cortHeight - pol + 1, dist - cortWidth) = pixVal; end
                     sampleImg(floor(y), floor(x)) = 1;
                 end
             end

@@ -1,5 +1,5 @@
-function [folderName, axes, refDist, analysisTypes, dataDir, ...
-    protOrder, protNames, colors, linestyles, markers] = experimentInformation()
+%function [folderName, axes, refDist, analysisTypes, dataDir, ...
+%    protOrder, protNames, colors, linestyles, markers] = experimentInformation()
 
     useTemplate = questdlg("Load fields from template csv/excel file?");
     switch useTemplate
@@ -32,11 +32,15 @@ function [folderName, axes, refDist, analysisTypes, dataDir, ...
     protNames = {dataDir(3:end).name};
     order = template{:, 8};
     order = order(~isnan(order));
-    message = sprintf("Found " + length(protNames) + " protocols. " + ...
-        "Choose their order in legend (0 to exclude):\n\n" + protNames(1));
-    protOrder = str2double(inputdlg({message, protNames{2:end}}, "Plotting Order", ...
-        [1 60], [order; zeros(length(protNames), 1)] + ""));
     
+    protOrder = zeros(length(protNames), 1);
+    for start = 1:10:length(protNames)
+        last = min(start + 9, length(protNames));
+        message = sprintf("Found " + length(protNames) + " protocols. " + ...
+            "Choose their order in legend (0 to exclude):\n\n" + protNames(start));
+        protOrder(start:last) = str2double(inputdlg({message, protNames{start + 1:last}}, ...
+            "Plotting Order", [1 60], [order(start:end); zeros(length(protNames), 1)] + ""));
+    end
     newTemplate = cell2table(cell(0,width(template)), 'VariableNames', template.Properties.VariableNames);
     newProtNames = cell(0);
     for i = 1:max(protOrder)
@@ -71,4 +75,4 @@ function [folderName, axes, refDist, analysisTypes, dataDir, ...
     message = sprintf("Choose from these markers: 'o', ''d'', ''s'', ''h'', ''^'', ''*'':\n\n");
     markers = inputdlg([{message + protNames(1)}; protNames(2:end)], ...
         'Choose marker plotting shapes', [1 60], [{'o', 'd', 's', 'h', '^', '*'}, repmat({''}, 1, length(protNames))]);
-end
+%end

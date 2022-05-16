@@ -78,7 +78,9 @@ class TVStimuli(ABC):
             csvFile.close()
     
     @staticmethod
-    def calibrate(calibrationFile = 'monitors.csv', mon = 'TV'):
+    def calibrate(calibrationFile = 'monitors.csv', mon = 'TV',
+                    crossFile = os.path.join(os.getcwd(), 'Calibration', 'cross.png')):
+            
         macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
         with open(calibrationFile) as csvFile:
             reader = csv.DictReader(csvFile, delimiter = ',')
@@ -102,7 +104,7 @@ class TVStimuli(ABC):
         TVStimuli.win = win
         TVStimuli.tvInfo = tvInfo
         
-        crossImg = os.path.join(os.getcwd(), 'Calibration', 'cross.png')
+        crossImg = os.path.join(crossFile)
         crossWidth = TVStimuli.angleCalc(TVStimuli.crossSize) * float(tvInfo['faceHeight'])
         crossHeight = TVStimuli.angleCalc(TVStimuli.crossSize) * float(tvInfo['faceWidth'])
         TVStimuli.cross = visual.ImageStim(win = win, units = 'cm', image = crossImg, size = (crossWidth, crossHeight))
@@ -184,22 +186,22 @@ class TVStimuli(ABC):
                 self.genDisplay('Trials left in experiment: ' + str(trialsLeft), 0, -6)
             self.genDisplay('Current score: ' + str(self.score), 0, -9, height = 3)
             self.showWait(1)
-            
-    def levelScreen(self, set):
-        if set == 0:
+    
+    def levelScreen(self, text1, text2):
+        if text2 == '1':
             self.playNotes(notes = [220, 277.18, 329.63, 277.18, 329.63, 554.37, 277.18, 329.63, 440],
                 beats = [1, 1, 1, 1, 1, 1, 1, 1, 4], beatLength = 0.1)
-        elif set == 1:
+        elif text2 == '2':
             self.playNotes(notes = [440, 466.16, 440, 415.30, 440, '', 220, '', 220, '', 220],
                 beats = [1, 1, 1, 1, 4, 2, 0.5, 0.5, 0.5, 0.5, 2], beatLength = 0.1)
-        else:
+        elif text2 == '3':
             self.playNotes(notes = [220, 277.18, 329.63, 440, 554.37, 440, 329.63, 277.18, 220],
                 beats = [1, 1, 1, 1, 1, 1, 1, 1, 4], beatLength = 0.1)
         leftEdge, rightEdge = -float(self.tvInfo['leftEdge']), float(self.tvInfo['rightEdge'])
         xPos = leftEdge
         while xPos < rightEdge:
-            self.genDisplay('Level', xPos, 6, height = 6)
-            self.genDisplay(str(set + 1), -xPos, -2, height = 4)
+            self.genDisplay(text1, xPos, 6, height = 6)
+            self.genDisplay(text2, -xPos, -2, height = 4)
             xPos += max(abs(xPos)/2, (rightEdge - leftEdge)/1000)
             self.win.flip()
     
@@ -383,7 +385,7 @@ class TVStimuli(ABC):
     def main(self):
         self.instructions()
         for setNum in range(0, self.numSets):
-            self.levelScreen(setNum)
+            self.levelScreen('Level', str(setNum + 1))
             self.learningPeriod(setNum)
             self.practiceRound(setNum, self.initialPracticeTrials, trialsLeft = self.totalTrials - setNum * self.trialsPerSet)
             self.experimentalRound(setNum)
