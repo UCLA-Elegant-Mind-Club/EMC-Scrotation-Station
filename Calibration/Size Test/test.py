@@ -17,7 +17,7 @@ class Test(TV):
         factor = faceHeight / self.displayImage.size[1]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         posX = math.tan(math.radians(20)) * float(self.tvInfo['leftEdge'])
-        self.displayImage.pos = (-posX, 0)
+        self.displayImage.pos = (posX, 0)
         self.displayImage.draw()
         
     def showImage2(self):
@@ -27,7 +27,7 @@ class Test(TV):
         factor = faceHeight / self.displayImage.size[1]
         self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
         posX = math.tan(math.radians(20)) * float(self.tvInfo['rightEdge'])
-        self.displayImage.pos = (posX, 0)
+        self.displayImage.pos = (-posX, 0)
         self.displayImage.draw()
     
     

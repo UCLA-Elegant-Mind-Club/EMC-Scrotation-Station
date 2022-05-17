@@ -136,7 +136,7 @@ class ScalingProtocol(TVStimuli):
 ##### Familiar Faces Protocols #####
 
 
-class FamiliarFaces (TVStimuli):
+class FamousFaces (TVStimuli):
     names = ["Biden", "Putin", "Trump", "Michael Jordan", "Obama", "Dwayne Johnson", "Oprah Winfrey"]
     numSets = 2
     trialsPerSet = 40
@@ -164,7 +164,7 @@ class FamiliarFaces (TVStimuli):
         self.showWait(keys = [mapping])
 
 #Rotation
-class FamousFacesRoll(FamiliarFaces, RotationProtocol):
+class FamousFacesRoll(FamousFaces, RotationProtocol):
     trialsPerSet = 40
     
     def __init__(self, fileName = ''):
@@ -172,13 +172,90 @@ class FamousFacesRoll(FamiliarFaces, RotationProtocol):
         super().__init__(self.rotations, fileName = fileName)
 
 #Scaling
-class FamousFacesScaling(FamiliarFaces, ScalingProtocol):
+class FamousFacesScaling(FamousFaces, ScalingProtocol):
     trialsPerSet = 100
     
     def __init__(self, fileName = ''):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, fileName = fileName)
 
+"""
+##### Trained Faces Protocols #####
+##### Trained Faces Protocols #####
+##### Trained Faces Protocols #####
+
+
+class TrainedFaces (FamousFaces):
+    names = ["Virginia", "Brenda", "Nicole", "Vicky", "Beth", "Naomi", "Velma", "Brittany", "Natalie"]
+    numSets = 3
+    trialsPerSet = 32
+    trainingTime = 10
+    trainingReps = 1
+    
+    def __init__(self, testValues, fileName = ''):
+        super(TVStimuli, self).__init__(testValues, 'Familiar', 'Face', fileName = fileName)
+    
+    def getImage(self, fileName):
+        return os.path.join(os.getcwd(), '2 - Familiar Faces', 'Stimuli', '9 Trained Faces', fileName)
+
+#Rotation
+class TrainedFacesRoll(TrainedFaces, RotationProtocol):
+    def __init__(self, fileName = ''):
+        self.initRotations(self.rotations)
+        super().__init__(self.rotations, fileName = fileName)
+    
+    def getImage(self, set, showTarget):
+        targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
+        fileName = 'face ' + targets[set][showTarget] + '.png'
+        return super().getImage(os.path.join('Roll', fileName))
+
+class TrainedFacesYaw(TrainedFaces, RotationProtocol):
+    def __init__(self, fileName = ''):
+        self.initRotations(self.rotations)
+        super().__init__(self.rotations, fileName = fileName)
+    
+    def showImage(self, set, showTarget, rotation):
+        self.displayImage.image = self.getImage(set, showTarget, rotation)
+        self.displayImage.draw()
+    
+    def getImage(self, set, showTarget, rotation):
+        targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
+        folderName = 'Face ' + targets[set][showTarget]
+        return super().getImage(os.path.join('Yaw', folderName, rotation + '.png'))
+    
+    def demo(self):
+        self.demoSequence(self.rotations, 'The faces will be rotated left and right as shown below.')
+
+class TrainedFacesPitch(TrainedFaces, RotationProtocol):
+    def __init__(self, fileName = ''):
+        self.initRotations(self.rotations)
+        super().__init__(self.rotations, fileName = fileName)
+    
+    def showImage(self, set, showTarget, rotation):
+        self.displayImage.image = self.getImage(set, showTarget, rotation)
+        self.displayImage.draw()
+    
+    def getImage(self, set, showTarget, rotation):
+        targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
+        folderName = 'Face ' + targets[set][showTarget]
+        return super().getImage(os.path.join('Pitch', folderName, rotation + '.png'))
+    
+    def demo(self):
+        self.demoSequence(self.rotations, 'The faces will be rotated up and down as shown below.')
+
+#Scaling
+class TrainedFacesScaling(TrainedFaces, ScalingProtocol):
+    trialsPerSet = 50
+    
+    def __init__(self, fileName = ''):
+        self.initSizes(self.sizes)
+        super().__init__(self.sizes, fileName = fileName)
+    
+    def getImage(self, set, showTarget):
+        targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
+        fileName = 'face ' + targets[set][showTarget] + '.png'
+        return super().getImage(os.path.join('Roll', fileName))
+"""
 
 ##### Complex Character Protocols #####
 ##### Complex Character Protocols #####
