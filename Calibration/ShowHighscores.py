@@ -41,7 +41,7 @@ class ScoreBoard (TVStimuli):
 
 # Get protocols list
 protocol = ScoreBoard(cycle)
-if cycle: groupNums = range(1, len(groups) - 1)
+if cycle: groupNums = range(7, len(groups) - 1)
 else: groupNums = [groups.index(groupInfo[0])]
 stayCycle = True
 
@@ -51,6 +51,7 @@ while stayCycle:
         protocols = protocolFile[groupNum][1].split('. ')
         for protocolName in protocols:
             scoreFolder = os.path.join(os.getcwd(), 'HighScores', groups[groupNum], protocolName)
+            if not os.path.exists(scoreFolder): continue
             dirList = os.listdir(scoreFolder);
             winners = [[0,'cm600286']] * 5
             for name in dirList:

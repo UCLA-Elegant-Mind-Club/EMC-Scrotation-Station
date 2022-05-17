@@ -99,9 +99,15 @@ def main():
     
     # Prepare Highscores
     
-    scoreFolder = os.path.join(os.getcwd(), 'Calibration', 'HighScores', groupInfo[0], protocolName[0])
-    dirList = os.listdir(scoreFolder);
+    scoreFolder = os.path.join(os.getcwd(), 'Calibration', 'HighScores', groupInfo[0])
+    if os.path.exists(scoreFolder):
+        os.mkdir(scoreFolder)
+    scoreFolder = os.path.join(scoreFolder, protocolName[0])
+    if os.path.exists(scoreFolder):
+        os.mkdir(scoreFolder)
+    
     winners = [[0,'cm600286']] * 5
+    dirList = os.listdir(scoreFolder)
     for name in dirList:
         with open(os.path.join(scoreFolder,name)) as file:
             score = int(file.read())
