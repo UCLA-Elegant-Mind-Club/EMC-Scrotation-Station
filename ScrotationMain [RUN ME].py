@@ -6,7 +6,7 @@ from TVStimuli import TVStimuli as TV
 from ScrotationClasses import *
 
 longBreakTime = 60
-TV.debug = True
+TV.debug = False
 groupFile = 'GroupProtocols.csv'
 monitorFile = 'monitors.csv'
 
