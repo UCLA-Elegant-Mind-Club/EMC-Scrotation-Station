@@ -100,10 +100,10 @@ def main():
     # Prepare Highscores
     
     scoreFolder = os.path.join(os.getcwd(), 'Calibration', 'HighScores', groupInfo[0])
-    if os.path.exists(scoreFolder):
+    if not os.path.exists(scoreFolder):
         os.mkdir(scoreFolder)
     scoreFolder = os.path.join(scoreFolder, protocolName[0])
-    if os.path.exists(scoreFolder):
+    if not os.path.exists(scoreFolder):
         os.mkdir(scoreFolder)
     
     winners = [[0,'cm600286']] * 5
