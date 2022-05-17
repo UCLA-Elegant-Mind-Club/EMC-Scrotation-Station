@@ -6,7 +6,7 @@ from TVStimuli import TVStimuli as TV
 from ScrotationClasses import *
 
 longBreakTime = 60
-TV.debug = False
+TV.debug = True
 groupFile = 'GroupProtocols.csv'
 monitorFile = 'monitors.csv'
 
@@ -162,8 +162,10 @@ def main():
         displayName = random.sample(['cm600286', 'Powell Cat Sushi', 'Bot' + '%04d' % random.randint(0,1000), 'Baby Monster', 'Scroptimus Prime', 'Michael Scrott',
             'Scrotation Crustacean', 'AmogUs', 'PikachYOU', 'Chuck Norris', 'Fast and Curious', 'Daddy Gene', 'Russian Spy', 'Ariana Grande\'s Ponytail'], 1)
     scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
-    with open(scoreFile + '.txt', 'w', newline='') as file:
-        file.write(str(protocol.score))
+    if not TV.debug:
+        with open(scoreFile + '.txt', 'w', newline='') as file:
+            file.write(str(protocol.score))
+    else: print(scoreFile + '.txt = ' + str(protocol.score))
     #if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
 
 def endScene(protocolList):

@@ -179,7 +179,7 @@ class FamousFacesScaling(FamousFaces, ScalingProtocol):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, fileName = fileName)
 
-"""
+
 ##### Trained Faces Protocols #####
 ##### Trained Faces Protocols #####
 ##### Trained Faces Protocols #####
@@ -193,7 +193,7 @@ class TrainedFaces (FamousFaces):
     trainingReps = 1
     
     def __init__(self, testValues, fileName = ''):
-        super(TVStimuli, self).__init__(testValues, 'Familiar', 'Face', fileName = fileName)
+        TVStimuli.__init__(self, testValues, 'Familiar', 'Face', fileName = fileName)
     
     def getImage(self, fileName):
         return os.path.join(os.getcwd(), '2 - Familiar Faces', 'Stimuli', '9 Trained Faces', fileName)
@@ -206,7 +206,7 @@ class TrainedFacesRoll(TrainedFaces, RotationProtocol):
     
     def getImage(self, set, showTarget):
         targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
-        fileName = 'face ' + targets[set][showTarget] + '.png'
+        fileName = 'face ' + str(targets[set][showTarget]) + '.png'
         return super().getImage(os.path.join('Roll', fileName))
 
 class TrainedFacesYaw(TrainedFaces, RotationProtocol):
@@ -220,7 +220,7 @@ class TrainedFacesYaw(TrainedFaces, RotationProtocol):
     
     def getImage(self, set, showTarget, rotation):
         targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
-        folderName = 'Face ' + targets[set][showTarget]
+        folderName = 'Face ' + str(targets[set][showTarget])
         return super().getImage(os.path.join('Yaw', folderName, rotation + '.png'))
     
     def demo(self):
@@ -237,7 +237,7 @@ class TrainedFacesPitch(TrainedFaces, RotationProtocol):
     
     def getImage(self, set, showTarget, rotation):
         targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
-        folderName = 'Face ' + targets[set][showTarget]
+        folderName = 'Face ' + str(targets[set][showTarget])
         return super().getImage(os.path.join('Pitch', folderName, rotation + '.png'))
     
     def demo(self):
@@ -253,9 +253,9 @@ class TrainedFacesScaling(TrainedFaces, ScalingProtocol):
     
     def getImage(self, set, showTarget):
         targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
-        fileName = 'face ' + targets[set][showTarget] + '.png'
+        fileName = 'face ' + str(targets[set][showTarget]) + '.png'
         return super().getImage(os.path.join('Roll', fileName))
-"""
+
 
 ##### Complex Character Protocols #####
 ##### Complex Character Protocols #####
