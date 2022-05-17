@@ -41,7 +41,7 @@ class ScoreBoard (TVStimuli):
 
 # Get protocols list
 protocol = ScoreBoard(cycle)
-if cycle: groupNums = range(7, len(groups) - 1)
+if cycle: groupNums = range(1, len(groups) - 1)
 else: groupNums = [groups.index(groupInfo[0])]
 stayCycle = True
 
