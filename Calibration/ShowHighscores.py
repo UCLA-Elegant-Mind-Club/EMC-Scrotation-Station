@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../')
 from TVStimuli import *
+from psychopy.event import waitKeys
 
 with open(os.path.join(os.getcwd(), 'GroupProtocols.csv')) as file:
     protocolFile = list(csv.reader(file, delimiter=','))
@@ -31,7 +32,10 @@ class ScoreBoard (TVStimuli):
     @staticmethod
     def showWait(seconds = -1, keys = ['space'], flip = True):
         if ScoreBoard.cycle and seconds == -1:
-            TVStimuli.showWait(3, keys, flip)
+            if flip: TVStimuli.win.flip()
+            key = waitKeys(keyList = keys + ['escape'], maxWait = 3)
+            if key != None and key[0] == 'escape':
+                core.quit()
         else:
             TVStimuli.showWait(seconds, keys, flip)
 
@@ -46,7 +50,7 @@ while stayCycle:
     for groupNum in groupNums:
         protocols = protocolFile[groupNum][1].split('. ')
         for protocolName in protocols:
-            scoreFolder = os.path.join(os.getcwd(), 'HighScores', groupInfo[0], protocolName)
+            scoreFolder = os.path.join(os.getcwd(), 'HighScores', groups[groupNum], protocolName)
             dirList = os.listdir(scoreFolder);
             winners = [[0,'cm600286']] * 5
             for name in dirList:
