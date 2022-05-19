@@ -1,5 +1,5 @@
-%function [folderName, axes, refDist, analysisTypes, dataDir, ...
-%    protOrder, protNames, colors, linestyles, markers] = experimentInformation()
+function [folderName, axes, refDist, analysisTypes, dataDir, ...
+    protOrder, protNames, colors, linestyles, markers] = experimentInformation()
 
     useTemplate = questdlg("Load fields from template csv/excel file?");
     switch useTemplate
@@ -75,4 +75,4 @@
     message = sprintf("Choose from these markers: 'o', ''d'', ''s'', ''h'', ''^'', ''*'':\n\n");
     markers = inputdlg([{message + protNames(1)}; protNames(2:end)], ...
         'Choose marker plotting shapes', [1 60], [{'o', 'd', 's', 'h', '^', '*'}, repmat({''}, 1, length(protNames))]);
-%end
+end
