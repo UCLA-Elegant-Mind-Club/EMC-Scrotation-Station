@@ -222,7 +222,7 @@ class TrainedFacesYaw(TrainedFaces, RotationProtocol):
     def getImage(self, set, showTarget, rotation):
         targets = [[1,2,3],[4,5,6],[7,8,9],['demo']]
         folderName = 'Face ' + str(targets[set][showTarget])
-        return super().getImage(os.path.join('Yaw', folderName, rotation + '.png'))
+        return super().getImage(os.path.join('Yaw', folderName, str(rotation) + '.png'))
     
     def demo(self):
         self.demoSequence(self.rotations, 'The faces will be rotated left and right as shown below.')
