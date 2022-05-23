@@ -210,6 +210,7 @@ class TrainedFacesRoll(TrainedFaces, RotationProtocol):
         return super().getImage(os.path.join('Roll', fileName))
 
 class TrainedFacesYaw(TrainedFaces, RotationProtocol):
+    rotations = list(range(-90, 105, 15))
     def __init__(self, fileName = ''):
         self.initRotations(self.rotations)
         super().__init__(self.rotations, fileName = fileName)
@@ -227,6 +228,7 @@ class TrainedFacesYaw(TrainedFaces, RotationProtocol):
         self.demoSequence(self.rotations, 'The faces will be rotated left and right as shown below.')
 
 class TrainedFacesPitch(TrainedFaces, RotationProtocol):
+    rotations = [-60, -52.5, -45, -37.5, -30, -22.5, -15, -7.5, 0, 7.5, 15, 22.5, 30, 37.5, 45, 52.5, 60]
     def __init__(self, fileName = ''):
         self.initRotations(self.rotations)
         super().__init__(self.rotations, fileName = fileName)
