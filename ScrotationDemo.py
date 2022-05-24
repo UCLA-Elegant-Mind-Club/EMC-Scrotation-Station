@@ -1,12 +1,66 @@
 from psychopy import gui, core, prefs
 from psychopy.sound import Sound
+from psychopy.event import waitKeys
 prefs.hardware['audioLib'] = ['ptb', 'pyo']
-import os, time, csv, re, uuid
+import os, time, csv, re, uuid, random
 from TVStimuli import TVStimuli as TV
 from ScrotationClasses import *
 
 longBreakTime = 60
-TV.debug = False
+
+def showWaitAuto(seconds = -1, keys = ['space'], flip = True):
+    if seconds < 0:
+        if flip: TVStimuli.win.flip()
+        key = waitKeys(keyList = keys + ['escape'], maxWait = 3)
+        if key != None and key[0] == 'escape':
+            core.quit()
+    else:
+        TV.showWait(seconds, keys, flip)
+
+TV.afkStreak = 0
+def stimTestAuto(self, set, target, testValue, correctKey, practice = False):
+    self.showCross()
+    self.showWait(random.randint(5,15)/10, flip = False)
+    self.showImage(set, target, testValue)
+    result = {'start': 0, 'end': 0}
+    self.win.timeOnFlip(result, 'start')
+    self.win.flip()
+    
+    wait = self.timeOut
+    if self.afkStreak >= 3:
+        wait = random.randint(600, int(self.timeOut * 1000)) / 1000
+        if random.randint(1,100) < 10:
+            wait += self.timeOut
+    
+    keys = waitKeys(timeStamped = True, maxWait = min(wait, self.timeOut) + float(self.tvInfo['timeDelay'])/1000)
+    if keys == None:
+        self.afkStreak += 1
+        if wait >= self.timeOut:
+            response = 'timedOut'
+            result['end'] = result['start']
+        else:
+            response = correctKey
+            if random.randint(1, 100) < 30:
+                response = random.sample(['v', 'b', 'n'], 1)[0]
+            result['end'] = wait + result['start']
+    else:
+        self.afkStreak = 0
+        response = keys[0][0]
+        result['end'] = keys[0][1]
+    self.win.flip()
+    
+    if response == 'escape':
+        core.quit()
+    reactionTime = (result['end'] - result['start']) * 1000 - float(self.tvInfo['timeDelay'])
+    
+    if response == correctKey:
+        self.feedback(True, scoreChange = (not practice) * (min(self.timeOut * 1000 - reactionTime, 800)/2 + 600))
+    elif response == 'timedOut':
+        self.feedback(-1, scoreChange = (not practice) * -400)
+    else:
+        self.feedback(False, scoreChange = (not practice) * -min(reactionTime, 800)/2)
+    return [(response == correctKey) * 1, testValue, reactionTime, set * 3 + target]
+
 groupFile = 'GroupProtocols.csv'
 monitorFile = 'monitors.csv'
 
@@ -67,42 +121,20 @@ def protocolBreak(time = 60):
 
 
 def main():
-    if TV.debug:
-        debugDlg = gui.Dlg(title='Debug Mode?', pos=None, size=None, style=None,\
-             labelButtonOK=' Yes ', labelButtonCancel=' No ', screen=-1)
-        debugDlg.show()
-        TV.debug = debugDlg.OK
-        
-    if TV.debug:
-        longBreakTime = 1
-
     with open(os.path.join(os.getcwd(), 'Calibration', groupFile)) as file:
         protocolFile = list(csv.reader(file, delimiter=','))
     
-    # Select group project
-    groupDialog = gui.Dlg(title='Select Group Project', screen=-1)
-    groups = [row[0] for row in protocolFile]
-    groupDialog.addField('Group: ', choices = groups[1:])
-    groupInfo = groupDialog.show()
-    if groupInfo is None:
-        core.quit()
-    
-    # Select protocol to run
-    groupNum = groups.index(groupInfo[0])
-    protocolDialog = gui.Dlg(title='Select protocol to run', screen=-1)
+    # Random project
+    groupNum = random.randint(1, len(protocolFile)-1)
     protocols = protocolFile[groupNum][1].split('. ')
-    protocolDialog.addField('Protocol: ', choices = protocols)
-    protocolName = protocolDialog.show()
-    if protocolName is None:
-        core.quit()
-    protocol = globals()[protocolName[0].replace(' ','')]
+    protocolName = random.sample(protocols, 1)[0]
+    protocol = globals()[protocolName.replace(' ','')]
     
     # Prepare Highscores
-    
-    scoreFolder = os.path.join(os.getcwd(), 'Calibration', 'HighScores', groupInfo[0])
+    scoreFolder = os.path.join(os.getcwd(), 'Calibration', 'HighScores', protocolFile[groupNum][0])
     if not os.path.exists(scoreFolder):
         os.mkdir(scoreFolder)
-    scoreFolder = os.path.join(scoreFolder, protocolName[0])
+    scoreFolder = os.path.join(scoreFolder, protocolName)
     if not os.path.exists(scoreFolder):
         os.mkdir(scoreFolder)
     
@@ -120,71 +152,44 @@ def main():
     protocol.highScores = [score[0] for score in topWinners + recentWinners]
     protocol.winners = [score[1] for score in topWinners + recentWinners]
     
-    if not TV.debug:
-        # Participant Name
-        codeInfo = {'Participant Name': ''}
-        codeDialog = gui.DlgFromDict(dictionary = codeInfo, sortKeys = False, title = 'Participant Info')
-        if codeDialog.OK == False:
-            core.quit()
-    else:
-        codeInfo = {'Participant Name': 'Test'}
-        protocol.trialsPerSet = 3
-        protocol.numSets = 1
-        protocol.initialPracticeTrials = 3
-        protocol.trainingTime = 1
-        protocol.interimPracticeTrials = 0
-        protocol.prePracticeBreak = 1
-        protocol.postPracticeBreak = 1
-        protocol.postSetBreak = 1
-        protocol.dummyTrials = 1
+    protocol.trialsPerSet = 16
+    protocol.numSets = 2
+    protocol.initialPracticeTrials = 3
+    protocol.trainingTime = 1
+    protocol.trainingReps = 1
+    protocol.interimPracticeTrials = 0
+    protocol.prePracticeBreak = 5
+    protocol.postPracticeBreak = 5
+    protocol.postSetBreak = 0
+    protocol.dummyTrials = 2
     
-    # Prepare directories
-    dataFolder = os.path.join(os.getcwd(), 'Data')
-    if not os.path.isdir(dataFolder):
-        os.mkdir(dataFolder)
-    dataFolder = os.path.join(dataFolder, str(groupInfo[0]))
-    if not os.path.isdir(dataFolder):
-        os.mkdir(dataFolder)
-    dataFolder = os.path.join(dataFolder, protocolName[0])
-    if not os.path.isdir(dataFolder):
-        os.mkdir(dataFolder)
-    
-    monNum = calibrate()
-    if codeInfo['Participant Name'] == 'Test':
-        fileName = 'Test'
-    else:
-        fileName = codeInfo['Participant Name'] + ' (' + time.strftime("%m %d") + ') ' + groupInfo[0] + ', ' + protocolName[0] + monNum
+    calibrate()
     loadSounds()
     
-    protocol = protocol(os.path.join(dataFolder, fileName + '.csv'))
+    protocol = protocol('')
+    protocol.showWait = showWaitAuto
+    protocol.afkStreak = 0
+    stimTestOld = funcType = type(protocol.stimTest)
+    protocol.stimTest = funcType(stimTestAuto, protocol)
     protocol.main()
     protocol.win.mouseVisible = False;
     protocol.win.winHandle.minimize()
     protocol.win.winHandle.close()
-    
-    scoreDialog = gui.Dlg(title = "Record Score", labelButtonCancel='Choose Premade Random Name.')
-    scoreDialog.addText('Do you want to record your score on the leaderboard?')
-    scoreDialog.addField('Display Name:', 'Daddy ' + codeInfo['Participant Name'])
-    displayName = scoreDialog.show()
-    if displayName == None:
-        displayName = random.sample(['cm600286', 'Powell Cat Sushi', 'Bot' + '%04d' % random.randint(0,1000), 'Baby Monster', 'Scroptimus Prime', 'Michael Scrott',
-            'Scrotation Crustacean', 'AmogUs', 'PikachYOU', 'Chuck Norris', 'Fast and Curious', 'Daddy Gene', 'Russian Spy', 'Ariana Grande\'s Ponytail'], 1)
-    scoreFile = os.path.join(scoreFolder, time.strftime("%y%m%d%H%m") + displayName[0])
-    if not TV.debug:
-        with open(scoreFile + '.txt', 'w', newline='') as file:
-            file.write(str(protocol.score))
-    else: print(scoreFile + '.txt = ' + str(protocol.score))
-    #if protocolNum < len(protocols) - 1: protocolBreak(longWaitTime)
 
 def endScene(protocolList):
     TV.playNotes(notes = [220, 277.18, 329.63, 277.18, 329.63, 440, 329.63, 440, 554.37, 440, 554.37, 659.25, 554.37, 659.25, 880],
         beats = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4], beatLength = 0.1)
-    TV.genDisplay('All done for today!', 0, 8, height = 3)
-    TV.genDisplay('Thank you for your time!', 0, 4, height = 2)
     TV.genDisplay('Final Scores', 0, 0, height = 3)
     for i in range(0, len(protocolList)):
         TV.genDisplay(str(protocolList[i].score), 0, -4 - 2 * i, color = [0,1,0])
         print(protocolList[i].score)
     TV.showWait()
 
-main()
+debugDlg = gui.Dlg(title='Debug Mode?', pos=None, size=None, style=None,\
+     labelButtonOK=' Yes ', labelButtonCancel=' No ', screen=-1)
+debugDlg.show()
+TV.debug = debugDlg.OK
+longBreakTime = 1
+
+while True:
+    main()
