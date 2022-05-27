@@ -105,20 +105,6 @@ def loadSounds():
     playThread.join()
     TV.showWait(0)
 
-def protocolBreak(time = 60):
-    for i in range(0, time + 1):
-        TV.genDisplay('Longer Break', 0, 9)
-        TV.genDisplay('You now have a 4 minute break to rest your eyes, get up,', 0, 6)
-        TV.genDisplay('and stretch your arms. If you need to use the restroom,', 0, 4)
-        TV.genDisplay('please notify the operator. You can also start the next', 0, 2)
-        TV.genDisplay('protocol early after 1 minute if you are ready.', 0, 0)
-        if i < time:
-            TV.genDisplay('Seconds left until early start: ' + str(time - i), 0, -4)
-            TV.showWait(1)
-        else:
-            TV.genDisplay('[Press space to start next protocol]', 0, -4)
-            TV.showWait()
-
 
 def main():
     with open(os.path.join(os.getcwd(), 'Calibration', groupFile)) as file:
@@ -152,10 +138,13 @@ def main():
     protocol.highScores = [score[0] for score in topWinners + recentWinners]
     protocol.winners = [score[1] for score in topWinners + recentWinners]
     
+    origTrials = protocol.trialsPerSet * protocol.numSets
     protocol.trialsPerSet = 16
     protocol.numSets = 2
+    protocol.highScores = [round(score * 32 / origTrials) for score in protocol.highScores]
+    
     protocol.initialPracticeTrials = 3
-    protocol.trainingTime = 1
+    protocol.trainingTime = 5
     protocol.trainingReps = 1
     protocol.interimPracticeTrials = 0
     protocol.prePracticeBreak = 5
@@ -168,22 +157,12 @@ def main():
     
     protocol = protocol('')
     protocol.showWait = showWaitAuto
-    protocol.afkStreak = 0
     stimTestOld = funcType = type(protocol.stimTest)
     protocol.stimTest = funcType(stimTestAuto, protocol)
     protocol.main()
     protocol.win.mouseVisible = False;
     protocol.win.winHandle.minimize()
     protocol.win.winHandle.close()
-
-def endScene(protocolList):
-    TV.playNotes(notes = [220, 277.18, 329.63, 277.18, 329.63, 440, 329.63, 440, 554.37, 440, 554.37, 659.25, 554.37, 659.25, 880],
-        beats = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4], beatLength = 0.1)
-    TV.genDisplay('Final Scores', 0, 0, height = 3)
-    for i in range(0, len(protocolList)):
-        TV.genDisplay(str(protocolList[i].score), 0, -4 - 2 * i, color = [0,1,0])
-        print(protocolList[i].score)
-    TV.showWait()
 
 debugDlg = gui.Dlg(title='Debug Mode?', pos=None, size=None, style=None,\
      labelButtonOK=' Yes ', labelButtonCancel=' No ', screen=-1)
