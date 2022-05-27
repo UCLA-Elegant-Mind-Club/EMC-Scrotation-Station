@@ -374,7 +374,7 @@ for i = 1:length(readXValues)
         [0.062745  0.062745  0.52941], [0.61961  0.25882  0.35686]};
     SubjectNames = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'};
     
-    for i = 14:length(fileList.files)
+    for i = 14:length(fileList(1).files) + 20
         color = [color, [rand rand rand]];
         SubjectNames = [SubjectNames, int2str(i)];
     end
