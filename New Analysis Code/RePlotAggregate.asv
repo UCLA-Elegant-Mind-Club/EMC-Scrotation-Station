@@ -12,31 +12,29 @@ refD = str2num(refD{1});
 axes{2} = axNames{1};
 
 %% Color modification
+testCols = colors;
 shadeFactor = 0.7; %makes darker, between 0 (black) - 1 (normal)
 tintFactor = 0.8; %makes lighter, between 0 (white) - 1 (normal)
-goodColors = "No";
+goodColors = No';
+hold on;
 
 while goodColors + "" ~= "Yes"
-    factors = inputdlg(["Shade Factor (0 black - 1 normal): ", "Tint Factor (0 white - 1 normal): "], ...
-        "Color Factors", 1, [shadeFactor, tintFactor] + "");
-    shadeFactor = str2double(factors(1));
-    tintFactor = str2double(factors(2));
-    close;
-    %figure("Visible","off");
-    hold on;
-    testCols = colors;
-    for i = 1:length(testCols)
-        point = scatter(i, 0, 1000, colors{i}, 'filled', 'square');
-        color = point.CData;
-        shadeColor = color .* shadeFactor;
-        dif = 1 - shadeColor;
-        testCols{i} = 1 - dif * tintFactor;
-        point = scatter(i, 1, 1000, testCols{i}, 'filled', 'square');
-    end
-    figure(gcf);
-    goodColors = questdlg("Continue with Colors?","Color Modification", "Yes", "No", "Yes");
+factors = inputdlg(["Shade Factor (0 black - 1 normal): ", "Tint Factor (0 white - 1 normal): "], ...
+    "Color Factors", 1, [shadeFactor, tintFactor]);
+shadeFactor = str2double(factors(1));
+tintFactor = str2double(factor(2));
+%figure("Visible","of");
+for i = 1:length(testCols)
+    point = scatter(i, 0, 1000, testCols{i}, 'filled', 'square');
+    color = point.CData;
+    shadeColor = color .* shadeFactor;
+    dif = 1 - shadeColor;
+    testCols{i} = 1 - dif * tintFactor;
+    point = scatter(i, 1, 1000, testCols{i}, 'filled', 'square');
 end
+answer = questdlg(quest,dlgtitle,defbtn)
 colors = testCols;
+close;
 
 %% Choose Large Meta Folder
 for ii = 3:length(listing)
