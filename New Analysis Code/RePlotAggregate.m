@@ -6,6 +6,7 @@ global readX;
 %% Experiment Information
 [dName, axNames, refD, readXValues, listing, ...
     protOrder, protocolNames, colors, linestyle, S] = experimentInformation();
+
 myDir = listing(1).folder;
 refD = str2num(refD{1});
 axes{2} = axNames{1};
@@ -216,4 +217,5 @@ for i = 1:length(readXValues)
     aggregatePlotting_v3(fileList, masterAngles, protocolWeightedMean, colors,...
         protocolStdErr,protocolChiFitPos, protocolChiFitNeg, linestyle,protocolNames, S,...
         axes, refDist, '');
+    xlim([-190 190]);
 end
