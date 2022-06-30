@@ -1,0 +1,32 @@
+from psychopy import gui, visual, core, event, monitors, prefs
+prefs.hardware['audioLib'] = ['ptb', 'pyo']
+import threading
+from psychopy.sound import Sound
+from psychopy.event import waitKeys
+import numpy as np
+import os, time, random, math, csv, re, uuid
+from abc import ABC, abstractmethod
+
+textZoom = 1.25
+
+class TVStimuli(ABC):
+    
+    def __init__(self, testValues, stimDescription, stimType, fileName = ''):
+        self.testValues = testValues
+        
+        if len(stimDescription) > 0:
+            stimDescription += ' '
+        self.stimDescription = stimDescription
+        self.stimType = stimType
+        
+        self.totalTrials = self.numSets * self.trialsPerSet
+        self.fileName = fileName
+        self.recordData = self.recordData and fileName != ''
+        if self.recordData and not os.path.isfile(fileName):
+            self.initFile()
+        self.score = 0
+        self.streak = 0
+        
+        self.initTestValues(testValues)
+
+        

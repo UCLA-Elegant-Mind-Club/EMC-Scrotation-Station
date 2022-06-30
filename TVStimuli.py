@@ -38,7 +38,7 @@ class TVStimuli(ABC):
     highScores = []
     rank = [-1, -1]
     
-    def __init__(self, testValues, stimDescription, stimType, fileName = ''):
+    def __init__(self, testValues: list, stimDescription: str, stimType: str, fileName: str = ''):
         self.testValues = testValues
         
         if len(stimDescription) > 0:
@@ -56,21 +56,21 @@ class TVStimuli(ABC):
         
         self.initTestValues(testValues)
 
-    def initTestValues(self, testValues):
+    def initTestValues(self, testValues: list):
         trialsPerValue = math.floor(self.totalTrials/len(testValues))
         extraTrials = self.totalTrials - trialsPerValue * len(testValues)
         self.testArray = testValues * trialsPerValue + random.sample(testValues, extraTrials)
         random.shuffle(self.testArray)
 
     @abstractmethod
-    def showImage(self, set, showTarget, testValue):
+    def showImage(self, set: int, showTarget: int, testValue: float):
         pass
         
     @abstractmethod
     def initFile(self):
         pass
 
-    def csvOutput(self, output):
+    def csvOutput(self, output: list):
         if(self.fileName != ''):
             with open(self.fileName, 'a', newline='') as csvFile:
                 writer = csv.writer(csvFile)
@@ -78,8 +78,8 @@ class TVStimuli(ABC):
             csvFile.close()
     
     @staticmethod
-    def calibrate(calibrationFile = 'monitors.csv', mon = 'TV',
-                    crossFile = os.path.join(os.getcwd(), 'Calibration', 'cross.png')):
+    def calibrate(calibrationFile: str = 'monitors.csv', mon: str = 'TV',
+                    crossFile: str = os.path.join(os.getcwd(), 'Calibration', 'cross.png')) -> None or str:
             
         macAddress = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
         with open(calibrationFile) as csvFile:
@@ -116,22 +116,24 @@ class TVStimuli(ABC):
         return tvInfo['Label']
             
     @staticmethod
-    def angleCalc(angle):
+    def angleCalc(angle: float):
         radians = math.radians(angle)
         spacer = 2 * math.tan(radians/2) * float(TVStimuli.tvInfo['Distance to screen'])
         return spacer
     
     @staticmethod
-    def genDisplay(text, xPos, yPos, height = 1.5, color = 'white'):
+    def genDisplay(text: str, xPos: float, yPos: float, height: float = 1.5, color: str = 'white'):
         displayText = visual.TextStim(win = TVStimuli.win, text = text, font = 'Arial',
         pos = (xPos * textZoom, yPos * textZoom + yPos * float(TVStimuli.tvInfo['spacer'])),
         height = height * float(TVStimuli.tvInfo['height']) * textZoom, wrapWidth = 500, color = color)
         displayText.draw();
-
+    
+    @abstractmethod
     def instructions(self):
         pass
     
-    def demoSequence(self, testValues, demoMessage):
+    @abstractmethod
+    def demoSequence(self, testValues: list, demoMessage: str):
         pass
     
     @abstractmethod
@@ -166,16 +168,18 @@ class TVStimuli(ABC):
         return rank;
     
     @staticmethod
-    def showWait(seconds = -1, keys = ['space'], flip = True):
+    def showWait(seconds: float = -1, keys: list = ['space'], flip: bool = True, timeOnly: bool = True):
         if flip: TVStimuli.win.flip()
         if seconds < 0:
             key = waitKeys(keyList = keys + ['escape'])
-        else:
+        elif timeOnly:
             key = waitKeys(keyList = ['escape'], maxWait = seconds)
+        else:
+            key = waitKeys(keyList = keys + ['escape'], maxWait = seconds)
         if key != None and key[0] == 'escape':
             core.quit()
 
-    def breakScreen(self, trialsLeft = 0):
+    def breakScreen(self, trialsLeft: int = 0):
         print('Short Set Break')
         self.streak = 0
         for i in range(0, self.postSetBreak):
@@ -187,7 +191,7 @@ class TVStimuli(ABC):
             self.genDisplay('Current score: ' + str(self.score), 0, -9, height = 3)
             self.showWait(1)
     
-    def levelScreen(self, text1, text2):
+    def levelScreen(self, text1: str, text2: str):
         if text2 == '1':
             self.playNotes(notes = [220, 277.18, 329.63, 277.18, 329.63, 554.37, 277.18, 329.63, 440],
                 beats = [1, 1, 1, 1, 1, 1, 1, 1, 4], beatLength = 0.1)
@@ -205,7 +209,7 @@ class TVStimuli(ABC):
             xPos += max(abs(xPos)/2, (rightEdge - leftEdge)/1000)
             self.win.flip()
     
-    def learningTrial(self, set, target, mapping, repeatText = False):
+    def learningTrial(self, set: int, target: int, mapping: str, repeatText: bool = False):
             yShift = repeatText * 3
             if(repeatText):
                 self.genDisplay('Training has restarted from the first ' + self.stimType + '.', 0, 6)
@@ -218,7 +222,7 @@ class TVStimuli(ABC):
             self.genDisplay('Press \'' + mapping + '\' to continue.', 0, 0)
             self.showWait(keys = [mapping])
     
-    def learningPeriod(self, set):
+    def learningPeriod(self, set: int):
         self.genDisplay('You have ' + str(self.trainingTime) + ' seconds to', 0, 6)
         self.genDisplay('memorize each of the 3 ' + self.stimType + 's on the next slides.', 0, 3)
         self.genDisplay('Don\'t focus on memorizing minor details.', 0, 0)
@@ -232,13 +236,13 @@ class TVStimuli(ABC):
             self.learningTrial(set, target = 2, mapping = 'n')
 
     @staticmethod
-    def showCross(prePause = 0.5, postPause = 0.2):
+    def showCross(prePause: float = 0.5, postPause: float = 0.2):
         TVStimuli.showWait(prePause)
         TVStimuli.cross.draw()
         TVStimuli.showWait(postPause)
         TVStimuli.win.flip()
     
-    def stimTest(self, set, target, testValue, correctKey, practice = False):
+    def stimTest(self, set: int, target: int, testValue: any, correctKey: str, practice: bool = False):
         self.showCross()
         self.showWait(random.randint(5,15)/10, flip = False)
         self.showImage(set, target, testValue)
@@ -266,7 +270,7 @@ class TVStimuli(ABC):
             self.feedback(False, scoreChange = (not practice) * -min(reactionTime, 800)/2)
         return [(response == correctKey) * 1, testValue, reactionTime, set * 3 + target]
     
-    def feedback(self, correct, scoreChange = 0):
+    def feedback(self, correct: bool or int, scoreChange: float = 0):
         rightMessage = random.sample(['Correct!'], 1)[0]
         wrongMessage = random.sample(['Incorrect'], 1)[0]
         overTimeMessage = random.sample(['Out of time'], 1)[0]
@@ -310,13 +314,14 @@ class TVStimuli(ABC):
             playThread.join()
 
     @staticmethod
-    def playNotes(notes, beats, beatLength = 0.15, loop = 0, freeze = False):
+    def playNotes(notes: list, beats: list, beatLength: float = 0.15, loop: int = 0, freeze: bool = False) -> threading.Thread:
         noteThread = threading.Thread(target = TVStimuli.noteThread, args = (notes, beats, beatLength, loop))
         noteThread.start()
         if loop >= 0 and freeze: TVStimuli.showWait(sum(beats) * beatLength * (loop + 1), flip = False)
         return noteThread
-        
-    def noteThread(notes, beats, beatLength, loop):
+    
+    @staticmethod
+    def noteThread(notes: list, beats: list, beatLength: float, loop: int):
         i = 0
         while i < len(notes):
             if notes[i] != '':
@@ -327,8 +332,8 @@ class TVStimuli(ABC):
             if i == len(notes) and loop != 0:
                 i = 0
                 loop -= 1
-
-    def practiceRound(self, set, practiceTrials = initialPracticeTrials, trialsLeft = 0):
+    
+    def practiceRound(self, set: int, practiceTrials: int = initialPracticeTrials, trialsLeft: int = 0):
         print('Practice Round')
         
         perStim = int(math.ceil(practiceTrials/6))
@@ -359,7 +364,7 @@ class TVStimuli(ABC):
             target = random.randint(0,2)
             self.stimTest(set, target, random.sample(self.testValues, 1)[0], ['v','b','n'][target], practice = True)
 
-    def experimentalRound(self, set):
+    def experimentalRound(self, set: int):
         trialNum = 0
         print('Experimental Round')
         while trialNum < self.trialsPerSet:
@@ -405,4 +410,10 @@ class TVStimuli(ABC):
         print('Current Protocol Finished. Score = ' + str(self.score) + '; Rank = ' + str(rank))
         self.rank = rank
         self.showWait()
-        
+
+# Import documentation for tooltips
+from TVStimuli_Doc import TVStimuli_Doc as doc
+TVStimuli.__doc__ = doc.__doc__
+functions = doc.__dict__
+for funct in list(functions.keys())[2:-2]:
+    getattr(TVStimuli, funct).__doc__ = functions[funct].__doc__
