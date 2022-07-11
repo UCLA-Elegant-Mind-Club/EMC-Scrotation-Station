@@ -326,7 +326,7 @@ class NonsenseCharsScaling(ComplexCharacters, ScalingProtocol):
 
 class WordsProtocol (TVStimuli):
     numSets = 2
-    trialsPerSet = 25
+    trialsPerSet = 35
     referenceSize = 2
     
     language = folder = ''
