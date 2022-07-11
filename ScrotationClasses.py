@@ -337,7 +337,7 @@ class WordsProtocol (TVStimuli):
         self.displayImage.size = None
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         factor = faceHeight / self.displayImage.size[1]
-        self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
+        self.displayImage.size = (self.displayImage.size[0], self.displayImage.size[1] * factor)
     
     def getImage(self, set, showTarget):
         targets = [[1,2,3], [4,5,6], ['demo']]
