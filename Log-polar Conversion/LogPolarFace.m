@@ -1,6 +1,12 @@
 path = uigetdir(pwd, 'Select a folder to convert');
-folder = dir(fullfile(path, '*.png'));
-mkdir(path + " - Converted");
+singleFile = "";
+if path ~= 0
+    folder = dir(fullfile(path, '*.png'));
+    mkdir(path + " - Converted");
+else
+    [singleFile, path] = uigetfile('*.*', 'Select an image to convert');
+    folder = struct('name', singleFile);
+end
 testGrid = im2double(imread("grid.png"));
 [gridImg, colorMap] = imread(fullfile(pwd, "gridConverted - 500.png"));
 if size(gridImg, 3) == 1; gridImg = ind2rgb(gridImg, colorMap); end
@@ -42,7 +48,7 @@ for fileNum = 1:length(folder)
     
     %% toggle drawing options
     stepDraw = false;
-    embedGrid = false;
+    embedGrid = true;
     
     for pixel = 1:size(img, 3)
         imgSlice = img(:, :, pixel);
@@ -93,7 +99,7 @@ for fileNum = 1:length(folder)
         newImg = max(0, (newImg - grid .* (grid > 0)));
     end
     imshow(newImg);
-    saveas(converted, fullfile(path + " - Converted", file));
+    if singleFile == ""; saveas(converted, fullfile(path + " - Converted", file)); end
     figure(converted);
 
     %figure('Name', file + " - Sample Image");
