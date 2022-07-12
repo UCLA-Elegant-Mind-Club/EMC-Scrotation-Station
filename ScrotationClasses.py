@@ -305,18 +305,42 @@ class EnglishCharsScaling(ComplexCharacters, ScalingProtocol):
         if not TVStimuli.debug:
             self.trainingTime = 5
             self.trainingReps = 1
+    
+    def showImage(self, set, showTarget, size):
+        self.displayImage.image = self.getImage(set, showTarget)
+        self.displayImage.size = None
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
+        self.displayImage.size = (self.displayImage.size[0], self.displayImage.size[1] * factor)
+        self.displayImage.draw()
 
 class ChineseCharsScaling(ComplexCharacters, ScalingProtocol):
     folder = 'Chinese Characters'
     def __init__(self, fileName):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, 'Chinese', 'character', fileName = fileName)
+    
+    def showImage(self, set, showTarget, size):
+        self.displayImage.image = self.getImage(set, showTarget)
+        self.displayImage.size = None
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
+        self.displayImage.size = (self.displayImage.size[0], self.displayImage.size[1] * factor)
+        self.displayImage.draw()
 
 class NonsenseCharsScaling(ComplexCharacters, ScalingProtocol):
     folder = 'Nonsense Characters'
     def __init__(self, fileName = ''):
         self.initSizes(self.sizes)
         super().__init__(self.sizes, 'Combined', 'characters', fileName = fileName)
+    
+    def showImage(self, set, showTarget, size):
+        self.displayImage.image = self.getImage(set, showTarget)
+        self.displayImage.size = None
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        factor = faceHeight / self.displayImage.size[1]
+        self.displayImage.size = (self.displayImage.size[0], self.displayImage.size[1] * factor)
+        self.displayImage.draw()
 
 
 ##### Word Protocols #####
