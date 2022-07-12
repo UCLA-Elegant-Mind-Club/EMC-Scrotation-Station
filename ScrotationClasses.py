@@ -266,7 +266,7 @@ class TrainedFacesScaling(TrainedFaces, ScalingProtocol):
 
 class ComplexCharacters (TVStimuli):
     numSets = 2
-    trialsPerSet = 25
+    trialsPerSet = 35
     
     folder = ''
     def getImage(self, set, showTarget):
