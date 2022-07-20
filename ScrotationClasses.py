@@ -357,11 +357,14 @@ class WordsProtocol (TVStimuli):
     def __init__(self, testValues, language, fileName = ''):
         super().__init__(testValues, language, 'word', fileName = fileName)
 
-    def resizeImage(self, size):
+    def resizeImage(self, size, dims = '2D'):
         self.displayImage.size = None
         faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
         factor = faceHeight / self.displayImage.size[1]
-        self.displayImage.size = (self.displayImage.size[0] * factor, self.displayImage.size[1] * factor)
+        factors = [factor, factor]
+        if dims == 'Vertical': factors[0] = 1
+        elif dims == 'Horizontal': factors[1] = 1
+        self.displayImage.size = (self.displayImage.size[0] * factors[0], self.displayImage.size[1] * factors[1])
     
     def getImage(self, set, showTarget):
         targets = [[1,2,3], [4,5,6], ['demo']]
@@ -381,6 +384,7 @@ class WordsRotation(WordsProtocol, RotationProtocol):
 
 class WordsScaling(WordsProtocol, ScalingProtocol):
     sizes = [size/4 for size in ScalingProtocol.sizes]
+    direction = '2D'
     
     def __init__(self, fileName = ''):
         self.initSizes(self.sizes)
@@ -388,7 +392,7 @@ class WordsScaling(WordsProtocol, ScalingProtocol):
 
     def showImage(self, set, showTarget, size):
         self.displayImage.image = self.getImage(set, showTarget)
-        self.resizeImage(size)
+        self.resizeImage(size, self.direction)
         self.displayImage.draw()
 
 #Rotation
@@ -413,17 +417,57 @@ class EnglishWordsScaling(WordsScaling):
     language = 'English'
     folder = 'English Words'
 
+class EnglishWordsScalingVertical(WordsScaling):
+    language = 'English'
+    folder = 'English Words'
+    direction = 'Vertical'
+
+class EnglishWordsScalingHorizontal(WordsScaling):
+    language = 'English'
+    folder = 'English Words'
+    direction = 'Horizontal'
+
 class LongEnglishWordsScaling(WordsScaling):
     language = 'English'
     folder = 'Long English Words'
+    
+class LongEnglishWordsScalingVertical(WordsScaling):
+    language = 'English'
+    folder = 'Long English Words'
+    direction = 'Vertical'
+    
+class LongEnglishWordsScalingHorizontal(WordsScaling):
+    language = 'English'
+    folder = 'Long English Words'
+    direction = 'Horizontal'
 
 class NonsenseWordsScaling(WordsScaling):
     language = 'Scrambled English'
     folder = 'Nonsense Words'
 
+class NonsenseWordsScalingVertical(WordsScaling):
+    language = 'Scrambled English'
+    folder = 'Nonsense Words'
+    direction = 'Vertical'
+
+class NonsenseWordsScalingHorizontal(WordsScaling):
+    language = 'Scrambled English'
+    folder = 'Nonsense Words'
+    direction = 'Horizontal'
+
 class LongNonsenseWordsScaling(WordsScaling):
     language = 'Scrambled English'
     folder = 'Long Nonsense Words'
+
+class LongNonsenseWordsScalingVertical(WordsScaling):
+    language = 'Scrambled English'
+    folder = 'Long Nonsense Words'
+    direction = 'Vertical'
+
+class LongNonsenseWordsScalingHorizontal(WordsScaling):
+    language = 'Scrambled English'
+    folder = 'Long Nonsense Words'
+    direction = 'Horizontal'
 
 
 ##### Scrotation Combination Protocols #####
