@@ -14,6 +14,7 @@ for k = 1:length(fileList)
         
         masterAngles = [masterAngles; angles];
         masterAngles = unique(masterAngles);
+        %{
         if strcmp(plotSeparate, 'True')
             figure((k-1)*length(fileList(k).files) + ii);
         elseif strcmp(plotSeparate, 'False')
@@ -31,12 +32,16 @@ for k = 1:length(fileList)
             [angleRT_StdErr(k).protocol(ii).subject.data], S{k}, 'Color', colors{k},...
             'LineWidth', 1, 'CapSize', 0);
         addpath(myDir, '\..\..');
+        %}
+        fprintf(k + ", " + ii);
         PosChiSquare = chiSquareFunction(angles(angles >= refDist), ...
             [angleRT_Mean(k).protocol(ii).subject(find(angles >=refDist)).data],...
             [angleRT_StdErr(k).protocol(ii).subject(find(angles>=refDist)).data]);
         NegChiSquare = chiSquareFunction(angles(angles <= refDist), ...
             [angleRT_Mean(k).protocol(ii).subject(find(angles <=refDist)).data],...
             [angleRT_StdErr(k).protocol(ii).subject(find(angles<=refDist)).data]);
+
+        %{
         plot(angles(angles >= refDist), angles(angles >= refDist)*PosChiSquare.slope +...
             PosChiSquare.intercept, 'LineWidth', 1, 'LineStyle', linestyle{k},...
             'color', colors{k});
@@ -68,6 +73,8 @@ for k = 1:length(fileList)
         elseif strcmp(plotSeparate, 'False')
             title(strcat('Subject', {' '}, string(ii)));
         end
+        %}
+
         outputParamStats(k).slopePos(ii) = PosChiSquare.slope;
         outputParamStats(k).slopePosErr(ii) = PosChiSquare.slopeErr;
         outputParamStats(k).slopeNeg(ii) = NegChiSquare.slope;
@@ -84,6 +91,7 @@ for k = 1:length(fileList)
         outputParamStats(k).R_Neg(ii) = NegChiSquare.R;
     end
 end
+%{
 if strcmp(plotSeparate, 'False')
     for k = 1:length(fileList)
         %mkdir(protocolNames{k});
@@ -99,6 +107,7 @@ if strcmp(plotSeparate, 'False')
         end
     end
 end
+%}
 for k = 1:length(fileList)
     outputParamStats(k).slopePos = [outputParamStats(k).slopePos]';
     outputParamStats(k).slopePosErr = [outputParamStats(k).slopePosErr]';
@@ -119,4 +128,5 @@ end
 for ii = 1:length(protocolNames)
     protocolOutput(ii).table = struct2table(outputParamStats(ii));
 end
+h = 0;
 end

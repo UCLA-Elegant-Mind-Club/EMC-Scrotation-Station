@@ -2,10 +2,11 @@ close all;
 %% Setup
 numProtocols = 7;
 % Make sure to have 2 yTickLabels per protocol
-yTickLabels = {'Counterclockwise', 'Clockwise', 'Counterclockwise', 'Clockwise', 'Counterclockwise', 'Clockwise', ...
-    'Leftwards', 'Rightwards', 'Leftwards', 'Rightwards', 'Downwards', 'Upwards', 'Downwards', 'Upwards'};
-protocolMarkers = ['o', 'o', 'o', 'd', 'd', 's', 's'];
-groupColors = struct('Roll', [0.8 0.5 0], 'Yaw', [0 0.75 0.1], 'Pitch', [0 0 0.95]);
+yTickLabels = {'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', ...
+    'Up', 'Down', 'Left', 'Right', 'CCW', 'CW', 'Up', 'Down', 'Left', 'Right', 'CCW', 'CW', 'CCW', 'CW', ...
+    'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', };
+protocolMarkers = ['^^^ooooooos^sss^'];
+groupColors = struct('Face', [0.8 0.5 0], 'Char', [0 0.75 0.1], 'Word', [0 0 0.95]);
 markerSize = 5;
 table = readtable("Rotation Parameters.xlsx");
 
@@ -16,14 +17,14 @@ set(gca, 'XGrid', 'on');
 graphingSlopes = true;
 if graphingSlopes
     cols = [4, 11];
-    xBounds = [-0.5 4];
+    xBounds = [0, 3];
     title("Comparison of Slopes between Protocols");
     xlabel("Slope (ms/°)");
     %for slopes, negate left slopes
     process = @(right, row, data) (right * 2 - 1) * data{row, cols(right + 1)};
 else
     cols = [6, 13];
-    xBounds = [450 550];
+    xBounds = [400 650];
     title("Comparison of Intercepts between Protocols");
     xlabel("Intercept (ms)");
     %for intercepts, treat normally
@@ -44,7 +45,8 @@ while row <= height(data)
         protocolNum = protocolNum + 1;
         if backtrack    % continue and draw left side data
             if row <= height(data)
-                protocols{ceil(protocolNum/2)} = sprintf(strrep(data{row,1}, ' ', '\n'));
+                temp = sprintf(strrep(data{row,1}, ' ', '\n'));
+                protocols{ceil(protocolNum/2)} = sprintf(strrep(temp, '_', ' '));
             end
             backtrack = false;
             protocolStart = row;
@@ -94,7 +96,7 @@ for i = 1:length(groups)
     legendPoints(i) = scatter(xBounds(1) - xBounds(2), i, 'filled', markerType(i), ...
         'MarkerEdgeColor', edgeColor, 'MarkerFaceColor', color, 'HandleVisibility','off');
 end
-leg = legend(legendPoints, groups, 'Location', 'northeast');
+leg = legend(legendPoints, groups, 'Location','southeast');
 legend Box on;
 leg.AutoUpdate = false;
 
@@ -103,15 +105,20 @@ axis([xBounds, 0 yPos])
 line([0 0], [0 yPos], 'Color', [0.4 0.4 0.4]);
 
 try delete(yLbl); catch; end
-yLbl = ylabel("Protocol");
-set(gca,'YTickLabel', yTickLabels);
-set(gca,'YTick', (borderPos(2:end) + borderPos(1:end-1))/2);
+a = gca;
+a.YTickLabel = yTickLabels;
+a.YTick = (borderPos(2:end) + borderPos(1:end-1))/2;
+a.YAxis.FontSize = 7;
+yLbl = ylabel("Protocol", 'FontSize', 11);
 
-try delete(protocolText); catch; end
-bufferDist = xBounds(1) - yLbl.Position(1);
-protocolText = text(ones(length(protocols), 1) * yLbl.Position(1) - bufferDist * 0.1, borderPos(2:2:end), protocols,...
-    'VerticalAlignment','middle','HorizontalAlignment','center');
-set(protocolText,'Rotation',90);
-%yLbl.Position(1) = yLbl.Position(1) - 10;
-yLbl.Position(1) = yLbl.Position(1) - bufferDist * 0.3;
+try delete(protocolText); catch; end;
+protocolText = text(ones(length(protocols), 1) * yLbl.Position(1), borderPos(2:2:end), protocols,...
+    'VerticalAlignment','middle','HorizontalAlignment','center', 'FontSize', 8, 'Units', 'data');
+%set(protocolText,'Rotation',90);
+w = protocolText(1).Extent(3);
+for i = 1:length(protocolText)
+    protocolText(i).Position(1) = yLbl.Position(1) - w/1.75;
+    %protocolText(i).Position(3) - w;
+end
+yLbl.Position(1) = a.YAxis.Label.Position(1) - w * 1.25;
 refresh;
