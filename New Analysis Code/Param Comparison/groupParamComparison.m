@@ -3,7 +3,7 @@ close all;
 numProtocols = 7;
 % Make sure to have 2 yTickLabels per protocol
 yTickLabels = {'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', ...
-    'Up', 'Down', 'Left', 'Right', 'CCW', 'CW', 'Up', 'Down', 'Left', 'Right', 'CCW', 'CW', 'CCW', 'CW', ...
+    'Down', 'Up', 'Left', 'Right', 'CCW', 'CW', 'Down', 'Up', 'Left', 'Right', 'CCW', 'CW', 'CCW', 'CW', ...
     'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', 'CCW', 'CW', };
 protocolMarkers = ['^^^ooooooos^sss^'];
 groupColors = struct('Face', [0.8 0.5 0], 'Char', [0 0.75 0.1], 'Word', [0 0 0.95]);
@@ -14,7 +14,7 @@ fig = figure();
 hold on;
 set(gca, 'XGrid', 'on');
 
-graphingSlopes = true;
+graphingSlopes = false;
 if graphingSlopes
     cols = [4, 11];
     xBounds = [0, 3];
