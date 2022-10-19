@@ -105,8 +105,10 @@ class ScalingProtocol(TVStimuli):
     
     def showImage(self, set, showTarget, size):
         self.displayImage.image = self.getImage(set, showTarget)
-        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth'])
-        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight'])
+        faceWidth = self.angleCalc(size) * float(self.tvInfo['faceWidth']) * 0.75
+        faceHeight = self.angleCalc(size) * float(self.tvInfo['faceHeight']) * 0.75
+        ##Added scalar of 0.75 to change participant seating distance from 140cm to 105cm
+        ####This needs to be done to merge with eye tracker; 140cm is too far for it to register eyes
         self.displayImage.size = (faceWidth, faceHeight)
         self.displayImage.draw()
     
